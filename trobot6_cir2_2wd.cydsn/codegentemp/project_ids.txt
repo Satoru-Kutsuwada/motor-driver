@@ -1,0 +1,6 @@
+C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\Libraly\trobot_libs\trobot_libs.cylib\trobot_libs.cyprj|f44f1156-0163-4437-8121-dcf93dac32e3
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|c8dae0c7-a9eb-41fd-b714-0fc8a4cec20f
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|fc13f2a6-d1ad-480b-9259-4634acc36265
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|e11aef4a-99df-40c6-8d10-6870d92268b7
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|c40e3f7b-a0a9-4c5e-894d-ab3cb4583801
+C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\trobot6_cir2_2wd.cyprj|42a6c821-21be-4d88-9a29-6f65a5f85afb

@@ -1,0 +1,231 @@
+# trobot6_cir2_2wd
+# 2023-03-13 08:25:20Z
+
+# IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
+dont_use_io iocell 1 0
+# IO_1@[IOP=(1)][IoId=(1)] is reserved: SWDDebugEnabled
+dont_use_io iocell 1 1
+# IO_3@[IOP=(1)][IoId=(3)] is reserved: SWDDebugEnabled
+dont_use_io iocell 1 3
+# IO_0@[IOP=(15)][IoId=(0)] is reserved: MhzXtalEnabled
+dont_use_io iocell 15 0
+# IO_1@[IOP=(15)][IoId=(1)] is reserved: MhzXtalEnabled
+dont_use_io iocell 15 1
+# IO_2@[IOP=(15)][IoId=(2)] is reserved: KhzXtalEnabled
+dont_use_io iocell 15 2
+# IO_3@[IOP=(15)][IoId=(3)] is reserved: KhzXtalEnabled
+dont_use_io iocell 15 3
+set_location "ClockBlock" clockblockcell -1 -1 0
+set_io "PWMOUT0(0)" iocell 5 2
+set_io "PWMOUT1(0)" iocell 6 2
+set_io "CW1(0)" iocell 6 0
+set_io "CW0(0)" iocell 5 0
+set_io "BREAK1(0)" iocell 6 3
+set_io "BREAK0(0)" iocell 5 3
+set_io "\USBUART_1:Dm(0)\" iocell 15 7
+set_location "\USBUART_1:Dp\" logicalport -1 -1 15
+set_io "\USBUART_1:Dp(0)\" iocell 15 6
+set_io "P_out(0)" iocell 2 4
+set_io "P_out(1)" iocell 2 5
+set_io "P_out(2)" iocell 2 6
+set_io "P_out(3)" iocell 2 7
+set_io "motor1_b(0)" iocell 15 4
+set_io "motor1_a(0)" iocell 6 1
+set_io "motor0_a(0)" iocell 5 1
+set_io "motor0_b(0)" iocell 1 6
+set_io "FirstLine(0)" iocell 0 4
+set_io "CycleStart(0)" iocell 0 5
+set_io "SubCycleStart(0)" iocell 0 6
+set_io "V_battery(0)" iocell 0 3
+set_io "PIC_CS(0)" iocell 5 5
+set_io "P_out_1(0)" iocell 6 4
+set_io "P_out_1(1)" iocell 6 5
+set_io "P_out_2(0)" iocell 6 6
+set_io "P_out_2(1)" iocell 6 7
+set_io "SS0(0)" iocell 3 7
+set_io "MOSI(0)" iocell 12 1
+set_io "SCLK(0)" iocell 0 2
+set_io "MISO(0)" iocell 12 0
+set_io "DOF9_CS(0)" iocell 5 4
+set_io "MOTOR_EN(0)" iocell 15 5
+set_io "Dist6_PVM1(0)" iocell 4 0
+set_io "Dist_9_Detect_dwn_step(0)" iocell 0 1
+set_io "DRV_ENA(0)" iocell 4 1
+set_io "SS1(0)" iocell 0 0
+set_io "Dist0_FR(0)" iocell 2 1
+set_io "Dist1_Front(0)" iocell 4 5
+set_io "Dist2_FL(0)" iocell 4 4
+set_io "Dist3_Rear(0)" iocell 4 3
+set_io "BMP_SW0_RF(0)" iocell 2 2
+set_io "BMP_SW1_FR(0)" iocell 2 3
+set_io "BMP_SW2_FL(0)" iocell 4 6
+set_io "BMP_SW3_LF(0)" iocell 4 7
+set_io "BMP_SW4_LR(0)" iocell 12 6
+set_io "BMP_SW5_RL(0)" iocell 1 7
+set_io "BMP_SW6_RR(0)" iocell 3 4
+set_io "BMP_SW7_rightR(0)" iocell 3 3
+set_io "MOTOR_FAULT(0)" iocell 2 0
+set_io "EM_STOP(0)" iocell 0 7
+set_io "psoc_nop(0)" iocell 3 0
+set_io "hu0(0)" iocell 3 5
+set_io "hv0(0)" iocell 3 2
+set_io "hw0(0)" iocell 3 1
+set_io "hu1(0)" iocell 12 7
+set_io "hv1(0)" iocell 1 2
+set_io "hw1(0)" iocell 1 5
+set_io "dist8_SW_DET(0)" iocell 4 2
+set_io "Dist4_PVM_CUR(0)" iocell 3 6
+set_io "Sonr_TRG_x4(0)" iocell 12 4
+set_location "\motor_enc_0:a_sync_c\" 1 2 0 1
+set_location "\motor_enc_0:b_sync_c\" 1 3 0 1
+set_location "\motor_enc_1:a_sync_c\" 3 4 1 1
+set_location "\motor_enc_1:b_sync_c\" 3 4 1 3
+set_location "\Timer_PWM:TimerUDB:status_tc\" 2 4 0 2
+set_location "SubCycleClk__SYNC_3" 3 1 5 1
+set_location "\Timer_cycle:TimerUDB:status_tc\" 3 2 1 2
+set_location "Net_2261" 2 2 0 0
+set_location "Net_32" 3 1 1 2
+set_location "\SPIM_1:BSPIM:load_rx_data\" 0 0 0 1
+set_location "\SPIM_1:BSPIM:tx_status_0\" 0 1 0 2
+set_location "\SPIM_1:BSPIM:tx_status_4\" 0 0 0 0
+set_location "\SPIM_1:BSPIM:rx_status_6\" 2 3 1 0
+set_location "Net_1273" 0 5 1 3
+set_location "Net_1270" 0 5 0 3
+set_location "\motor_enc_2:a_sync_c\" 1 1 0 0
+set_location "\motor_enc_2:b_sync_c\" 1 0 0 1
+set_location "\motor_enc_3:a_sync_c\" 3 2 0 3
+set_location "\motor_enc_3:b_sync_c\" 3 2 1 3
+set_location "SubCycleClk__SYNC_2" 3 4 5 0
+set_location "SubCycleClk__SYNC_1" 3 3 5 1
+set_location "SubCycleClk__SYNC" 3 1 5 0
+set_location "motor0_b(0)_SYNC" 1 3 5 0
+set_location "motor0_a(0)_SYNC" 1 2 5 0
+set_location "motor1_a(0)_SYNC" 3 3 5 0
+set_location "motor1_b(0)_SYNC" 1 3 5 1
+set_location "Net_2191" 3 2 1 0
+set_location "Net_2262" 2 1 1 3
+set_location "\WDT_detect_com_err:TimerUDB:status_tc\" 3 5 1 2
+set_location "\SPIM_2:BSPIM:load_rx_data\" 0 3 0 2
+set_location "\SPIM_2:BSPIM:tx_status_0\" 1 2 1 2
+set_location "\SPIM_2:BSPIM:tx_status_4\" 1 4 0 2
+set_location "\SPIM_2:BSPIM:rx_status_6\" 0 3 1 0
+set_location "Net_2519" 2 1 0 3
+set_location "Net_2518" 2 4 1 0
+set_location "\motor_contl_reg_0:Sync:ctrl_reg\" 0 5 6
+set_location "\USBUART_1:dp_int\" interrupt -1 -1 12
+set_location "\USBUART_1:USB\" usbcell -1 -1 0
+set_location "\USBUART_1:ep_3\" interrupt -1 -1 4
+set_location "\USBUART_1:ep_2\" interrupt -1 -1 3
+set_location "\USBUART_1:ep_1\" interrupt -1 -1 2
+set_location "\USBUART_1:ep_0\" interrupt -1 -1 24
+set_location "\USBUART_1:bus_reset\" interrupt -1 -1 23
+set_location "\USBUART_1:arb_int\" interrupt -1 -1 22
+set_location "\USBUART_1:sof_int\" interrupt -1 -1 21
+set_location "sub_cycle_int" interrupt -1 -1 17
+set_location "\motor_enc_0:motor_enc:u0\" 1 2 2
+set_location "\motor_enc_0:motor_enc:u1\" 0 2 2
+set_location "\motor_enc_1:motor_enc:u0\" 2 3 2
+set_location "\motor_enc_1:motor_enc:u1\" 3 3 2
+set_location "__ONE__" 3 4 0 1
+set_location "\Timer_PWM:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\" 1 1 6
+set_location "\Timer_PWM:TimerUDB:rstSts:stsreg\" 2 4 4
+set_location "\Timer_PWM:TimerUDB:sT8:timerdp:u0\" 2 4 2
+set_location "\Direct_dual_8bPWM_0:Direct_dual_8bPWM:u0\" 0 5 2
+set_location "\Timer_cycle:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\" 2 2 6
+set_location "\Timer_cycle:TimerUDB:rstSts:stsreg\" 3 2 4
+set_location "\Timer_cycle:TimerUDB:sT8:timerdp:u0\" 3 2 2
+set_location "\ADC_SAR_1:IRQ\" interrupt -1 -1 1
+set_location "\ADC_SAR_1:ADC_SAR\" sarcell -1 -1 1
+set_location "\VDAC8_1:viDAC8\" vidaccell -1 -1 1
+set_location "WDT_int" interrupt -1 -1 0
+set_location "\Timer_sub_cycle:TimerHW\" timercell -1 -1 0
+set_location "\SPIM_1:BSPIM:BitCounter\" 3 0 7
+set_location "\SPIM_1:BSPIM:TxStsReg\" 0 1 4
+set_location "\SPIM_1:BSPIM:RxStsReg\" 2 3 4
+set_location "\SPIM_1:BSPIM:sR16:Dp:u0\" 1 1 2
+set_location "\SPIM_1:BSPIM:sR16:Dp:u1\" 0 1 2
+set_location "\SS0_B:Sync:ctrl_reg\" 3 2 6
+set_location "\motor_en_reg:Sync:ctrl_reg\" 3 4 6
+set_location "\motor_enc_2:motor_enc:u0\" 0 0 2
+set_location "\motor_enc_2:motor_enc:u1\" 1 0 2
+set_location "\motor_enc_3:motor_enc:u0\" 3 1 2
+set_location "\motor_enc_3:motor_enc:u1\" 2 1 2
+set_location "\Direct_dual_8bPWM_1:Direct_dual_8bPWM:u0\" 1 4 2
+set_location "\motor_contl_reg_1:Sync:ctrl_reg\" 2 4 6
+set_location "\BMP_SW:sts:sts_reg\" 2 5 3
+set_location "\WDT_detect_com_err:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\" 2 1 6
+set_location "\WDT_detect_com_err:TimerUDB:rstSts:stsreg\" 3 5 4
+set_location "\WDT_detect_com_err:TimerUDB:sT16:timerdp:u0\" 2 5 2
+set_location "\WDT_detect_com_err:TimerUDB:sT16:timerdp:u1\" 3 5 2
+set_location "\SPIM_2:BSPIM:BitCounter\" 0 4 7
+set_location "\SPIM_2:BSPIM:TxStsReg\" 1 4 4
+set_location "\SPIM_2:BSPIM:RxStsReg\" 0 3 4
+set_location "\SPIM_2:BSPIM:sR8:Dp:u0\" 0 3 2
+set_location "Net_270" 0 5 0 2
+set_location "Net_288" 0 5 1 2
+set_location "Net_1274" 0 5 1 0
+set_location "Net_1271" 0 5 0 1
+set_location "\motor_enc_0:a1\" 1 2 0 0
+set_location "\motor_enc_0:a2\" 1 3 0 3
+set_location "\motor_enc_0:a3\" 1 0 1 3
+set_location "\motor_enc_0:a_sync\" 1 1 1 1
+set_location "\motor_enc_0:b1\" 1 3 0 0
+set_location "\motor_enc_0:b2\" 1 3 1 1
+set_location "\motor_enc_0:b3\" 1 4 1 3
+set_location "\motor_enc_0:b_sync\" 1 4 1 1
+set_location "\motor_enc_0:re_load1\" 3 1 0 1
+set_location "\motor_enc_0:re_load2\" 2 2 0 2
+set_location "\motor_enc_0:re_load_sync\" 1 2 1 1
+set_location "\motor_enc_0:up_pulse\" 0 2 1 2
+set_location "\motor_enc_0:down_pulse\" 1 2 1 0
+set_location "\motor_enc_0:re_load_pulse\" 1 2 0 3
+set_location "\motor_enc_1:a1\" 3 3 1 2
+set_location "\motor_enc_1:a2\" 3 3 0 1
+set_location "\motor_enc_1:a3\" 3 3 0 2
+set_location "\motor_enc_1:a_sync\" 3 4 0 3
+set_location "\motor_enc_1:b1\" 1 3 1 3
+set_location "\motor_enc_1:b2\" 3 3 0 3
+set_location "\motor_enc_1:b3\" 3 5 0 0
+set_location "\motor_enc_1:b_sync\" 3 5 1 3
+set_location "\motor_enc_1:re_load_sync\" 2 3 0 1
+set_location "\motor_enc_1:up_pulse\" 3 3 1 1
+set_location "\motor_enc_1:down_pulse\" 3 3 0 0
+set_location "\motor_enc_1:re_load_pulse\" 2 3 1 2
+set_location "Net_2112" 1 4 0 3
+set_location "Net_2134" 0 5 0 0
+set_location "Net_2135" 0 5 1 1
+set_location "cycle_start_sig" 3 2 0 0
+set_location "Net_2494" 2 5 1 3
+set_location "Net_2499" 2 1 1 2
+set_location "Net_2521" 2 1 1 1
+set_location "\SPIM_1:BSPIM:state_2\" 0 0 1 0
+set_location "\SPIM_1:BSPIM:state_1\" 2 0 1 0
+set_location "\SPIM_1:BSPIM:state_0\" 2 0 0 0
+set_location "\SPIM_1:BSPIM:load_cond\" 3 0 1 0
+set_location "\SPIM_1:BSPIM:cnt_enable\" 3 0 0 1
+set_location "Net_2506" 2 1 0 0
+set_location "\motor_enc_2:a2\" 1 2 0 2
+set_location "\motor_enc_2:a3\" 3 3 1 0
+set_location "\motor_enc_2:a_sync\" 1 1 1 3
+set_location "\motor_enc_2:b_sync\" 1 1 1 0
+set_location "\motor_enc_2:re_load_sync\" 1 0 0 3
+set_location "\motor_enc_2:up_pulse\" 1 0 0 2
+set_location "\motor_enc_2:down_pulse\" 1 0 1 0
+set_location "\motor_enc_2:re_load_pulse\" 1 0 1 1
+set_location "\motor_enc_3:a_sync\" 2 2 0 3
+set_location "\motor_enc_3:b_sync\" 2 2 1 0
+set_location "\motor_enc_3:re_load_sync\" 1 1 1 2
+set_location "\motor_enc_3:up_pulse\" 3 1 1 0
+set_location "\motor_enc_3:down_pulse\" 3 1 0 0
+set_location "\motor_enc_3:re_load_pulse\" 1 1 0 1
+set_location "Net_2339" 2 4 0 0
+set_location "\WDT_detect_com_err:TimerUDB:run_mode\" 2 5 0 3
+set_location "\WDT_detect_com_err:TimerUDB:timer_enable\" 2 5 0 0
+set_location "\WDT_detect_com_err:TimerUDB:trig_disable\" 2 5 0 1
+set_location "Net_2505" 0 3 1 1
+set_location "\SPIM_2:BSPIM:state_2\" 1 5 0 1
+set_location "\SPIM_2:BSPIM:state_1\" 0 2 0 0
+set_location "\SPIM_2:BSPIM:state_0\" 0 4 1 1
+set_location "\SPIM_2:BSPIM:load_cond\" 1 5 1 0
+set_location "\SPIM_2:BSPIM:cnt_enable\" 0 4 0 0
+set_location "Net_2522" 2 4 1 1

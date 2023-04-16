@@ -1,0 +1,805 @@
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"SelfTest_CPU_asm.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.CPU_PSoC_Asm,"ax",%progbits
+  19              		.align	2
+  20              		.global	CPU_PSoC_Asm
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	CPU_PSoC_Asm, %function
+  24              	CPU_PSoC_Asm:
+  25              	.LFB63:
+  26              		.file 1 ".\\SelfTest_CPU_asm.c"
+   1:.\SelfTest_CPU_asm.c **** /*******************************************************************************
+   2:.\SelfTest_CPU_asm.c **** * File Name: SelfTest_CPU_asm.c 
+   3:.\SelfTest_CPU_asm.c **** * Version 1.0
+   4:.\SelfTest_CPU_asm.c **** *
+   5:.\SelfTest_CPU_asm.c **** * Description:
+   6:.\SelfTest_CPU_asm.c **** * This file provides the source code for CPU register self tests for 
+   7:.\SelfTest_CPU_asm.c **** * PSoC 3 and PSoC 5LP.
+   8:.\SelfTest_CPU_asm.c **** *
+   9:.\SelfTest_CPU_asm.c **** * Note:
+  10:.\SelfTest_CPU_asm.c **** *
+  11:.\SelfTest_CPU_asm.c **** ********************************************************************************
+  12:.\SelfTest_CPU_asm.c **** * Copyright (2013), Cypress Semiconductor Corporation.
+  13:.\SelfTest_CPU_asm.c **** ********************************************************************************
+  14:.\SelfTest_CPU_asm.c **** * This software is owned by Cypress Semiconductor Corporation (Cypress) and is
+  15:.\SelfTest_CPU_asm.c **** * protected by and subject to worldwide patent protection (United States and
+  16:.\SelfTest_CPU_asm.c **** * foreign), United States copyright laws and international treaty provisions.
+  17:.\SelfTest_CPU_asm.c **** * Cypress hereby grants to licensee a personal, non-exclusive, non-transferable
+  18:.\SelfTest_CPU_asm.c **** * license to copy, use, modify, create derivative works of, and compile the
+  19:.\SelfTest_CPU_asm.c **** * Cypress Source Code and derivative works for the sole purpose of creating
+  20:.\SelfTest_CPU_asm.c **** * custom software in support of licensee product to be used only in conjunction
+  21:.\SelfTest_CPU_asm.c **** * with a Cypress integrated circuit as specified in the applicable agreement.
+  22:.\SelfTest_CPU_asm.c **** * Any reproduction, modification, translation, compilation, or representation of
+  23:.\SelfTest_CPU_asm.c **** * this software except as specified above is prohibited without the express
+  24:.\SelfTest_CPU_asm.c **** * written permission of Cypress.
+  25:.\SelfTest_CPU_asm.c **** *
+  26:.\SelfTest_CPU_asm.c **** * Disclaimer: CYPRESS MAKES NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, WITH
+  27:.\SelfTest_CPU_asm.c **** * REGARD TO THIS MATERIAL, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  28:.\SelfTest_CPU_asm.c **** * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  29:.\SelfTest_CPU_asm.c **** * Cypress reserves the right to make changes without further notice to the
+  30:.\SelfTest_CPU_asm.c **** * materials described herein. Cypress does not assume any liability arising out
+  31:.\SelfTest_CPU_asm.c **** * of the application or use of any product or circuit described herein. Cypress
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 2
+
+
+  32:.\SelfTest_CPU_asm.c **** * does not authorize its products for use as critical components in life-support
+  33:.\SelfTest_CPU_asm.c **** * systems where a malfunction or failure may reasonably be expected to result in
+  34:.\SelfTest_CPU_asm.c **** * significant injury to the user. The inclusion of CypressвЂ™ product in a life*
+  35:.\SelfTest_CPU_asm.c **** support systems application implies that the manufacturer assumes all risk of
+  36:.\SelfTest_CPU_asm.c **** * such use and in doing so indemnifies Cypress against all charges. Use may be
+  37:.\SelfTest_CPU_asm.c **** * limited by and subject to the applicable Cypress software license agreement.
+  38:.\SelfTest_CPU_asm.c **** *******************************************************************************/
+  39:.\SelfTest_CPU_asm.c **** 
+  40:.\SelfTest_CPU_asm.c **** #include <device.h>
+  41:.\SelfTest_CPU_asm.c **** #include <SelfTest_CPU_asm.h>
+  42:.\SelfTest_CPU_asm.c **** #include "TestConfiguration.h"
+  43:.\SelfTest_CPU_asm.c **** 
+  44:.\SelfTest_CPU_asm.c **** 
+  45:.\SelfTest_CPU_asm.c **** /* Declaration of return variable if PSoC 3 */
+  46:.\SelfTest_CPU_asm.c ****  #if defined(__C51__)	
+  47:.\SelfTest_CPU_asm.c ****     static uint8 data ret_flag = 0u;            
+  48:.\SelfTest_CPU_asm.c ****     
+  49:.\SelfTest_CPU_asm.c **** /* Declaration of return variable and defines if PSoC 5 */	
+  50:.\SelfTest_CPU_asm.c **** #elif defined(__GNUC__)
+  51:.\SelfTest_CPU_asm.c **** #define CPU_REGISTER_TEST(reg)         \
+  52:.\SelfTest_CPU_asm.c ****     "MOV   "reg", 0xAAAAAAAA  \n\t"    \
+  53:.\SelfTest_CPU_asm.c ****     "CMP   "reg", 0xAAAAAAAA  \n\t"    \
+  54:.\SelfTest_CPU_asm.c ****     "BNE   __test_asm_fail    \n\t"    \
+  55:.\SelfTest_CPU_asm.c ****     "MOV   "reg", 0x55555555  \n\t"    \
+  56:.\SelfTest_CPU_asm.c ****     "CMP   "reg", 0x55555555  \n\t"    \
+  57:.\SelfTest_CPU_asm.c ****     "BNE   __test_asm_fail    \n\t"
+  58:.\SelfTest_CPU_asm.c **** 	
+  59:.\SelfTest_CPU_asm.c **** #define CPU_REGISTER_TEST_ERROR(reg)   \
+  60:.\SelfTest_CPU_asm.c ****     "MOV   "reg", 0xAAAAAAAA  \n\t"    \
+  61:.\SelfTest_CPU_asm.c ****     "ADD   "reg", "reg", 0x01 \n\t"    \
+  62:.\SelfTest_CPU_asm.c ****     "CMP   "reg", 0xAAAAAAAA  \n\t"    \
+  63:.\SelfTest_CPU_asm.c ****     "BNE   __test_asm_fail    \n\t"    \
+  64:.\SelfTest_CPU_asm.c ****     "MOV   "reg", 0x55555555  \n\t"    \
+  65:.\SelfTest_CPU_asm.c ****     "CMP   "reg", 0x55555555  \n\t"    \
+  66:.\SelfTest_CPU_asm.c ****     "BNE   __test_asm_fail    \n\t"    
+  67:.\SelfTest_CPU_asm.c ****     
+  68:.\SelfTest_CPU_asm.c **** #endif
+  69:.\SelfTest_CPU_asm.c **** 
+  70:.\SelfTest_CPU_asm.c **** /*****************************************************************************
+  71:.\SelfTest_CPU_asm.c **** * Function Name: CPU_PSoC_Asm
+  72:.\SelfTest_CPU_asm.c **** ******************************************************************************
+  73:.\SelfTest_CPU_asm.c **** * Summary:
+  74:.\SelfTest_CPU_asm.c **** *  This function performs checkerboard test for all CPU registers for PSoC 3 
+  75:.\SelfTest_CPU_asm.c **** *  and PSoC 5 except PC register.
+  76:.\SelfTest_CPU_asm.c **** *
+  77:.\SelfTest_CPU_asm.c **** * Parameters:
+  78:.\SelfTest_CPU_asm.c **** *  None.
+  79:.\SelfTest_CPU_asm.c **** *
+  80:.\SelfTest_CPU_asm.c **** * Return:
+  81:.\SelfTest_CPU_asm.c **** *  0 - No error
+  82:.\SelfTest_CPU_asm.c **** *  Not 0 - Error detected
+  83:.\SelfTest_CPU_asm.c **** *
+  84:.\SelfTest_CPU_asm.c **** * Note:
+  85:.\SelfTest_CPU_asm.c **** *  This API is C compiler dependent.
+  86:.\SelfTest_CPU_asm.c **** *
+  87:.\SelfTest_CPU_asm.c **** *****************************************************************************/
+  88:.\SelfTest_CPU_asm.c **** 
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 3
+
+
+  89:.\SelfTest_CPU_asm.c **** #if defined(__C51__)
+  90:.\SelfTest_CPU_asm.c ****     uint8 CPU_PSoC_Asm(void)                            /* declaration of function if PSoC 3 */
+  91:.\SelfTest_CPU_asm.c ****     {    
+  92:.\SelfTest_CPU_asm.c **** #elif defined(__GNUC__)
+  93:.\SelfTest_CPU_asm.c ****     __attribute__((naked)) uint8 CPU_PSoC_Asm(void)      /* declaration of function if PSoC 5 GCC c
+  94:.\SelfTest_CPU_asm.c ****     {    
+  27              		.loc 1 94 0
+  28              		.cfi_startproc
+  29              		@ Naked Function: prologue and epilogue provided by programmer.
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  95:.\SelfTest_CPU_asm.c **** #endif  
+  96:.\SelfTest_CPU_asm.c **** 
+  97:.\SelfTest_CPU_asm.c ****     /* assembler code for PSoC 3 */
+  98:.\SelfTest_CPU_asm.c ****     #if defined(__C51__)	                            
+  99:.\SelfTest_CPU_asm.c **** 	
+ 100:.\SelfTest_CPU_asm.c **** 		/* Disable global interrupts */
+ 101:.\SelfTest_CPU_asm.c ****     	CyGlobalIntDisable;    
+ 102:.\SelfTest_CPU_asm.c **** 	
+ 103:.\SelfTest_CPU_asm.c ****         #pragma asm
+ 104:.\SelfTest_CPU_asm.c ****         push ACC
+ 105:.\SelfTest_CPU_asm.c ****         
+ 106:.\SelfTest_CPU_asm.c ****         /* Pushing R0 into Stack */
+ 107:.\SelfTest_CPU_asm.c ****         push 00h         
+ 108:.\SelfTest_CPU_asm.c ****         
+ 109:.\SelfTest_CPU_asm.c ****         /* Accumulator check */
+ 110:.\SelfTest_CPU_asm.c ****         mov A, #55h
+ 111:.\SelfTest_CPU_asm.c ****         
+ 112:.\SelfTest_CPU_asm.c ****         #if ERROR_IN_CPU_REGISTERS    
+ 113:.\SelfTest_CPU_asm.c ****             inc A
+ 114:.\SelfTest_CPU_asm.c ****         #endif  
+ 115:.\SelfTest_CPU_asm.c ****         
+ 116:.\SelfTest_CPU_asm.c ****         cjne A, #55h, LABEL_CPU_FAILURE
+ 117:.\SelfTest_CPU_asm.c ****         
+ 118:.\SelfTest_CPU_asm.c ****         mov A, #0AAh
+ 119:.\SelfTest_CPU_asm.c ****         cjne A, #0AAh, LABEL_CPU_FAILURE    
+ 120:.\SelfTest_CPU_asm.c ****         
+ 121:.\SelfTest_CPU_asm.c ****         /* Checking the R0 register, which will be used for looping through the Internal RAM locati
+ 122:.\SelfTest_CPU_asm.c ****         rl A
+ 123:.\SelfTest_CPU_asm.c ****         xch A, R0
+ 124:.\SelfTest_CPU_asm.c ****         xch A, R0
+ 125:.\SelfTest_CPU_asm.c ****         cjne A, #55h, LABEL_CPU_FAILURE
+ 126:.\SelfTest_CPU_asm.c ****        
+ 127:.\SelfTest_CPU_asm.c ****         rl A
+ 128:.\SelfTest_CPU_asm.c ****         xch A, R0
+ 129:.\SelfTest_CPU_asm.c ****         xch A, R0
+ 130:.\SelfTest_CPU_asm.c ****         cjne A, #0AAh, LABEL_CPU_FAILURE
+ 131:.\SelfTest_CPU_asm.c ****            
+ 132:.\SelfTest_CPU_asm.c ****         
+ 133:.\SelfTest_CPU_asm.c ****         /* Moving the IDATA SIZE into R0 for looping through the locations */
+ 134:.\SelfTest_CPU_asm.c ****         mov R0, #IRAM_SIZE
+ 135:.\SelfTest_CPU_asm.c ****         
+ 136:.\SelfTest_CPU_asm.c ****         /* Checking each locations using @R0 addressing */
+ 137:.\SelfTest_CPU_asm.c ****         IRAM_chk: 
+ 138:.\SelfTest_CPU_asm.c ****         
+ 139:.\SelfTest_CPU_asm.c ****         rl A
+ 140:.\SelfTest_CPU_asm.c ****         xch A, @R0
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 4
+
+
+ 141:.\SelfTest_CPU_asm.c ****         xch A, @R0
+ 142:.\SelfTest_CPU_asm.c ****         cjne A, #55h, LABEL_CPU_FAILURE
+ 143:.\SelfTest_CPU_asm.c ****         
+ 144:.\SelfTest_CPU_asm.c ****         rl A
+ 145:.\SelfTest_CPU_asm.c ****         xch A, @R0
+ 146:.\SelfTest_CPU_asm.c ****         xch A, @R0
+ 147:.\SelfTest_CPU_asm.c ****         cjne A, #0AAh, LABEL_CPU_FAILURE
+ 148:.\SelfTest_CPU_asm.c ****         
+ 149:.\SelfTest_CPU_asm.c ****         /* Checking for end of IRAM (255 to 1) as 0th location is R0 itself which has been checked 
+ 150:.\SelfTest_CPU_asm.c ****         djnz R0, IRAM_chk
+ 151:.\SelfTest_CPU_asm.c ****         
+ 152:.\SelfTest_CPU_asm.c ****         /* If control reaches till here then all the CPU registers are fine */
+ 153:.\SelfTest_CPU_asm.c ****         mov ret_flag, CPU_OK 
+ 154:.\SelfTest_CPU_asm.c ****         jmp end_of_CPU_test
+ 155:.\SelfTest_CPU_asm.c ****         
+ 156:.\SelfTest_CPU_asm.c ****         /* CPU failure  */
+ 157:.\SelfTest_CPU_asm.c ****         LABEL_CPU_FAILURE:
+ 158:.\SelfTest_CPU_asm.c ****         mov ret_flag, #CPU_FAILURE
+ 159:.\SelfTest_CPU_asm.c ****         jmp end_of_CPU_test
+ 160:.\SelfTest_CPU_asm.c ****         
+ 161:.\SelfTest_CPU_asm.c ****         end_of_CPU_test:
+ 162:.\SelfTest_CPU_asm.c ****         
+ 163:.\SelfTest_CPU_asm.c ****         /* Popping out R0 and Accumulator in the order they were pushed */
+ 164:.\SelfTest_CPU_asm.c ****         pop 00h
+ 165:.\SelfTest_CPU_asm.c ****         pop ACC
+ 166:.\SelfTest_CPU_asm.c ****         
+ 167:.\SelfTest_CPU_asm.c ****     	#pragma endasm
+ 168:.\SelfTest_CPU_asm.c ****         
+ 169:.\SelfTest_CPU_asm.c ****     	/* Enable global interrupts */
+ 170:.\SelfTest_CPU_asm.c ****     	CyGlobalIntEnable;         
+ 171:.\SelfTest_CPU_asm.c ****         
+ 172:.\SelfTest_CPU_asm.c ****         /* Return with the result to the calling function */
+ 173:.\SelfTest_CPU_asm.c ****         return ret_flag;
+ 174:.\SelfTest_CPU_asm.c ****     }
+ 175:.\SelfTest_CPU_asm.c ****     /* enf of assembler code for PSoC 3 */
+ 176:.\SelfTest_CPU_asm.c **** 
+ 177:.\SelfTest_CPU_asm.c ****     /* assembler code for PSoC 5 */
+ 178:.\SelfTest_CPU_asm.c ****     #elif defined(__GNUC__) 
+ 179:.\SelfTest_CPU_asm.c **** 	
+ 180:.\SelfTest_CPU_asm.c **** 		/* Disable global interrupts */
+ 181:.\SelfTest_CPU_asm.c ****     	CyGlobalIntDisable;    
+  32              		.loc 1 181 0
+  33              	@ 181 ".\SelfTest_CPU_asm.c" 1
+  34 0000 72B6     		CPSID   i
+  35              	@ 0 "" 2
+ 182:.\SelfTest_CPU_asm.c **** 		
+ 183:.\SelfTest_CPU_asm.c ****         __ASM volatile (
+  36              		.loc 1 183 0
+  37              	@ 183 ".\SelfTest_CPU_asm.c" 1
+  38 0002 2DE9FE5F 		     PUSH  {R1-R12, LR}          
+  39 0006 4FF0AA30 		MOV   R0, 0xAAAAAAAA  
+  40 000a B0F1AA3F 		CMP   R0, 0xAAAAAAAA  
+  41 000e 40F09F80 		BNE   __test_asm_fail    
+  42 0012 4FF05530 		MOV   R0, 0x55555555  
+  43 0016 B0F1553F 		CMP   R0, 0x55555555  
+  44 001a 40F09980 		BNE   __test_asm_fail    
+  45 001e 4FF0AA31 		MOV   R1, 0xAAAAAAAA  
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 5
+
+
+  46 0022 B1F1AA3F 		CMP   R1, 0xAAAAAAAA  
+  47 0026 40F09380 		BNE   __test_asm_fail    
+  48 002a 4FF05531 		MOV   R1, 0x55555555  
+  49 002e B1F1553F 		CMP   R1, 0x55555555  
+  50 0032 40F08D80 		BNE   __test_asm_fail    
+  51 0036 4FF0AA32 		MOV   R2, 0xAAAAAAAA  
+  52 003a B2F1AA3F 		CMP   R2, 0xAAAAAAAA  
+  53 003e 40F08780 		BNE   __test_asm_fail    
+  54 0042 4FF05532 		MOV   R2, 0x55555555  
+  55 0046 B2F1553F 		CMP   R2, 0x55555555  
+  56 004a 40F08180 		BNE   __test_asm_fail    
+  57 004e 4FF0AA33 		MOV   R3, 0xAAAAAAAA  
+  58 0052 B3F1AA3F 		CMP   R3, 0xAAAAAAAA  
+  59 0056 7BD1     		BNE   __test_asm_fail    
+  60 0058 4FF05533 		MOV   R3, 0x55555555  
+  61 005c B3F1553F 		CMP   R3, 0x55555555  
+  62 0060 76D1     		BNE   __test_asm_fail    
+  63 0062 4FF0AA34 		MOV   R4, 0xAAAAAAAA  
+  64 0066 B4F1AA3F 		CMP   R4, 0xAAAAAAAA  
+  65 006a 71D1     		BNE   __test_asm_fail    
+  66 006c 4FF05534 		MOV   R4, 0x55555555  
+  67 0070 B4F1553F 		CMP   R4, 0x55555555  
+  68 0074 6CD1     		BNE   __test_asm_fail    
+  69 0076 4FF0AA35 		MOV   R5, 0xAAAAAAAA  
+  70 007a B5F1AA3F 		CMP   R5, 0xAAAAAAAA  
+  71 007e 67D1     		BNE   __test_asm_fail    
+  72 0080 4FF05535 		MOV   R5, 0x55555555  
+  73 0084 B5F1553F 		CMP   R5, 0x55555555  
+  74 0088 62D1     		BNE   __test_asm_fail    
+  75 008a 4FF0AA36 		MOV   R6, 0xAAAAAAAA  
+  76 008e B6F1AA3F 		CMP   R6, 0xAAAAAAAA  
+  77 0092 5DD1     		BNE   __test_asm_fail    
+  78 0094 4FF05536 		MOV   R6, 0x55555555  
+  79 0098 B6F1553F 		CMP   R6, 0x55555555  
+  80 009c 58D1     		BNE   __test_asm_fail    
+  81 009e 4FF0AA37 		MOV   R7, 0xAAAAAAAA  
+  82 00a2 B7F1AA3F 		CMP   R7, 0xAAAAAAAA  
+  83 00a6 53D1     		BNE   __test_asm_fail    
+  84 00a8 4FF05537 		MOV   R7, 0x55555555  
+  85 00ac B7F1553F 		CMP   R7, 0x55555555  
+  86 00b0 4ED1     		BNE   __test_asm_fail    
+  87 00b2 4FF0AA38 		MOV   R8, 0xAAAAAAAA  
+  88 00b6 B8F1AA3F 		CMP   R8, 0xAAAAAAAA  
+  89 00ba 49D1     		BNE   __test_asm_fail    
+  90 00bc 4FF05538 		MOV   R8, 0x55555555  
+  91 00c0 B8F1553F 		CMP   R8, 0x55555555  
+  92 00c4 44D1     		BNE   __test_asm_fail    
+  93 00c6 4FF0AA39 		MOV   R9, 0xAAAAAAAA  
+  94 00ca B9F1AA3F 		CMP   R9, 0xAAAAAAAA  
+  95 00ce 3FD1     		BNE   __test_asm_fail    
+  96 00d0 4FF05539 		MOV   R9, 0x55555555  
+  97 00d4 B9F1553F 		CMP   R9, 0x55555555  
+  98 00d8 3AD1     		BNE   __test_asm_fail    
+  99 00da 4FF0AA3A 		MOV   R10, 0xAAAAAAAA  
+ 100 00de BAF1AA3F 		CMP   R10, 0xAAAAAAAA  
+ 101 00e2 35D1     		BNE   __test_asm_fail    
+ 102 00e4 4FF0553A 		MOV   R10, 0x55555555  
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 6
+
+
+ 103 00e8 BAF1553F 		CMP   R10, 0x55555555  
+ 104 00ec 30D1     		BNE   __test_asm_fail    
+ 105 00ee 4FF0AA3B 		MOV   R11, 0xAAAAAAAA  
+ 106 00f2 BBF1AA3F 		CMP   R11, 0xAAAAAAAA  
+ 107 00f6 2BD1     		BNE   __test_asm_fail    
+ 108 00f8 4FF0553B 		MOV   R11, 0x55555555  
+ 109 00fc BBF1553F 		CMP   R11, 0x55555555  
+ 110 0100 26D1     		BNE   __test_asm_fail    
+ 111 0102 4FF0AA3C 		MOV   R12, 0xAAAAAAAA  
+ 112 0106 BCF1AA3F 		CMP   R12, 0xAAAAAAAA  
+ 113 010a 21D1     		BNE   __test_asm_fail    
+ 114 010c 4FF0553C 		MOV   R12, 0x55555555  
+ 115 0110 BCF1553F 		CMP   R12, 0x55555555  
+ 116 0114 1CD1     		BNE   __test_asm_fail    
+ 117 0116 4FF0AA3E 		MOV   LR, 0xAAAAAAAA  
+ 118 011a BEF1AA3F 		CMP   LR, 0xAAAAAAAA  
+ 119 011e 17D1     		BNE   __test_asm_fail    
+ 120 0120 4FF0553E 		MOV   LR, 0x55555555  
+ 121 0124 BEF1553F 		CMP   LR, 0x55555555  
+ 122 0128 12D1     		BNE   __test_asm_fail    
+ 123 012a 6846     		    MOV   R0, SP              
+ 124 012c 0B49     		    LDR   R1, =0xAAAAAAA8     
+ 125 012e 8D46     		    MOV   SP, R1              
+ 126 0130 8D45     		    CMP   SP, R1              
+ 127 0132 18BF     		    IT    NE                  
+ 128 0134 8546     		        MOVNE SP, R0          
+ 129 0136 0BD1     		        BNE   __test_asm_fail 
+ 130 0138 0949     		    LDR   R1, =0x55555554     
+ 131 013a 8D46     		    MOV   SP, R1              
+ 132 013c 8D45     		    CMP   SP, R1              
+ 133 013e 18BF     		    IT    NE                  
+ 134 0140 8546     		        MOVNE SP, R0          
+ 135 0142 05D1     		        BNE   __test_asm_fail 
+ 136 0144 8546     		    MOV   SP, R0              
+ 137 0146 4FF00000 		    MOV   R0, #0              
+ 138 014a BDE8FE5F 		    POP   {R1-R12, LR}        
+ 139 014e 7047     		    BX    LR                  
+ 140              		__test_asm_fail:              
+ 141 0150 4FF00100 		    MOV   R0, 0x00000001      
+ 142 0154 BDE8FE5F 		    POP   {R1-R12, LR}        
+ 143 0158 7047     		    BX    LR                  
+ 144              		
+ 145              	@ 0 "" 2
+ 184:.\SelfTest_CPU_asm.c ****             "     PUSH  {R1-R12, LR}          \n\t"
+ 185:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R0")          
+ 186:.\SelfTest_CPU_asm.c ****             #if (ERROR_IN_CPU_REGISTERS)
+ 187:.\SelfTest_CPU_asm.c ****                 CPU_REGISTER_TEST_ERROR("R1")
+ 188:.\SelfTest_CPU_asm.c ****             #else    
+ 189:.\SelfTest_CPU_asm.c ****                 CPU_REGISTER_TEST("R1")
+ 190:.\SelfTest_CPU_asm.c ****             #endif  
+ 191:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R2")
+ 192:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R3")
+ 193:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R4")
+ 194:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R5")
+ 195:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R6")
+ 196:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R7")
+ 197:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R8")
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 7
+
+
+ 198:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R9")
+ 199:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R10")
+ 200:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R11")
+ 201:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R12")
+ 202:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("LR")
+ 203:.\SelfTest_CPU_asm.c ****             
+ 204:.\SelfTest_CPU_asm.c ****             /* Test SP register */
+ 205:.\SelfTest_CPU_asm.c ****             /*   Note: SP ignores writes to the lower two bits, 
+ 206:.\SelfTest_CPU_asm.c ****                        so they are intentionally set to 0 */
+ 207:.\SelfTest_CPU_asm.c ****                        
+ 208:.\SelfTest_CPU_asm.c ****             /* Save SP to R0 */           
+ 209:.\SelfTest_CPU_asm.c ****             "    MOV   R0, SP              \n\t" 
+ 210:.\SelfTest_CPU_asm.c ****             
+ 211:.\SelfTest_CPU_asm.c ****             /* Load SP with 0xAAAAAAA8 */
+ 212:.\SelfTest_CPU_asm.c ****             "    LDR   R1, =0xAAAAAAA8     \n\t" 
+ 213:.\SelfTest_CPU_asm.c ****             "    MOV   SP, R1              \n\t" 
+ 214:.\SelfTest_CPU_asm.c ****             "    CMP   SP, R1              \n\t"
+ 215:.\SelfTest_CPU_asm.c ****             
+ 216:.\SelfTest_CPU_asm.c ****             /* Restore SP and return failure */
+ 217:.\SelfTest_CPU_asm.c ****             "    IT    NE                  \n\t" 
+ 218:.\SelfTest_CPU_asm.c ****             "        MOVNE SP, R0          \n\t"
+ 219:.\SelfTest_CPU_asm.c ****             "        BNE   __test_asm_fail \n\t"
+ 220:.\SelfTest_CPU_asm.c ****             
+ 221:.\SelfTest_CPU_asm.c ****             /* Load SP with 0x55555554 */
+ 222:.\SelfTest_CPU_asm.c ****             "    LDR   R1, =0x55555554     \n\t" 
+ 223:.\SelfTest_CPU_asm.c ****             "    MOV   SP, R1              \n\t"
+ 224:.\SelfTest_CPU_asm.c ****             "    CMP   SP, R1              \n\t"
+ 225:.\SelfTest_CPU_asm.c ****             "    IT    NE                  \n\t"
+ 226:.\SelfTest_CPU_asm.c ****             "        MOVNE SP, R0          \n\t"
+ 227:.\SelfTest_CPU_asm.c ****             "        BNE   __test_asm_fail \n\t"
+ 228:.\SelfTest_CPU_asm.c ****             "    MOV   SP, R0              \n\t"
+ 229:.\SelfTest_CPU_asm.c ****             
+ 230:.\SelfTest_CPU_asm.c ****             /* Return success */
+ 231:.\SelfTest_CPU_asm.c ****             "    MOV   R0, #0              \n\t" 
+ 232:.\SelfTest_CPU_asm.c ****             "    POP   {R1-R12, LR}        \n\t"
+ 233:.\SelfTest_CPU_asm.c ****             "    BX    LR                  \n\t"
+ 234:.\SelfTest_CPU_asm.c ****             
+ 235:.\SelfTest_CPU_asm.c ****             /* Return failure */
+ 236:.\SelfTest_CPU_asm.c ****             "__test_asm_fail:              \n\t"
+ 237:.\SelfTest_CPU_asm.c ****             "    MOV   R0, 0x00000001      \n\t"
+ 238:.\SelfTest_CPU_asm.c ****             "    POP   {R1-R12, LR}        \n\t"
+ 239:.\SelfTest_CPU_asm.c ****             "    BX    LR                  \n\t");
+ 240:.\SelfTest_CPU_asm.c ****            
+ 241:.\SelfTest_CPU_asm.c ****     		/* Enable global interrupts */
+ 242:.\SelfTest_CPU_asm.c ****     		CyGlobalIntEnable;            
+ 146              		.loc 1 242 0
+ 147              	@ 242 ".\SelfTest_CPU_asm.c" 1
+ 148 015a 62B6     		CPSIE   i
+ 149              	@ 0 "" 2
+ 243:.\SelfTest_CPU_asm.c ****            
+ 244:.\SelfTest_CPU_asm.c ****     /* end of assembler code for PSoC 5 */  
+ 245:.\SelfTest_CPU_asm.c ****     }
+ 150              		.loc 1 245 0
+ 151              		.thumb
+ 152              		.cfi_endproc
+ 153              	.LFE63:
+ 154              		.size	CPU_PSoC_Asm, .-CPU_PSoC_Asm
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 8
+
+
+ 155              		.text
+ 156              	.Letext0:
+ 157              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 158              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 159              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 160              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 161              		.section	.debug_info,"",%progbits
+ 162              	.Ldebug_info0:
+ 163 0000 CC000000 		.4byte	0xcc
+ 164 0004 0400     		.2byte	0x4
+ 165 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 166 000a 04       		.byte	0x4
+ 167 000b 01       		.uleb128 0x1
+ 168 000c 63000000 		.4byte	.LASF16
+ 169 0010 01       		.byte	0x1
+ 170 0011 44010000 		.4byte	.LASF17
+ 171 0015 74010000 		.4byte	.LASF18
+ 172 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 173 001d 00000000 		.4byte	0
+ 174 0021 00000000 		.4byte	.Ldebug_line0
+ 175 0025 02       		.uleb128 0x2
+ 176 0026 01       		.byte	0x1
+ 177 0027 06       		.byte	0x6
+ 178 0028 2E010000 		.4byte	.LASF0
+ 179 002c 02       		.uleb128 0x2
+ 180 002d 01       		.byte	0x1
+ 181 002e 08       		.byte	0x8
+ 182 002f F1000000 		.4byte	.LASF1
+ 183 0033 02       		.uleb128 0x2
+ 184 0034 02       		.byte	0x2
+ 185 0035 05       		.byte	0x5
+ 186 0036 59010000 		.4byte	.LASF2
+ 187 003a 02       		.uleb128 0x2
+ 188 003b 02       		.byte	0x2
+ 189 003c 07       		.byte	0x7
+ 190 003d 0E000000 		.4byte	.LASF3
+ 191 0041 03       		.uleb128 0x3
+ 192 0042 3A010000 		.4byte	.LASF9
+ 193 0046 02       		.byte	0x2
+ 194 0047 3F       		.byte	0x3f
+ 195 0048 4C000000 		.4byte	0x4c
+ 196 004c 02       		.uleb128 0x2
+ 197 004d 04       		.byte	0x4
+ 198 004e 05       		.byte	0x5
+ 199 004f 04010000 		.4byte	.LASF4
+ 200 0053 02       		.uleb128 0x2
+ 201 0054 04       		.byte	0x4
+ 202 0055 07       		.byte	0x7
+ 203 0056 34000000 		.4byte	.LASF5
+ 204 005a 02       		.uleb128 0x2
+ 205 005b 08       		.byte	0x8
+ 206 005c 05       		.byte	0x5
+ 207 005d 00000000 		.4byte	.LASF6
+ 208 0061 02       		.uleb128 0x2
+ 209 0062 08       		.byte	0x8
+ 210 0063 07       		.byte	0x7
+ 211 0064 46000000 		.4byte	.LASF7
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 9
+
+
+ 212 0068 04       		.uleb128 0x4
+ 213 0069 04       		.byte	0x4
+ 214 006a 05       		.byte	0x5
+ 215 006b 696E7400 		.ascii	"int\000"
+ 216 006f 02       		.uleb128 0x2
+ 217 0070 04       		.byte	0x4
+ 218 0071 07       		.byte	0x7
+ 219 0072 21000000 		.4byte	.LASF8
+ 220 0076 03       		.uleb128 0x3
+ 221 0077 63010000 		.4byte	.LASF10
+ 222 007b 03       		.byte	0x3
+ 223 007c 2C       		.byte	0x2c
+ 224 007d 41000000 		.4byte	0x41
+ 225 0081 05       		.uleb128 0x5
+ 226 0082 2E000000 		.4byte	.LASF11
+ 227 0086 04       		.byte	0x4
+ 228 0087 3801     		.2byte	0x138
+ 229 0089 2C000000 		.4byte	0x2c
+ 230 008d 02       		.uleb128 0x2
+ 231 008e 04       		.byte	0x4
+ 232 008f 04       		.byte	0x4
+ 233 0090 5D000000 		.4byte	.LASF12
+ 234 0094 02       		.uleb128 0x2
+ 235 0095 08       		.byte	0x8
+ 236 0096 04       		.byte	0x4
+ 237 0097 0D010000 		.4byte	.LASF13
+ 238 009b 02       		.uleb128 0x2
+ 239 009c 01       		.byte	0x1
+ 240 009d 08       		.byte	0x8
+ 241 009e FF000000 		.4byte	.LASF14
+ 242 00a2 02       		.uleb128 0x2
+ 243 00a3 04       		.byte	0x4
+ 244 00a4 07       		.byte	0x7
+ 245 00a5 6B010000 		.4byte	.LASF15
+ 246 00a9 06       		.uleb128 0x6
+ 247 00aa 14010000 		.4byte	.LASF19
+ 248 00ae 01       		.byte	0x1
+ 249 00af 5D       		.byte	0x5d
+ 250 00b0 81000000 		.4byte	0x81
+ 251 00b4 00000000 		.4byte	.LFB63
+ 252 00b8 5C010000 		.4byte	.LFE63-.LFB63
+ 253 00bc 01       		.uleb128 0x1
+ 254 00bd 9C       		.byte	0x9c
+ 255 00be 07       		.uleb128 0x7
+ 256 00bf 21010000 		.4byte	.LASF20
+ 257 00c3 05       		.byte	0x5
+ 258 00c4 5506     		.2byte	0x655
+ 259 00c6 CA000000 		.4byte	0xca
+ 260 00ca 08       		.uleb128 0x8
+ 261 00cb 76000000 		.4byte	0x76
+ 262 00cf 00       		.byte	0
+ 263              		.section	.debug_abbrev,"",%progbits
+ 264              	.Ldebug_abbrev0:
+ 265 0000 01       		.uleb128 0x1
+ 266 0001 11       		.uleb128 0x11
+ 267 0002 01       		.byte	0x1
+ 268 0003 25       		.uleb128 0x25
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 10
+
+
+ 269 0004 0E       		.uleb128 0xe
+ 270 0005 13       		.uleb128 0x13
+ 271 0006 0B       		.uleb128 0xb
+ 272 0007 03       		.uleb128 0x3
+ 273 0008 0E       		.uleb128 0xe
+ 274 0009 1B       		.uleb128 0x1b
+ 275 000a 0E       		.uleb128 0xe
+ 276 000b 55       		.uleb128 0x55
+ 277 000c 17       		.uleb128 0x17
+ 278 000d 11       		.uleb128 0x11
+ 279 000e 01       		.uleb128 0x1
+ 280 000f 10       		.uleb128 0x10
+ 281 0010 17       		.uleb128 0x17
+ 282 0011 00       		.byte	0
+ 283 0012 00       		.byte	0
+ 284 0013 02       		.uleb128 0x2
+ 285 0014 24       		.uleb128 0x24
+ 286 0015 00       		.byte	0
+ 287 0016 0B       		.uleb128 0xb
+ 288 0017 0B       		.uleb128 0xb
+ 289 0018 3E       		.uleb128 0x3e
+ 290 0019 0B       		.uleb128 0xb
+ 291 001a 03       		.uleb128 0x3
+ 292 001b 0E       		.uleb128 0xe
+ 293 001c 00       		.byte	0
+ 294 001d 00       		.byte	0
+ 295 001e 03       		.uleb128 0x3
+ 296 001f 16       		.uleb128 0x16
+ 297 0020 00       		.byte	0
+ 298 0021 03       		.uleb128 0x3
+ 299 0022 0E       		.uleb128 0xe
+ 300 0023 3A       		.uleb128 0x3a
+ 301 0024 0B       		.uleb128 0xb
+ 302 0025 3B       		.uleb128 0x3b
+ 303 0026 0B       		.uleb128 0xb
+ 304 0027 49       		.uleb128 0x49
+ 305 0028 13       		.uleb128 0x13
+ 306 0029 00       		.byte	0
+ 307 002a 00       		.byte	0
+ 308 002b 04       		.uleb128 0x4
+ 309 002c 24       		.uleb128 0x24
+ 310 002d 00       		.byte	0
+ 311 002e 0B       		.uleb128 0xb
+ 312 002f 0B       		.uleb128 0xb
+ 313 0030 3E       		.uleb128 0x3e
+ 314 0031 0B       		.uleb128 0xb
+ 315 0032 03       		.uleb128 0x3
+ 316 0033 08       		.uleb128 0x8
+ 317 0034 00       		.byte	0
+ 318 0035 00       		.byte	0
+ 319 0036 05       		.uleb128 0x5
+ 320 0037 16       		.uleb128 0x16
+ 321 0038 00       		.byte	0
+ 322 0039 03       		.uleb128 0x3
+ 323 003a 0E       		.uleb128 0xe
+ 324 003b 3A       		.uleb128 0x3a
+ 325 003c 0B       		.uleb128 0xb
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 11
+
+
+ 326 003d 3B       		.uleb128 0x3b
+ 327 003e 05       		.uleb128 0x5
+ 328 003f 49       		.uleb128 0x49
+ 329 0040 13       		.uleb128 0x13
+ 330 0041 00       		.byte	0
+ 331 0042 00       		.byte	0
+ 332 0043 06       		.uleb128 0x6
+ 333 0044 2E       		.uleb128 0x2e
+ 334 0045 00       		.byte	0
+ 335 0046 3F       		.uleb128 0x3f
+ 336 0047 19       		.uleb128 0x19
+ 337 0048 03       		.uleb128 0x3
+ 338 0049 0E       		.uleb128 0xe
+ 339 004a 3A       		.uleb128 0x3a
+ 340 004b 0B       		.uleb128 0xb
+ 341 004c 3B       		.uleb128 0x3b
+ 342 004d 0B       		.uleb128 0xb
+ 343 004e 27       		.uleb128 0x27
+ 344 004f 19       		.uleb128 0x19
+ 345 0050 49       		.uleb128 0x49
+ 346 0051 13       		.uleb128 0x13
+ 347 0052 11       		.uleb128 0x11
+ 348 0053 01       		.uleb128 0x1
+ 349 0054 12       		.uleb128 0x12
+ 350 0055 06       		.uleb128 0x6
+ 351 0056 40       		.uleb128 0x40
+ 352 0057 18       		.uleb128 0x18
+ 353 0058 9742     		.uleb128 0x2117
+ 354 005a 19       		.uleb128 0x19
+ 355 005b 00       		.byte	0
+ 356 005c 00       		.byte	0
+ 357 005d 07       		.uleb128 0x7
+ 358 005e 34       		.uleb128 0x34
+ 359 005f 00       		.byte	0
+ 360 0060 03       		.uleb128 0x3
+ 361 0061 0E       		.uleb128 0xe
+ 362 0062 3A       		.uleb128 0x3a
+ 363 0063 0B       		.uleb128 0xb
+ 364 0064 3B       		.uleb128 0x3b
+ 365 0065 05       		.uleb128 0x5
+ 366 0066 49       		.uleb128 0x49
+ 367 0067 13       		.uleb128 0x13
+ 368 0068 3F       		.uleb128 0x3f
+ 369 0069 19       		.uleb128 0x19
+ 370 006a 3C       		.uleb128 0x3c
+ 371 006b 19       		.uleb128 0x19
+ 372 006c 00       		.byte	0
+ 373 006d 00       		.byte	0
+ 374 006e 08       		.uleb128 0x8
+ 375 006f 35       		.uleb128 0x35
+ 376 0070 00       		.byte	0
+ 377 0071 49       		.uleb128 0x49
+ 378 0072 13       		.uleb128 0x13
+ 379 0073 00       		.byte	0
+ 380 0074 00       		.byte	0
+ 381 0075 00       		.byte	0
+ 382              		.section	.debug_aranges,"",%progbits
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 12
+
+
+ 383 0000 1C000000 		.4byte	0x1c
+ 384 0004 0200     		.2byte	0x2
+ 385 0006 00000000 		.4byte	.Ldebug_info0
+ 386 000a 04       		.byte	0x4
+ 387 000b 00       		.byte	0
+ 388 000c 0000     		.2byte	0
+ 389 000e 0000     		.2byte	0
+ 390 0010 00000000 		.4byte	.LFB63
+ 391 0014 5C010000 		.4byte	.LFE63-.LFB63
+ 392 0018 00000000 		.4byte	0
+ 393 001c 00000000 		.4byte	0
+ 394              		.section	.debug_ranges,"",%progbits
+ 395              	.Ldebug_ranges0:
+ 396 0000 00000000 		.4byte	.LFB63
+ 397 0004 5C010000 		.4byte	.LFE63
+ 398 0008 00000000 		.4byte	0
+ 399 000c 00000000 		.4byte	0
+ 400              		.section	.debug_line,"",%progbits
+ 401              	.Ldebug_line0:
+ 402 0000 76010000 		.section	.debug_str,"MS",%progbits,1
+ 402      02005501 
+ 402      00000201 
+ 402      FB0E0D00 
+ 402      01010101 
+ 403              	.LASF6:
+ 404 0000 6C6F6E67 		.ascii	"long long int\000"
+ 404      206C6F6E 
+ 404      6720696E 
+ 404      7400
+ 405              	.LASF3:
+ 406 000e 73686F72 		.ascii	"short unsigned int\000"
+ 406      7420756E 
+ 406      7369676E 
+ 406      65642069 
+ 406      6E7400
+ 407              	.LASF8:
+ 408 0021 756E7369 		.ascii	"unsigned int\000"
+ 408      676E6564 
+ 408      20696E74 
+ 408      00
+ 409              	.LASF11:
+ 410 002e 75696E74 		.ascii	"uint8\000"
+ 410      3800
+ 411              	.LASF5:
+ 412 0034 6C6F6E67 		.ascii	"long unsigned int\000"
+ 412      20756E73 
+ 412      69676E65 
+ 412      6420696E 
+ 412      7400
+ 413              	.LASF7:
+ 414 0046 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 414      206C6F6E 
+ 414      6720756E 
+ 414      7369676E 
+ 414      65642069 
+ 415              	.LASF12:
+ 416 005d 666C6F61 		.ascii	"float\000"
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 13
+
+
+ 416      7400
+ 417              	.LASF16:
+ 418 0063 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 418      4320342E 
+ 418      392E3320 
+ 418      32303135 
+ 418      30333033 
+ 419 0096 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 419      20726576 
+ 419      6973696F 
+ 419      6E203232 
+ 419      31323230 
+ 420 00c9 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 420      66756E63 
+ 420      74696F6E 
+ 420      2D736563 
+ 420      74696F6E 
+ 421              	.LASF1:
+ 422 00f1 756E7369 		.ascii	"unsigned char\000"
+ 422      676E6564 
+ 422      20636861 
+ 422      7200
+ 423              	.LASF14:
+ 424 00ff 63686172 		.ascii	"char\000"
+ 424      00
+ 425              	.LASF4:
+ 426 0104 6C6F6E67 		.ascii	"long int\000"
+ 426      20696E74 
+ 426      00
+ 427              	.LASF13:
+ 428 010d 646F7562 		.ascii	"double\000"
+ 428      6C6500
+ 429              	.LASF19:
+ 430 0114 4350555F 		.ascii	"CPU_PSoC_Asm\000"
+ 430      50536F43 
+ 430      5F41736D 
+ 430      00
+ 431              	.LASF20:
+ 432 0121 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 432      52784275 
+ 432      66666572 
+ 432      00
+ 433              	.LASF0:
+ 434 012e 7369676E 		.ascii	"signed char\000"
+ 434      65642063 
+ 434      68617200 
+ 435              	.LASF9:
+ 436 013a 5F5F696E 		.ascii	"__int32_t\000"
+ 436      7433325F 
+ 436      7400
+ 437              	.LASF17:
+ 438 0144 2E5C5365 		.ascii	".\\SelfTest_CPU_asm.c\000"
+ 438      6C665465 
+ 438      73745F43 
+ 438      50555F61 
+ 438      736D2E63 
+ 439              	.LASF2:
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 14
+
+
+ 440 0159 73686F72 		.ascii	"short int\000"
+ 440      7420696E 
+ 440      7400
+ 441              	.LASF10:
+ 442 0163 696E7433 		.ascii	"int32_t\000"
+ 442      325F7400 
+ 443              	.LASF15:
+ 444 016b 73697A65 		.ascii	"sizetype\000"
+ 444      74797065 
+ 444      00
+ 445              	.LASF18:
+ 446 0174 433A5C54 		.ascii	"C:\\TIRI\\k3g2pmpm_20211223\\trobot_psoc_v6_73\\tro"
+ 446      4952495C 
+ 446      6B336732 
+ 446      706D706D 
+ 446      5F323032 
+ 447 01a3 626F7436 		.ascii	"bot6_cir2_2wd.cydsn\000"
+ 447      5F636972 
+ 447      325F3277 
+ 447      642E6379 
+ 447      64736E00 
+ 448              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

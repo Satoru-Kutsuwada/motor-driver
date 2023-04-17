@@ -157,6 +157,10 @@
 #include "Dist4_PVM_CUR.h"
 #include "Sonr_TRG_x4_aliases.h"
 #include "Sonr_TRG_x4.h"
+#include "RTC_1.h"
+#include "DEB_UART.h"
+#include "KeisokuTimer.h"
+#include "KeisokuTimer_isr.h"
 #include "USBUART_1_Dm_aliases.h"
 #include "USBUART_1_Dm.h"
 #include "USBUART_1_Dp_aliases.h"
@@ -165,8 +169,8 @@
 #include "ADC_SAR_1_theACLK.h"
 #include "SPIM_1_IntClock.h"
 #include "SPIM_2_IntClock.h"
+#include "DEB_UART_IntClock.h"
 #include "core_cm3_psoc5.h"
-#include "core_cm3.h"
 #include "CyDmac.h"
 #include "CyFlash.h"
 #include "CyLib.h"
@@ -174,8 +178,6 @@
 #include "cyPm.h"
 #include "CySpc.h"
 #include "cytypes.h"
-#include "core_cmFunc.h"
-#include "core_cmInstr.h"
 
 /*[]*/
 

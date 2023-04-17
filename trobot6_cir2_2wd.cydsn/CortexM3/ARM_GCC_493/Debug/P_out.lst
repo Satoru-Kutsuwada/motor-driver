@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
   29:.\Generated_Source\PSoC5/P_out.c **** * \brief Writes the value to the physical port (data output register), masking
   30:.\Generated_Source\PSoC5/P_out.c **** *  and shifting the bits appropriately. 
   31:.\Generated_Source\PSoC5/P_out.c **** *
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 2
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 2
 
 
   32:.\Generated_Source\PSoC5/P_out.c **** * The data output register controls the signal applied to the physical pin in 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
   52              		.size	P_out_Write, .-P_out_Write
   53              		.section	.text.P_out_SetDriveMode,"ax",%progbits
   54              		.align	2
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 3
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 3
 
 
   55              		.global	P_out_SetDriveMode
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
   76 0010 0132     		adds	r2, r2, #1
   77 0012 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
   78 0014 03F0F103 		and	r3, r3, #241
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 4
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 4
 
 
   79 0018 0343     		orrs	r3, r3, r0
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  109              		.loc 1 117 0
  110              		.cfi_startproc
  111              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 5
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 5
 
 
  112              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  138              		@ frame_needed = 0, uses_anonymous_args = 0
  139              		@ link register save eliminated.
  146:.\Generated_Source\PSoC5/P_out.c ****     return (P_out_DR & P_out_MASK) >> P_out_SHIFT;
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 6
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 6
 
 
  140              		.loc 1 146 0
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  193 004b 36000000 		.4byte	.LASF5
  194 004f 02       		.uleb128 0x2
  195 0050 08       		.byte	0x8
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 7
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 7
 
 
  196 0051 05       		.byte	0x5
@@ -378,7 +378,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  210 006b 04       		.uleb128 0x4
  211 006c B8010000 		.4byte	.LASF12
  212 0070 02       		.byte	0x2
- 213 0071 3801     		.2byte	0x138
+ 213 0071 9201     		.2byte	0x192
  214 0073 2C000000 		.4byte	0x2c
  215 0077 02       		.uleb128 0x2
  216 0078 04       		.byte	0x4
@@ -395,7 +395,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  227 008c 04       		.uleb128 0x4
  228 008d 31000000 		.4byte	.LASF13
  229 0091 02       		.byte	0x2
- 230 0092 E201     		.2byte	0x1e2
+ 230 0092 3C02     		.2byte	0x23c
  231 0094 98000000 		.4byte	0x98
  232 0098 05       		.uleb128 0x5
  233 0099 6B000000 		.4byte	0x6b
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  250 00c2 06000000 		.4byte	.LASF23
  251 00c6 01       		.byte	0x1
  252 00c7 3B       		.byte	0x3b
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 8
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 8
 
 
  253 00c8 6B000000 		.4byte	0x6b
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  307 000e 01       		.uleb128 0x1
  308 000f 10       		.uleb128 0x10
  309 0010 17       		.uleb128 0x17
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 9
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 9
 
 
  310 0011 00       		.byte	0
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  364 0047 0B       		.uleb128 0xb
  365 0048 27       		.uleb128 0x27
  366 0049 19       		.uleb128 0x19
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 10
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 10
 
 
  367 004a 11       		.uleb128 0x11
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  421 0081 19       		.uleb128 0x19
  422 0082 49       		.uleb128 0x49
  423 0083 13       		.uleb128 0x13
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 11
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 11
 
 
  424 0084 11       		.uleb128 0x11
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  478 000c 0000     		.2byte	0
  479 000e 0000     		.2byte	0
  480 0010 00000000 		.4byte	.LFB0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 12
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 12
 
 
  481 0014 18000000 		.4byte	.LFE0-.LFB0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  518      6420696E 
  518      7400
  519              	.LASF3:
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 13
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 13
 
 
  520 0048 73686F72 		.ascii	"short unsigned int\000"
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 1
  538              	.LASF17:
  539 016c 6D6F6465 		.ascii	"mode\000"
  539      00
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccI5Mcqb.s 			page 14
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cccoiAe0.s 			page 14
 
 
  540              	.LASF15:

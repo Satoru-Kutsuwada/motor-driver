@@ -1,25 +1,298 @@
---------------- Build Started: 03/10/2023 13:42:45 Project: trobot6_cir2_2wd, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
+--------------- Build Started: 04/11/2023 17:50:45 Project: trobot6_cir2_2wd, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
 The code generation step is up to date.
-arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -Wno-main -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_493\Debug/main.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c .\main.c -o .\CortexM3\ARM_GCC_493\Debug\main.o
-.\main.c: In function 'main':
-.\main.c:1048:11: warning: unused variable 'j' [-Wunused-variable]
-     uint8 j ;
-           ^
-.\main.c:1047:12: warning: unused variable 'i' [-Wunused-variable]
-     uint16 i ;
+arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -Wno-main -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_493\Debug/sk_debug.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c .\sk_debug.c -o .\CortexM3\ARM_GCC_493\Debug\sk_debug.o
+In file included from .\sk_debug.c:15:0:
+.\sk_source.h:304:1: warning: "/*" within comment [-Wcomment]
+ /* trobot farm status 
+ ^
+.\sk_debug.c:202:5: warning: missing braces around initializer [-Wmissing-braces]
+     Deb_menue00, (uint8)(sizeof(Deb_menue00 )/sizeof(MENUE)),
+     ^
+.\sk_debug.c:202:5: warning: (near initialization for 'MenueList[0]') [-Wmissing-braces]
+.\sk_debug.c:202:5: warning: initialization discards 'const' qualifier from pointer target type
+.\sk_debug.c:203:5: warning: initialization discards 'const' qualifier from pointer target type
+     Deb_menue01, (uint8)(sizeof(Deb_menue01 )/sizeof(MENUE)),
+     ^
+.\sk_debug.c:204:5: warning: initialization discards 'const' qualifier from pointer target type
+     Deb_menue02, (uint8)(sizeof(Deb_menue02 )/sizeof(MENUE)),
+     ^
+.\sk_debug.c:205:5: warning: initialization discards 'const' qualifier from pointer target type
+     Deb_menue03, (uint8)(sizeof(Deb_menue03 )/sizeof(MENUE)),
+     ^
+.\sk_debug.c:206:5: warning: initialization discards 'const' qualifier from pointer target type
+     Deb_menue04, (uint8)(sizeof(Deb_menue04 )/sizeof(MENUE)),
+     ^
+.\sk_debug.c:207:5: warning: initialization discards 'const' qualifier from pointer target type
+     Deb_menue05, (uint8)(sizeof(Deb_menue05 )/sizeof(MENUE))
+     ^
+.\sk_debug.c:354:1: warning: parameter names (without types) in function declaration
+ uint8 Menu03(l_ch);
+ ^
+.\sk_debug.c:358:1: warning: parameter names (without types) in function declaration
+ uint8 Menu04(l_ch);
+ ^
+.\sk_debug.c:359:1: warning: parameter names (without types) in function declaration
+ uint8 Menu05(l_ch);
+ ^
+.\sk_debug.c:418:1: warning: return type defaults to 'int' [-Wreturn-type]
+ My_KeisokuTimer_isr_Interrupt(void)
+ ^
+.\sk_debug.c:418:1: warning: conflicting types for 'My_KeisokuTimer_isr_Interrupt'
+.\sk_debug.c:297:10: note: previous declaration of 'My_KeisokuTimer_isr_Interrupt' was here
+ void     My_KeisokuTimer_isr_Interrupt(void);
+          ^
+.\sk_debug.c: In function 'debug_menue':
+.\sk_debug.c:554:5: warning: implicit declaration of function 'SK_GetChar_uart' [-Wimplicit-function-declaration]
+     l_ch  = SK_GetChar_uart();
+     ^
+.\sk_debug.c:559:9: warning: implicit declaration of function 'sk_PutString03' [-Wimplicit-function-declaration]
+         sk_PutString03("Get CHAR = ", l_ch, CRLF_ON,16);
+         ^
+.\sk_debug.c: In function 'Menu00':
+.\sk_debug.c:639:16: warning: unused variable 'dt_rT' [-Wunused-variable]
+         real_T dt_rT;
+                ^
+.\sk_debug.c:638:15: warning: unused variable 'dt' [-Wunused-variable]
+         int16 dt;
+               ^
+.\sk_debug.c: In function 'Menu01':
+.\sk_debug.c:713:13: warning: implicit declaration of function 'MoterCtrl_data2_Display' [-Wimplicit-function-declaration]
+             MoterCtrl_data2_Display();
+             ^
+.\sk_debug.c: In function 'Display_parameter':
+.\sk_debug.c:1267:5: warning: implicit declaration of function 'sk_PutString04' [-Wimplicit-function-declaration]
+     sk_PutString04("dist_front = ",dist_front ,CRLF_ON );
+     ^
+.\sk_debug.c: In function 'Display_Com_parameter':
+.\sk_debug.c:1599:28: warning: passing argument 1 of 'sk_PutString01' discards 'const' qualifier from pointer target type
+             sk_PutString01(compara_dital[j].name,CRLF_ON);
+                            ^
+In file included from .\sk_source.h:14:0,
+                 from .\sk_debug.c:15:
+.\sk_common.h:36:13: note: expected 'char8 *' but argument is of type 'const char *'
+ extern void sk_PutString01(char8 *strin,CRLF flg);
+             ^
+.\sk_debug.c:1606:28: warning: passing argument 1 of 'sk_PutString01' discards 'const' qualifier from pointer target type
+             sk_PutString01(compara_dital[j].name,CRLF_ON);
+                            ^
+In file included from .\sk_source.h:14:0,
+                 from .\sk_debug.c:15:
+.\sk_common.h:36:13: note: expected 'char8 *' but argument is of type 'const char *'
+ extern void sk_PutString01(char8 *strin,CRLF flg);
+             ^
+.\sk_debug.c: In function 'Display_MotCtrl_Com':
+.\sk_debug.c:1622:13: warning: variable 'j' set but not used [-Wunused-but-set-variable]
+     uint8 i,j;
+             ^
+.\sk_debug.c: In function 'MoterCtrl_data_Display':
+.\sk_debug.c:1685:5: warning: implicit declaration of function 'sk_PutString_realT' [-Wimplicit-function-declaration]
+     sk_PutString_realT("  Integrator1_IC = ",Motor_Contl4_3_P.Integrator1_IC,CRLF_ON);
+     ^
+.\sk_debug.c: At top level:
+.\sk_debug.c:1753:6: warning: conflicting types for 'MoterCtrl_data2_Display'
+ void MoterCtrl_data2_Display(void)
+      ^
+.\sk_debug.c:713:13: note: previous implicit declaration of 'MoterCtrl_data2_Display' was here
+             MoterCtrl_data2_Display();
+             ^
+.\sk_debug.c: In function 'sk_log_int':
+.\sk_debug.c:1943:21: warning: comparison between pointer and integer
+         if( *string == NULL ){
+                     ^
+.\sk_debug.c:1958:5: warning: implicit declaration of function 'itoa' [-Wimplicit-function-declaration]
+     itoa(data,&Deblog.rec[Deblog.Wpt].buf[i],16);
+     ^
+.\sk_debug.c: In function 'sk_log_int_string':
+.\sk_debug.c:2008:21: warning: comparison between pointer and integer
+         if( *string == NULL ){
+                     ^
+.\sk_debug.c:2009:42: warning: assignment makes integer from pointer without a cast
+             Deblog.rec[Deblog.Wpt].buf[i]= NULL;
+                                          ^
+.\sk_debug.c:2019:51: warning: assignment makes integer from pointer without a cast
+         Deblog.rec[Deblog.Wpt].buf[LOG_BUF_CHAR-1]= NULL;
+                                                   ^
+.\sk_debug.c: In function 'sk_log_int_realT':
+.\sk_debug.c:2053:16: warning: comparison between pointer and integer
+     while( *pt != NULL ){
+                ^
+.\sk_debug.c: At top level:
+.\sk_debug.c:2062:6: warning: conflicting types for 'sk_PutString_realT'
+ void sk_PutString_realT(char8 *string,real_T data,CRLF flg)
+      ^
+.\sk_debug.c:1685:5: note: previous implicit declaration of 'sk_PutString_realT' was here
+     sk_PutString_realT("  Integrator1_IC = ",Motor_Contl4_3_P.Integrator1_IC,CRLF_ON);
+     ^
+.\sk_debug.c: In function 'sk_PutString_realT':
+.\sk_debug.c:2070:16: warning: comparison between pointer and integer
+     while( *pt != NULL ){
+                ^
+.\sk_debug.c: In function 'sk_log_int_float':
+.\sk_debug.c:2091:16: warning: comparison between pointer and integer
+     while( *pt != NULL ){
+                ^
+.\sk_debug.c: In function 'sk_log_int_int32':
+.\sk_debug.c:2111:16: warning: comparison between pointer and integer
+     while( *pt != NULL ){
+                ^
+.\sk_debug.c: In function 'sk_log_int_uint16':
+.\sk_debug.c:2132:16: warning: comparison between pointer and integer
+     while( *pt != NULL ){
+                ^
+.\sk_debug.c:2169:12: warning: assignment makes integer from pointer without a cast
+     buf[i] = NULL;
             ^
-.\main.c:1046:11: warning: variable 'ret' set but not used [-Wunused-but-set-variable]
-     uint8 ret;
+.\sk_debug.c:2127:13: warning: unused variable 'j' [-Wunused-variable]
+     uint8 i,j;
+             ^
+.\sk_debug.c: In function 'sk_log_int_int16':
+.\sk_debug.c:2190:16: warning: comparison between pointer and integer
+     while( *pt != NULL ){
+                ^
+.\sk_debug.c: In function 'sk_log_out':
+.\sk_debug.c:2225:21: warning: comparison between pointer and integer
+         if( *string == NULL ){
+                     ^
+.\sk_debug.c: In function 'sk_adc_debug':
+.\sk_debug.c:2367:34: warning: comparison between pointer and integer
+                     while( *buf1 != NULL ){
+                                  ^
+.\sk_debug.c:2372:29: warning: assignment makes integer from pointer without a cast
+                     buf2[i] = NULL;
+                             ^
+.\sk_debug.c:2382:34: warning: comparison between pointer and integer
+                     while( *buf1 != NULL ){
+                                  ^
+.\sk_debug.c:2387:29: warning: assignment makes integer from pointer without a cast
+                     buf2[i] = NULL;
+                             ^
+.\sk_debug.c:2397:34: warning: comparison between pointer and integer
+                     while( *buf1 != NULL ){
+                                  ^
+.\sk_debug.c:2402:29: warning: assignment makes integer from pointer without a cast
+                     buf2[i] = NULL;
+                             ^
+.\sk_debug.c:2412:34: warning: comparison between pointer and integer
+                     while( *buf1 != NULL ){
+                                  ^
+.\sk_debug.c:2417:29: warning: assignment makes integer from pointer without a cast
+                     buf2[i] = NULL;
+                             ^
+.\sk_debug.c:2314:9: warning: unused variable 'k' [-Wunused-variable]
+     int k=0;
+         ^
+.\sk_debug.c:2312:9: warning: unused variable 'n' [-Wunused-variable]
+     int n;
+         ^
+.\sk_debug.c: In function 'Set_f2c':
+.\sk_debug.c:2575:18: warning: assignment makes integer from pointer without a cast
+         *(cpt+j) = NULL;
+                  ^
+.\sk_debug.c:2476:12: warning: variable 'dt32' set but not used [-Wunused-but-set-variable]
+     uint32 dt32;
+            ^
+.\sk_debug.c:2475:11: warning: unused variable 'dt2' [-Wunused-variable]
+     float dt2;
            ^
-.\main.c: In function 'ini_spi2':
-.\main.c:3619:11: warning: variable 'spi2_whoami' set but not used [-Wunused-but-set-variable]
-     uint8 spi2_whoami;
+.\sk_debug.c:2473:11: warning: unused variable 'dt0' [-Wunused-variable]
+     float dt0;
            ^
-arm-none-eabi-ar.exe -rs .\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.a .\CortexM3\ARM_GCC_493\Debug\cyfitter_cfg.o .\CortexM3\ARM_GCC_493\Debug\motor_contl_reg_0.o .\CortexM3\ARM_GCC_493\Debug\motor_contl_reg_0_PM.o .\CortexM3\ARM_GCC_493\Debug\PWMOUT0.o .\CortexM3\ARM_GCC_493\Debug\PWMOUT1.o .\CortexM3\ARM_GCC_493\Debug\CW1.o .\CortexM3\ARM_GCC_493\Debug\CW0.o .\CortexM3\ARM_GCC_493\Debug\BREAK1.o .\CortexM3\ARM_GCC_493\Debug\BREAK0.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_audio.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_boot.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_cdc.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_cls.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_descr.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_drv.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_episr.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_hid.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_pm.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_std.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_vnd.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_midi.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_msc.o .\CortexM3\ARM_GCC_493\Debug\sub_cycle_int.o .\CortexM3\ARM_GCC_493\Debug\P_out.o .\CortexM3\ARM_GCC_493\Debug\motor1_b.o .\CortexM3\ARM_GCC_493\Debug\motor1_a.o .\CortexM3\ARM_GCC_493\Debug\motor0_a.o .\CortexM3\ARM_GCC_493\Debug\motor0_b.o .\CortexM3\ARM_GCC_493\Debug\Timer_PWM.o .\CortexM3\ARM_GCC_493\Debug\Timer_PWM_PM.o .\CortexM3\ARM_GCC_493\Debug\timer_clock.o .\CortexM3\ARM_GCC_493\Debug\Timer_cycle.o .\CortexM3\ARM_GCC_493\Debug\Timer_cycle_PM.o .\CortexM3\ARM_GCC_493\Debug\FirstLine.o .\CortexM3\ARM_GCC_493\Debug\CycleStart.o .\CortexM3\ARM_GCC_493\Debug\SubCycleStart.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1_INT.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1_PM.o .\CortexM3\ARM_GCC_493\Debug\AMux_1.o .\CortexM3\ARM_GCC_493\Debug\V_battery.o .\CortexM3\ARM_GCC_493\Debug\VDAC8_1.o .\CortexM3\ARM_GCC_493\Debug\VDAC8_1_PM.o .\CortexM3\ARM_GCC_493\Debug\DieTemp_1.o .\CortexM3\ARM_GCC_493\Debug\WDT_int.o .\CortexM3\ARM_GCC_493\Debug\PIC_CS.o .\CortexM3\ARM_GCC_493\Debug\P_out_1.o .\CortexM3\ARM_GCC_493\Debug\Timer_sub_cycle.o .\CortexM3\ARM_GCC_493\Debug\Timer_sub_cycle_PM.o .\CortexM3\ARM_GCC_493\Debug\P_out_2.o .\CortexM3\ARM_GCC_493\Debug\SS0.o .\CortexM3\ARM_GCC_493\Debug\MOSI.o .\CortexM3\ARM_GCC_493\Debug\SCLK.o .\CortexM3\ARM_GCC_493\Debug\MISO.o .\CortexM3\ARM_GCC_493\Debug\SPIM_1.o .\CortexM3\ARM_GCC_493\Debug\SPIM_1_PM.o .\CortexM3\ARM_GCC_493\Debug\SPIM_1_INT.o .\CortexM3\ARM_GCC_493\Debug\SS0_B.o .\CortexM3\ARM_GCC_493\Debug\SS0_B_PM.o .\CortexM3\ARM_GCC_493\Debug\motor_en_reg.o .\CortexM3\ARM_GCC_493\Debug\motor_en_reg_PM.o .\CortexM3\ARM_GCC_493\Debug\DOF9_CS.o .\CortexM3\ARM_GCC_493\Debug\MOTOR_EN.o .\CortexM3\ARM_GCC_493\Debug\motor_contl_reg_1.o .\CortexM3\ARM_GCC_493\Debug\motor_contl_reg_1_PM.o .\CortexM3\ARM_GCC_493\Debug\DRV_ENA.o .\CortexM3\ARM_GCC_493\Debug\Dist0_FR.o .\CortexM3\ARM_GCC_493\Debug\Dist1_Front.o .\CortexM3\ARM_GCC_493\Debug\Dist2_FL.o .\CortexM3\ARM_GCC_493\Debug\Dist3_Rear.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW0_RF.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW1_FR.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW2_FL.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW3_LF.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW4_LR.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW5_RL.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW6_RR.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW7_rightR.o .\CortexM3\ARM_GCC_493\Debug\MOTOR_FAULT.o .\CortexM3\ARM_GCC_493\Debug\EM_STOP.o .\CortexM3\ARM_GCC_493\Debug\psoc_nop.o .\CortexM3\ARM_GCC_493\Debug\WDT_detect_com_err.o .\CortexM3\ARM_GCC_493\Debug\WDT_detect_com_err_PM.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_Dm.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_Dp.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1_IRQ.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1_theACLK.o .\CortexM3\ARM_GCC_493\Debug\SPIM_1_IntClock.o .\CortexM3\ARM_GCC_493\Debug\CyBootAsmGnu.o .\CortexM3\ARM_GCC_493\Debug\CyDmac.o .\CortexM3\ARM_GCC_493\Debug\CyFlash.o .\CortexM3\ARM_GCC_493\Debug\CyLib.o .\CortexM3\ARM_GCC_493\Debug\cyPm.o .\CortexM3\ARM_GCC_493\Debug\CySpc.o .\CortexM3\ARM_GCC_493\Debug\cyutils.o .\CortexM3\ARM_GCC_493\Debug\SS1.o .\CortexM3\ARM_GCC_493\Debug\SPIM_2.o .\CortexM3\ARM_GCC_493\Debug\SPIM_2_PM.o .\CortexM3\ARM_GCC_493\Debug\SPIM_2_INT.o .\CortexM3\ARM_GCC_493\Debug\SPIM_2_IntClock.o .\CortexM3\ARM_GCC_493\Debug\hu0.o .\CortexM3\ARM_GCC_493\Debug\hv0.o .\CortexM3\ARM_GCC_493\Debug\hw0.o .\CortexM3\ARM_GCC_493\Debug\hu1.o .\CortexM3\ARM_GCC_493\Debug\hv1.o .\CortexM3\ARM_GCC_493\Debug\hw1.o .\CortexM3\ARM_GCC_493\Debug\Dist6_PVM1.o .\CortexM3\ARM_GCC_493\Debug\Dist_9_Detect_dwn_step.o .\CortexM3\ARM_GCC_493\Debug\dist8_SW_DET.o .\CortexM3\ARM_GCC_493\Debug\Dist4_PVM_CUR.o .\CortexM3\ARM_GCC_493\Debug\Sonr_TRG_x4.o
+.\sk_debug.c: In function 'Set_realT2c':
+.\sk_debug.c:2649:18: warning: assignment makes integer from pointer without a cast
+         *(cpt+j) = NULL;
+                  ^
+.\sk_debug.c:2588:12: warning: unused variable 'dt64' [-Wunused-variable]
+     uint64 dt64;
+            ^
+.\sk_debug.c:2587:12: warning: unused variable 'dt2' [-Wunused-variable]
+     real_T dt2;
+            ^
+.\sk_debug.c:2585:12: warning: unused variable 'dt0' [-Wunused-variable]
+     real_T dt0;
+            ^
+.\sk_debug.c: In function 'skSet_time':
+.\sk_debug.c:2748:18: warning: assignment makes integer from pointer without a cast
+         *(cpt+k) = NULL;
+                  ^
+.\sk_debug.c: In function 'MyRTC_1_EverySecondHandler':
+.\sk_debug.c:2776:12: warning: unused variable 'dt' [-Wunused-variable]
+     uint16 dt;
+            ^
+.\sk_debug.c: In function 'SK_Motor_Contl4_3_step':
+.\sk_debug.c:3048:13: warning: unused variable 'dt' [-Wunused-variable]
+     real_T  dt;
+             ^
+.\sk_debug.c: At top level:
+.\sk_debug.c:3452:2: warning: "/*" within comment [-Wcomment]
+ //*************************************************
+ ^
+.\sk_debug.c:3454:2: warning: "/*" within comment [-Wcomment]
+ //*************************************************
+ ^
+.\sk_debug.c: In function 'debug_menue':
+.\sk_debug.c:585:11: warning: 'rtn' may be used uninitialized in this function [-Wmaybe-uninitialized]
+         if( rtn == 0 ){
+           ^
+arm-none-eabi-gcc.exe -mcpu=cortex-m3 -mthumb -Wno-main -I. -IGenerated_Source\PSoC5 -Wa,-alh=.\CortexM3\ARM_GCC_493\Debug/sk_uart.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c .\sk_uart.c -o .\CortexM3\ARM_GCC_493\Debug\sk_uart.o
+In file included from .\sk_uart.c:14:0:
+.\sk_source.h:304:1: warning: "/*" within comment [-Wcomment]
+ /* trobot farm status 
+ ^
+.\sk_uart.c: In function 'sk_PutString02':
+.\sk_uart.c:73:13: warning: implicit declaration of function 'itoa' [-Wimplicit-function-declaration]
+             itoa(data,buf,10);
+             ^
+.\sk_uart.c: In function 'sk_int32toChar':
+.\sk_uart.c:246:13: warning: assignment makes integer from pointer without a cast
+     *string = NULL;
+             ^
+.\sk_uart.c:192:12: warning: unused variable 'dt16' [-Wunused-variable]
+     uint16 dt16;
+            ^
+.\sk_uart.c:190:11: warning: variable 'j' set but not used [-Wunused-but-set-variable]
+     uint8 j;
+           ^
+.\sk_uart.c:188:10: warning: unused variable 'buf' [-Wunused-variable]
+     char buf[15];
+          ^
+.\sk_uart.c: In function 'sk_int16toChar':
+.\sk_uart.c:311:13: warning: assignment makes integer from pointer without a cast
+     *string = NULL;
+             ^
+.\sk_uart.c:258:11: warning: variable 'j' set but not used [-Wunused-but-set-variable]
+     uint8 j;
+           ^
+.\sk_uart.c:256:10: warning: unused variable 'buf' [-Wunused-variable]
+     char buf[15];
+          ^
+.\sk_uart.c: In function 'sk_int8toChar':
+.\sk_uart.c:376:13: warning: assignment makes integer from pointer without a cast
+     *string = NULL;
+             ^
+.\sk_uart.c:323:11: warning: variable 'j' set but not used [-Wunused-but-set-variable]
+     uint8 j;
+           ^
+.\sk_uart.c:321:10: warning: unused variable 'buf' [-Wunused-variable]
+     char buf[15];
+          ^
+.\sk_uart.c: In function 'sk_PutString05':
+.\sk_uart.c:513:15: warning: assignment makes integer from pointer without a cast
+         buf[j]=NULL;
+               ^
+.\sk_uart.c:510:14: warning: 'j' may be used uninitialized in this function [-Wmaybe-uninitialized]
+             j++;
+              ^
+.\sk_uart.c:482:17: warning: 'dt1' may be used uninitialized in this function [-Wmaybe-uninitialized]
+             dt1 = dt1 - 10000*dt0;
+                 ^
+.\sk_uart.c:471:17: warning: 'dt0' may be used uninitialized in this function [-Wmaybe-uninitialized]
+             dt0 /= 10;
+                 ^
+arm-none-eabi-ar.exe -rs .\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.a .\CortexM3\ARM_GCC_493\Debug\cyfitter_cfg.o .\CortexM3\ARM_GCC_493\Debug\motor_contl_reg_0.o .\CortexM3\ARM_GCC_493\Debug\motor_contl_reg_0_PM.o .\CortexM3\ARM_GCC_493\Debug\PWMOUT0.o .\CortexM3\ARM_GCC_493\Debug\PWMOUT1.o .\CortexM3\ARM_GCC_493\Debug\CW1.o .\CortexM3\ARM_GCC_493\Debug\CW0.o .\CortexM3\ARM_GCC_493\Debug\BREAK1.o .\CortexM3\ARM_GCC_493\Debug\BREAK0.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_audio.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_boot.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_cdc.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_cls.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_descr.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_drv.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_episr.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_hid.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_pm.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_std.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_vnd.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_midi.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_msc.o .\CortexM3\ARM_GCC_493\Debug\sub_cycle_int.o .\CortexM3\ARM_GCC_493\Debug\P_out.o .\CortexM3\ARM_GCC_493\Debug\motor1_b.o .\CortexM3\ARM_GCC_493\Debug\motor1_a.o .\CortexM3\ARM_GCC_493\Debug\motor0_a.o .\CortexM3\ARM_GCC_493\Debug\motor0_b.o .\CortexM3\ARM_GCC_493\Debug\Timer_PWM.o .\CortexM3\ARM_GCC_493\Debug\Timer_PWM_PM.o .\CortexM3\ARM_GCC_493\Debug\timer_clock.o .\CortexM3\ARM_GCC_493\Debug\Timer_cycle.o .\CortexM3\ARM_GCC_493\Debug\Timer_cycle_PM.o .\CortexM3\ARM_GCC_493\Debug\FirstLine.o .\CortexM3\ARM_GCC_493\Debug\CycleStart.o .\CortexM3\ARM_GCC_493\Debug\SubCycleStart.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1_INT.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1_PM.o .\CortexM3\ARM_GCC_493\Debug\AMux_1.o .\CortexM3\ARM_GCC_493\Debug\V_battery.o .\CortexM3\ARM_GCC_493\Debug\VDAC8_1.o .\CortexM3\ARM_GCC_493\Debug\VDAC8_1_PM.o .\CortexM3\ARM_GCC_493\Debug\DieTemp_1.o .\CortexM3\ARM_GCC_493\Debug\WDT_int.o .\CortexM3\ARM_GCC_493\Debug\PIC_CS.o .\CortexM3\ARM_GCC_493\Debug\P_out_1.o .\CortexM3\ARM_GCC_493\Debug\Timer_sub_cycle.o .\CortexM3\ARM_GCC_493\Debug\Timer_sub_cycle_PM.o .\CortexM3\ARM_GCC_493\Debug\P_out_2.o .\CortexM3\ARM_GCC_493\Debug\SS0.o .\CortexM3\ARM_GCC_493\Debug\MOSI.o .\CortexM3\ARM_GCC_493\Debug\SCLK.o .\CortexM3\ARM_GCC_493\Debug\MISO.o .\CortexM3\ARM_GCC_493\Debug\SPIM_1.o .\CortexM3\ARM_GCC_493\Debug\SPIM_1_PM.o .\CortexM3\ARM_GCC_493\Debug\SPIM_1_INT.o .\CortexM3\ARM_GCC_493\Debug\SS0_B.o .\CortexM3\ARM_GCC_493\Debug\SS0_B_PM.o .\CortexM3\ARM_GCC_493\Debug\motor_en_reg.o .\CortexM3\ARM_GCC_493\Debug\motor_en_reg_PM.o .\CortexM3\ARM_GCC_493\Debug\DOF9_CS.o .\CortexM3\ARM_GCC_493\Debug\MOTOR_EN.o .\CortexM3\ARM_GCC_493\Debug\motor_contl_reg_1.o .\CortexM3\ARM_GCC_493\Debug\motor_contl_reg_1_PM.o .\CortexM3\ARM_GCC_493\Debug\DRV_ENA.o .\CortexM3\ARM_GCC_493\Debug\Dist0_FR.o .\CortexM3\ARM_GCC_493\Debug\Dist1_Front.o .\CortexM3\ARM_GCC_493\Debug\Dist2_FL.o .\CortexM3\ARM_GCC_493\Debug\Dist3_Rear.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW0_RF.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW1_FR.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW2_FL.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW3_LF.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW4_LR.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW5_RL.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW6_RR.o .\CortexM3\ARM_GCC_493\Debug\BMP_SW7_rightR.o .\CortexM3\ARM_GCC_493\Debug\MOTOR_FAULT.o .\CortexM3\ARM_GCC_493\Debug\EM_STOP.o .\CortexM3\ARM_GCC_493\Debug\psoc_nop.o .\CortexM3\ARM_GCC_493\Debug\WDT_detect_com_err.o .\CortexM3\ARM_GCC_493\Debug\WDT_detect_com_err_PM.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_Dm.o .\CortexM3\ARM_GCC_493\Debug\USBUART_1_Dp.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1_IRQ.o .\CortexM3\ARM_GCC_493\Debug\ADC_SAR_1_theACLK.o .\CortexM3\ARM_GCC_493\Debug\SPIM_1_IntClock.o .\CortexM3\ARM_GCC_493\Debug\CyBootAsmGnu.o .\CortexM3\ARM_GCC_493\Debug\CyDmac.o .\CortexM3\ARM_GCC_493\Debug\CyFlash.o .\CortexM3\ARM_GCC_493\Debug\CyLib.o .\CortexM3\ARM_GCC_493\Debug\cyPm.o .\CortexM3\ARM_GCC_493\Debug\CySpc.o .\CortexM3\ARM_GCC_493\Debug\cyutils.o .\CortexM3\ARM_GCC_493\Debug\SS1.o .\CortexM3\ARM_GCC_493\Debug\SPIM_2.o .\CortexM3\ARM_GCC_493\Debug\SPIM_2_PM.o .\CortexM3\ARM_GCC_493\Debug\SPIM_2_INT.o .\CortexM3\ARM_GCC_493\Debug\SPIM_2_IntClock.o .\CortexM3\ARM_GCC_493\Debug\hu0.o .\CortexM3\ARM_GCC_493\Debug\hv0.o .\CortexM3\ARM_GCC_493\Debug\hw0.o .\CortexM3\ARM_GCC_493\Debug\hu1.o .\CortexM3\ARM_GCC_493\Debug\hv1.o .\CortexM3\ARM_GCC_493\Debug\hw1.o .\CortexM3\ARM_GCC_493\Debug\Dist6_PVM1.o .\CortexM3\ARM_GCC_493\Debug\Dist_9_Detect_dwn_step.o .\CortexM3\ARM_GCC_493\Debug\dist8_SW_DET.o .\CortexM3\ARM_GCC_493\Debug\Dist4_PVM_CUR.o .\CortexM3\ARM_GCC_493\Debug\Sonr_TRG_x4.o .\CortexM3\ARM_GCC_493\Debug\RTC_1.o .\CortexM3\ARM_GCC_493\Debug\RTC_1_INT.o .\CortexM3\ARM_GCC_493\Debug\DEB_UART.o .\CortexM3\ARM_GCC_493\Debug\DEB_UART_PM.o .\CortexM3\ARM_GCC_493\Debug\DEB_UART_INT.o .\CortexM3\ARM_GCC_493\Debug\DEB_UART_BOOT.o .\CortexM3\ARM_GCC_493\Debug\DEB_UART_IntClock.o .\CortexM3\ARM_GCC_493\Debug\KeisokuTimer.o .\CortexM3\ARM_GCC_493\Debug\KeisokuTimer_PM.o .\CortexM3\ARM_GCC_493\Debug\KeisokuTimer_isr.o
 arm-none-eabi-ar.exe: creating .\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.a
-arm-none-eabi-gcc.exe -Wl,--start-group -o .\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.elf .\CortexM3\ARM_GCC_493\Debug\main.o .\CortexM3\ARM_GCC_493\Debug\Motor_Contl4_3.o .\CortexM3\ARM_GCC_493\Debug\Motor_Contl4_3_data.o .\CortexM3\ARM_GCC_493\Debug\SelfTest_CPU.o .\CortexM3\ARM_GCC_493\Debug\SelfTest_CPU_asm.o .\CortexM3\ARM_GCC_493\Debug\cymetadata.o .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o .\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.a "C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM3\ARM_GCC_493\Debug\CyComponentLibrary.a" -mcpu=cortex-m3 -mthumb -g -ffunction-sections -Og -ffat-lto-objects -L Generated_Source\PSoC5 -Wl,-Map,.\CortexM3\ARM_GCC_493\Debug/trobot6_cir2_2wd.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections -Wl,--end-group
+arm-none-eabi-gcc.exe -Wl,--start-group -o .\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.elf .\CortexM3\ARM_GCC_493\Debug\main.o .\CortexM3\ARM_GCC_493\Debug\Motor_Contl4_3.o .\CortexM3\ARM_GCC_493\Debug\Motor_Contl4_3_data.o .\CortexM3\ARM_GCC_493\Debug\SelfTest_CPU.o .\CortexM3\ARM_GCC_493\Debug\SelfTest_CPU_asm.o .\CortexM3\ARM_GCC_493\Debug\sk_debug.o .\CortexM3\ARM_GCC_493\Debug\sk_uart.o .\CortexM3\ARM_GCC_493\Debug\cymetadata.o .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o .\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.a "C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM3\ARM_GCC_493\Debug\CyComponentLibrary.a" -mcpu=cortex-m3 -mthumb -g -ffunction-sections -Og -ffat-lto-objects -L Generated_Source\PSoC5 -Wl,-Map,.\CortexM3\ARM_GCC_493\Debug/trobot6_cir2_2wd.map -T Generated_Source\PSoC5\cm3gcc.ld -specs=nano.specs -Wl,--gc-sections -Wl,--end-group
 cyelftool.exe -C C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.elf --flash_row_size 256 --flash_size 262144
 cyelftool.exe -S C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\CortexM3\ARM_GCC_493\Debug\trobot6_cir2_2wd.elf
-Flash used: 29184 of 262144 bytes (11.1%).
-SRAM used: 4733 of 65536 bytes (7.2%). Stack: 2048 bytes. Heap: 128 bytes.
---------------- Build Succeeded: 03/10/2023 13:42:47 ---------------
+Flash used: 68352 of 262144 bytes (26.1%).
+SRAM used: 48957 of 65536 bytes (74.7%). Stack: 2048 bytes. Heap: 128 bytes.
+--------------- Build Succeeded: 04/11/2023 17:50:48 ---------------

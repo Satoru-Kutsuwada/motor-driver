@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
   29:.\SelfTest_CPU.c **** * Cypress reserves the right to make changes without further notice to the
   30:.\SelfTest_CPU.c **** * materials described herein. Cypress does not assume any liability arising out
   31:.\SelfTest_CPU.c **** * of the application or use of any product or circuit described herein. Cypress
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 2
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 2
 
 
   32:.\SelfTest_CPU.c **** * does not authorize its products for use as critical components in life-support
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
   34              		.cfi_offset 14, -4
   79:.\SelfTest_CPU.c ****     #if defined(__C51__) || defined(__GNUC__)
   80:.\SelfTest_CPU.c ****         return CPU_PSoC_Asm();	
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 3
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 3
 
 
   35              		.loc 1 80 0
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  120:.\SelfTest_CPU.c **** 	   && (returned_value == CHECKERBOARD_PATTERN_55))
  121:.\SelfTest_CPU.c **** 	{
  122:.\SelfTest_CPU.c ****     
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 4
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 4
 
 
  123:.\SelfTest_CPU.c ****         /* Clear global variables for next test */
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  172:.\SelfTest_CPU.c **** 
  173:.\SelfTest_CPU.c ****     SelfTestA = SELF_TEST_A_2;
   55              		.loc 1 173 0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 5
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 5
 
 
   56 0000 044B     		ldr	r3, .L4
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  201:.\SelfTest_CPU.c **** * Return:
  202:.\SelfTest_CPU.c **** *  SelfTestA:  write unique value to variable for this function SELF_TEST_A_1.
  203:.\SelfTest_CPU.c **** *  SelfTestB:  write unique value to variable for this function SELF_TEST_B_1.
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 6
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 6
 
 
  204:.\SelfTest_CPU.c **** *  SelfTestC:  write unique value to variable for this function SELF_TEST_C_1.
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  108:.\SelfTest_CPU.c ****     uint8 returned_value;
  117              		.loc 1 108 0
  118              		.cfi_startproc
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 7
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 7
 
 
  119              		@ args = 0, pretend = 0, frame = 0
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  128:.\SelfTest_CPU.c ****         
  162              		.loc 1 128 0
  163 0038 FFF7FEFF 		bl	SelfTest_PCAAAA
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 8
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 8
 
 
  164              	.LVL2:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  211              		.loc 1 138 0
  212 0070 0120     		movs	r0, #1
  213              	.LVL13:
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 9
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 9
 
 
  214 0072 10BD     		pop	{r4, pc}
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  266 0000 A4010000 		.4byte	0x1a4
  267 0004 0400     		.2byte	0x4
  268 0006 00000000 		.4byte	.Ldebug_abbrev0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 10
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 10
 
 
  269 000a 04       		.byte	0x4
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  323 0076 03       		.uleb128 0x3
  324 0077 C3010000 		.4byte	.LASF10
  325 007b 03       		.byte	0x3
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 11
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 11
 
 
  326 007c 2C       		.byte	0x2c
@@ -606,17 +606,17 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  328 0081 05       		.uleb128 0x5
  329 0082 00020000 		.4byte	.LASF11
  330 0086 04       		.byte	0x4
- 331 0087 3801     		.2byte	0x138
+ 331 0087 9201     		.2byte	0x192
  332 0089 2C000000 		.4byte	0x2c
  333 008d 05       		.uleb128 0x5
  334 008e 03010000 		.4byte	.LASF12
  335 0092 04       		.byte	0x4
- 336 0093 3901     		.2byte	0x139
+ 336 0093 9301     		.2byte	0x193
  337 0095 3A000000 		.4byte	0x3a
  338 0099 05       		.uleb128 0x5
  339 009a 0A010000 		.4byte	.LASF13
  340 009e 04       		.byte	0x4
- 341 009f 3A01     		.2byte	0x13a
+ 341 009f 9401     		.2byte	0x194
  342 00a1 53000000 		.4byte	0x53
  343 00a5 02       		.uleb128 0x2
  344 00a6 04       		.byte	0x4
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  380 00f4 41000000 		.4byte	.LASF18
  381 00f8 01       		.byte	0x1
  382 00f9 AA       		.byte	0xaa
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 12
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 12
 
 
  383 00fa 81000000 		.4byte	0x81
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  437 017b 31000000 		.4byte	.LASF25
  438 017f 01       		.byte	0x1
  439 0180 31       		.byte	0x31
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 13
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 13
 
 
  440 0181 C4000000 		.4byte	0xc4
@@ -728,7 +728,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  444 018b 0C       		.uleb128 0xc
  445 018c C7000000 		.4byte	.LASF29
  446 0190 05       		.byte	0x5
- 447 0191 5506     		.2byte	0x655
+ 447 0191 9606     		.2byte	0x696
  448 0193 97010000 		.4byte	0x197
  449 0197 06       		.uleb128 0x6
  450 0198 76000000 		.4byte	0x76
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  494 0023 3A       		.uleb128 0x3a
  495 0024 0B       		.uleb128 0xb
  496 0025 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 14
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 14
 
 
  497 0026 0B       		.uleb128 0xb
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  551 005c 06       		.uleb128 0x6
  552 005d 40       		.uleb128 0x40
  553 005e 18       		.uleb128 0x18
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 15
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 15
 
 
  554 005f 9742     		.uleb128 0x2117
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  608 0099 34       		.uleb128 0x34
  609 009a 00       		.byte	0
  610 009b 03       		.uleb128 0x3
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 16
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 16
 
 
  611 009c 0E       		.uleb128 0xe
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  665 000a 50       		.byte	0x50
  666 000b 3C000000 		.4byte	.LVL2
  667 000f 5E000000 		.4byte	.LVL3
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 17
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 17
 
 
  668 0013 0100     		.2byte	0x1
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  722              		.section	.debug_ranges,"",%progbits
  723              	.Ldebug_ranges0:
  724 0000 00000000 		.4byte	.LFB63
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 18
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 18
 
 
  725 0004 08000000 		.4byte	.LFE63
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  754      69676E65 
  754      6420696E 
  754      7400
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 19
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 19
 
 
  755              	.LASF3:
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  775 0177 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
  775      66756E63 
  775      74696F6E 
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 20
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 20
 
 
  775      2D736563 
@@ -1198,6 +1198,6 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 1
  801      54657374 
  801      5F504300 
  802              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccAuB64A.s 			page 21
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccm23JOS.s 			page 21
 
 

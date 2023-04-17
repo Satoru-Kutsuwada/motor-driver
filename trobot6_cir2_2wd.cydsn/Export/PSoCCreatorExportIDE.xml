@@ -25,7 +25,7 @@
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
   </Toolchains>
-  <Project Name="trobot6_cir2_2wd" Path="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn" Version="5.30" Type="Normal">
+  <Project Name="trobot6_cir2_2wd" Path="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn" Version="5.40" Type="Normal">
     <CMSIS_SVD_File>trobot6_cir2_2wd.svd</CMSIS_SVD_File>
     <Datasheet />
     <LinkerFiles>
@@ -41,6 +41,10 @@
           <File BuildType="BUILD" Toolchain="">.\Motor_Contl4_3_data.c</File>
           <File BuildType="BUILD" Toolchain="">.\SelfTest_CPU.c</File>
           <File BuildType="BUILD" Toolchain="">.\SelfTest_CPU_asm.c</File>
+          <File BuildType="BUILD" Toolchain="">.\sk_debug.c</File>
+          <File BuildType="BUILD" Toolchain="">.\sk_uart.c</File>
+          <File BuildType="BUILD" Toolchain="">.\sk_source.h</File>
+          <File BuildType="BUILD" Toolchain="">.\sk_common.h</File>
           <File BuildType="BUILD" Toolchain="">.\cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">.\device.h</File>
           <File BuildType="BUILD" Toolchain="">.\SelfTest_CPU.h</File>
@@ -300,6 +304,8 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\core_cmInstr.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Cm3Iar.icf</File>
           <File BuildType="BUILD" Toolchain="ARM IAR Generic">.\Generated_Source\PSoC5\CyBootAsmIar.s</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cmsis_armcc.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\cmsis_gcc.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\project.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SS1_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SS1.c</File>
@@ -344,6 +350,21 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Sonr_TRG_x4_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Sonr_TRG_x4.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\Sonr_TRG_x4.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\RTC_1.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\RTC_1.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\RTC_1_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DEB_UART.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DEB_UART.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DEB_UART_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DEB_UART_INT.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DEB_UART_BOOT.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DEB_UART_IntClock.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\DEB_UART_IntClock.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\KeisokuTimer.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\KeisokuTimer.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\KeisokuTimer_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\KeisokuTimer_isr.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\KeisokuTimer_isr.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\Export\ARM_GCC_Generic">

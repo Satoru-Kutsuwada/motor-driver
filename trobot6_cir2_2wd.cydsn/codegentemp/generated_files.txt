@@ -258,6 +258,19 @@
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\Sonr_TRG_x4_aliases.h" value="NONE;Sonr_TRG_x4" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\Sonr_TRG_x4.c" value="ARM_C_FILE;Sonr_TRG_x4" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\Sonr_TRG_x4.h" value="NONE;Sonr_TRG_x4" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\RTC_1.c" value="ARM_C_FILE;RTC_1" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\RTC_1.h" value="NONE;RTC_1" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\RTC_1_INT.c" value="ARM_C_FILE;RTC_1" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\DEB_UART.c" value="ARM_C_FILE;DEB_UART" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\DEB_UART.h" value="NONE;DEB_UART" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\DEB_UART_PM.c" value="ARM_C_FILE;DEB_UART" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\DEB_UART_INT.c" value="ARM_C_FILE;DEB_UART" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\DEB_UART_BOOT.c" value="ARM_C_FILE;DEB_UART" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\KeisokuTimer.c" value="ARM_C_FILE;KeisokuTimer" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\KeisokuTimer.h" value="NONE;KeisokuTimer" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\KeisokuTimer_PM.c" value="ARM_C_FILE;KeisokuTimer" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\KeisokuTimer_isr.c" value="ARM_C_FILE;KeisokuTimer_isr" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\KeisokuTimer_isr.h" value="NONE;KeisokuTimer_isr" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\USBUART_1_Dm_aliases.h" value="NONE;USBUART_1_Dm" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\USBUART_1_Dm.c" value="ARM_C_FILE;USBUART_1_Dm" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\USBUART_1_Dm.h" value="NONE;USBUART_1_Dm" />
@@ -272,14 +285,16 @@
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\SPIM_1_IntClock.h" value="NONE;SPIM_1_IntClock" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\SPIM_2_IntClock.c" value="ARM_C_FILE;SPIM_2_IntClock" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\SPIM_2_IntClock.h" value="NONE;SPIM_2_IntClock" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\DEB_UART_IntClock.c" value="ARM_C_FILE;DEB_UART_IntClock" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\DEB_UART_IntClock.h" value="NONE;DEB_UART_IntClock" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\cycodeshareimport.ld" value="NONE;" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\cycodeshareexport.ld" value="NONE;" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\cycodeshareimport.scat" value="NONE;" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\cm3gcc.ld" value="NONE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\Cm3RealView.scat" value="NONE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\Cm3Start.c" value="ARM_C_FILE;cy_boot" />
-  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\core_cm3_psoc5.h" value="NONE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\core_cm3.h" value="NONE;cy_boot" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\core_cm3_psoc5.h" value="NONE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\CyBootAsmGnu.s" value="GNU_ARM_ASM_FILE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\CyBootAsmRv.s" value="REALVIEW_ARM_ASM_FILE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\CyDmac.c" value="ARM_C_FILE;cy_boot" />
@@ -299,5 +314,7 @@
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\core_cmInstr.h" value="NONE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\Cm3Iar.icf" value="NONE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\CyBootAsmIar.s" value="IAR_ASM_FILE;cy_boot" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\cmsis_armcc.h" value="NONE;cy_boot" />
+  <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\cmsis_gcc.h" value="NONE;cy_boot" />
   <file name="C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\codegentemp\project.h" value="NONE;" />
 </fileSet>

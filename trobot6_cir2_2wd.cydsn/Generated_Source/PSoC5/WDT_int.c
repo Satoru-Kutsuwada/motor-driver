@@ -27,7 +27,7 @@
 *  Place your includes, defines and code here 
 ********************************************************************************/
 /* `#START WDT_int_intc` */
-
+extern void sk_log_int(char8 *string,uint16 data);
 /* `#END` */
 
 #ifndef CYINT_IRQ_BASE
@@ -165,7 +165,7 @@ CY_ISR(WDT_int_Interrupt)
 
     /*  Place your Interrupt code here. */
     /* `#START WDT_int_Interrupt` */
-
+    sk_log_int("WDT_int_Interrupt:001",0);
     /* `#END` */
 }
 

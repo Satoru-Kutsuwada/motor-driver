@@ -61,8 +61,8 @@
 
 
 #include "Motor_Contl4_3.h"
+#include "sk_common.h"
 
-extern uint8 SelfTest_CPU_Registers(void);
 
 //--------------------------------------------------------------------
 // macro definitions 
@@ -721,38 +721,102 @@ uint8 err_wdt_mot_fault;
 //--------------------------------------------------------------------
 // Fuction Definition
 //--------------------------------------------------------------------
+extern void SKLog_sub_cycl_int(void);
+extern void debug_main(void);
+extern void debug_init(void);
+extern void sk_PutString05(char8 *string,uint16 data1,uint16 data2,uint16 data3,uint16 data4);
+uint8   sk_bwp_sw;
+uint8 	sk_pwm_control,sk_pwm_period,sk_pwm_width0,sk_pwm_width1;
+
+int32					sk_speed_lf_buf	= 0; 
+int32    					sk_speed_rf_buf	= 0; 
+int32    					sk_speed_lr_buf	= 0; 
+int32    					sk_speed_rr_buf	= 0; 
+int32					sk_speed_lf	= 0xff; 
+int32    					sk_speed_rf	= 0xff; 
+int32    					sk_speed_lr	= 0xff; 
+int32    					sk_speed_rr	= 0xff; 
+int16 sk_ms0_main[4];
+
+extern uint16 sk_log_cnt;
+
+extern sk_int32toChar(char8 *string,int32 data);
+extern sk_int16toChar(char8 *string,int16 data);
         
-		
+extern void sk_adc_debug(uint8 ad, uint8 data );
+
+extern void SK_1ms_main_loop(void);
+extern void SK_10ms_main_loop(void);
+extern void SK_100ms_main_loop(void);
+extern void SK_1000ms_main_loop(void);
+extern void sk_log_int_string(char8 *string);
+extern void sk_log_int_float(char *string,float data);
+extern void sk_log_int_realT(char *string,float data);
+extern uint8       sk_mt_start;
+extern void sk_mt_ctrl(uint16 flg);
+extern uint16 sk_mt_speed;
+extern uint16 sk_input_ofst ;
+extern uint16 sk_input_data ;
+
+extern void sk_log_int_uint16(char *string,uint16 dt1, uint16 dt2, uint16 dt3);
 /************************************************/
 /*	Trobot3 Interrupt routine (every sub_cycle) */
 /************************************************/
 CY_ISR(InterruptHandler) // 2'hfX
 {
 	uint8 istat_tmp ; // keep origin routine stat_sequence_code number
-
+  
+    
 	/* Clear Interrupt */
    	Timer_sub_cycle_STATUS;
+    
+    
+    
 	FirstLine_Write(0);
     Sonr_TRG_x4_Write(0);                                  //for sonnor 1/4 sec period
 	istat_tmp = (P_out_2_Read()*64+P_out_1_Read()*16+P_out_Read()) ;
 	pout(0xf0) ; //2.42us
 
+    
+
+    
+    SKLog_sub_cycl_int();
+    
+    if( sk_log_flg & SK_LOG_SUBCYCL ){
+        sk_log_int("CY_ISR",0);
+
+        sk_PutString05("I:S:T:F= ",interruptcnt,sub_cycle_count,trans_line,frame_count);
+        
+    }
+    
+    
     // last sub cycle ??
     
-	if (sub_cycle_count == MAX_SUB_COUNT - 1){
-
-		if (interruptcnt == 512 ){  //max feelds? (1/16sec )
+	if (sub_cycle_count == MAX_SUB_COUNT - 1){  // 3.9usec
+     
+		if (interruptcnt == 512 ){  //max feelds? (1/16sec 62.5msec )
+            
+            if( sk_log_flg & SK_LOG_INTRUPT512 )
+                sk_log_int("interruptcnt512 ",0);
+            
 			FirstLine_Write(1);
 			interruptcnt = 0;
 			trans_line = 0;
-
-            if ( frame_count >=15) 
-				frame_count = 0 ;        //for sonnor 1/4 sec period
-            else 
-				frame_count += 1 ;                         //for sonnor 1/4 sec period
-
-            if ( frame_count % 4 ==0) 
-				Sonr_TRG_x4_Write(1); //for sonnor 1/4 sec period
+       
+            
+            if ( frame_count >=15) {
+                frame_count = 0 ;        //for sonnor 1/4 sec period
+                
+                if( sk_log_flg & SK_LOG_FRAME_CNT  )
+                sk_log_int("frame_count ",0);
+            }
+            else {
+                frame_count += 1 ;                         //for sonnor 1/4 sec period
+            }
+            
+            if ( frame_count % 4 ==0) {
+                Sonr_TRG_x4_Write(1); //for sonnor 1/4 sec period
+            }
             
             if ( sense_diagflag == 2){
         		CyWdtClear(); //WDT CLEAR during boot prosess
@@ -763,6 +827,7 @@ CY_ISR(InterruptHandler) // 2'hfX
     
 		interruptcnt++;
 		sub_cycle_count = 0;
+
 	
     }else{
 		
@@ -770,36 +835,98 @@ CY_ISR(InterruptHandler) // 2'hfX
 		interruptcnt++;
 		CyGlobalIntDisable;
 		CyGlobalIntEnable;
+	
     }
     
+        #if DEMODE == 1
+    		pout(0xf1); //3.31us
+        #endif
+        #if DEMODE1 == 1
+    		pout((uint)trans_line) ;
+    		pout((uint)sub_cycle_count) ;
+        #endif
 
 	if (interruptcnt == 512){
 		//Timer_cycle_Start();
+        
+        if( sk_log_flg & SK_LOG_CYCLE_START  ){
+            sk_log_int("Timer_cycle_WriteCounter", 0);    
+
+        }
+                
 		Timer_cycle_WriteCounter(0);
+
 	}
 
 	irqt1 = 2;
 		
-	//P_out_Write(sub_cycle_count) ;
+		//P_out_Write(sub_cycle_count) ;
 
-    if ((sub_cycle_count % 8) == 0){
+    if ((sub_cycle_count % 8) == 0){    // 0.97msec
+        if( sk_log_flg & SK_LOG_SUBCYCL_8P )
+            sk_log_int("sub_cycle_count8P",0);
+
+        if( sk_log_flg & SK_LOG_COM_INT  ){
+            sk_log_int("Sub_Enc() START ",0); 
+        }    
+            
 		Sub_Enc(); // 0x04 EXECUTE every 8 subcycle
+
+        if( sk_log_flg & SK_LOG_COM_INT  ){
+            sk_log_int("Sub_Enc() END ",0); 
+        }    
 	}
-
+    
+    
     // ******* UART comunication PC to Board (command) *********
+        #if DEMODE == 1
+            
+    		pout(0xf2); //13.2us 13.31us
+        #endif
+    
     no_getcom_loop_cnt=0;
-	pc2main();
+
+    if( sk_log_flg & SK_LOG_COM_INT  ){
+        sk_log_int("pc2main() START ",0); 
+    }    
+
+    pc2main();
+
+    if( sk_log_flg & SK_LOG_COM_INT  ){
+        sk_log_int("pc2main() END ",0); 
+    }    
 
 
     // ******* UART comunication PC to Board (command) *********
+        #if DEMODE == 1
+        	pout(0xf0);//20.71us
+        	pout(0xf3);
+        #endif
+        
+    if( sk_log_flg & SK_LOG_COM_INT  ){
+        sk_log_int("main2pc() START ",0); 
+    }    
+
     main2pc();
+
+    if( sk_log_flg & SK_LOG_COM_INT  ){
+        sk_log_int("main2pc() END ",0); 
+    }    
 
     
 // ******* finishing operation return previous stat  *********
+        #if DEMODE == 1
+        	pout(0xf0);//25.93us
+        #endif
         
 	pout(istat_tmp);
 	
-	
+    
+            
+    if( sk_log_flg & SK_LOG_MAX_SUB_COUNT ){
+        sk_log_int_uint16("int,tar,sub = ",(uint16)interruptcnt, trans_line,sub_cycle_count);
+    }
+
 	return;
 }
 
@@ -822,7 +949,7 @@ uint8 main_init()    // 2'h1X
     //  bit1 = "H"      :motor predrv selector disenable (All output = "L")
     //  bit0 = "L"      :motor predrv(8323) disenable (ALL gate output = "L")
     //*******************************************
-
+    sk_log_main("main_init():001",0);
     motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);     // PVM1,PVM2:off  sel:disEN  pDRV:disEN
     // sense_diagflag = 3;
     //*******************************************
@@ -836,7 +963,7 @@ uint8 main_init()    // 2'h1X
         //PASS to STEP3
     };
 
-   
+   sk_log_main("main_init():002",0);
     //*******************************************
     // STEP3 : (EM_SW condition watch) & PVM1,PVM2 Power on 
     //*******************************************
@@ -855,8 +982,10 @@ uint8 main_init()    // 2'h1X
     CyDelayUs(30000);
     CyDelayUs(30000);
   
-    
+
+
     if(drive_wheels == 2){  
+       sk_log_main("main_init():003",0);
         // 2WD Case
         //3-2: PVM1 Voltage  Check (main battery )
                         
@@ -873,6 +1002,7 @@ uint8 main_init()    // 2'h1X
                 output2_tag[30]=status0;
 
                 motor_en_reg_Write((uint8)MOT_PVM_DRV_ON); 
+                sk_PutString01("ESTOP05",CRLF_ON);
 
                 return 20 ;
             }else{
@@ -887,7 +1017,10 @@ uint8 main_init()    // 2'h1X
             }
         }
    
-    }else{  
+
+    }else{
+               sk_log_main("main_init():004",0);
+
         // 4WD Case 
         //3-3: PVM2 Voltage  Check (main battery )
     	adin = 6;
@@ -913,6 +1046,7 @@ uint8 main_init()    // 2'h1X
                 output2_tag[30]=status0;
 
                 motor_en_reg_Write((uint8)MOT_PVM_DRV_ON); 
+                sk_PutString01("ESTOP06",CRLF_ON);
 
                 return 20 ;
             }else{
@@ -952,6 +1086,7 @@ uint8 main_init()    // 2'h1X
             };    
 
             motor_en_reg_Write((uint8)MOT_PVM_DRV_ON); 
+            sk_PutString01("ESTOP07",CRLF_ON);
 
             return 40;
         }else{
@@ -978,6 +1113,7 @@ uint8 main_init()    // 2'h1X
             };    
 
             motor_en_reg_Write((uint8)MOT_PVM_DRV_ON); 
+            sk_PutString01("ESTOP08",CRLF_ON);
 
             return 50;
         }else{
@@ -1003,6 +1139,7 @@ uint8 main_init()    // 2'h1X
         status0 |= MOTOR_FAULT ;
         state = EMSTOP;
         motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);       // PVM1,PVM2:off  sel:disEN  pDRV:disEN  
+        sk_PutString01("ESTOP09",CRLF_ON);
         ret =60;
         return ret ;
     }
@@ -1023,6 +1160,7 @@ uint8 main_init()    // 2'h1X
             state = EMSTOP;
 
             motor_en_reg_Write((uint8)MOT_PVM_DRV_ON); 
+            sk_PutString01("ESTOP10",CRLF_ON);
 
             return 50;
         }else{
@@ -1047,12 +1185,26 @@ uint8 main_init()    // 2'h1X
     uint16 i ;
     uint8 j ;
     
+    pout(0x00);
+    
+    sk_log_main("main():001",0);
+    
+    sk_uart_init();
+    SK_Rtc_init();
+    
+    sk_log_main("main():002",0);
+    
     //diagnostics selftest 
     ret = SelfTest_CPU_Registers();
-
+    if(ret!=0) pout(0x99)      ;
     // start Initialize and Initial Diagnostics 
 	ret = main_init();
 
+    sk_log_main("main():003",0);
+
+    if(ret != 0){
+        //state = EMSTOP;  //Initial diag error stop PVM
+    }
     ret =0;
     // start die temprature measure 
     if(state != SHUTDWN){
@@ -1065,46 +1217,141 @@ uint8 main_init()    // 2'h1X
     output2_tag[29]=status1;
     output2_tag[30]=status0;
 
-
+    debug_init();
     
+//		TP_1_Write(0) ;      //end marker
+
 	// ********* main routine start *********
 	
 	while(1){
+        debug_main();
+        debug_menue();
+        CyWdtClear(); //WDT CLEAR during boot prosess
+        
+        
+       
+
+        if( Check_0001ms() == TM_ON ){
+            SK_1ms_main_loop();
+        }
+        if( Check_0010ms() == TM_ON ){
+             SK_10ms_main_loop();
+        
+        }
+        if( Check_0100ms() == TM_ON ){
+            SK_100ms_main_loop();
+        }
+        if( Check_1000ms() == TM_ON ){
+            SK_1000ms_main_loop();
+        }
+        
+        
+        
+        
+
+
+        
+            #if DEMODE == 1
+            	pout(0x10) ;				
 		if (irqt1==2){
-		switch(sub_cycle_count){
-        case 10:
+            sk_log_main("main():004",0);
+            #endif
+//		if (irqt1==2 && ((state == IDLE)||(state == DRIVE))){
+                #if DEMODE == 1
+                	pout(0x11) ;	//11L:37.53us			
+					pout((uint)speed_lf_buf) ;
+					pout(0x11) ;    //11L:40.04us //12L:31.92us 
+                #endif
+                #if DEMODE1 == 1					
+					pout((uint)speed_lf_buf) ;
+					pout(0x11) ;
+					pout((uint)speed_rf_buf) ;
+					pout(0x11) ;
+//					pout((uint)speed_lr_buf) ;
+//					pout(0x11) ;
+//					pout((uint)speed_rr_buf) ;
+//					pout(0x11) ;
+                #endif
+			switch(sub_cycle_count){
+                case 10:
+
+
+                #if DEMODE == 1
+                        	pout(0x12);		//33.6us			
+                        #endif
 					McpuOP();  //2'h5X
+                        #if DEMODE == 1
+                        	pout(0x13);					
+                        #endif
 				    output2_tag[28]=state;
                     output2_tag[29]=status1;
                     output2_tag[30]=status0;
+                #if CALC_RATIO ==2
+                    case 26:
+                #endif
                         
                         
 					Sub_Calc1();  // 2'h7X
-					Set_PWM();
+                        #if DEMODE == 1
+                        	pout(0x14);		//409.51us			
+                        #endif
+					 
+                        #if DEMODE == 1
+                        	pout(0x15);     //419.49us
+                        #endif
 
-                    irqt1 = 0;
+
+                        irqt1 = 0;
 					break;
-		case 16:
+//				case 16:
+				case 16:
+                        #if DEMODE == 1
+                        	pout(0x17);					
+                        #endif
 					McpuOP2();
 
+                        #if DEMODE == 1
+                        	pout(0x10);					
+                        #endif
 					irqt1 = 0;
 					break;
-		case 20:
+				case 20:
+                        #if DEMODE == 1
+                        	pout(0x20);					
+                        #endif
+
+                        
                     diag_sense();
                         
+                        #if DEMODE == 1
+                        	pout(0x10);					
+                        #endif
  					irqt1 = 0;
 					break;
-		case 24:
-					//Sensor();  // trans line 14 //11L:45.2us
- 					//start_get_die_temp();
-					//Diagnostic(); // transline 11 start 13 getdata
-					irqt1 = 0;
-					break;
+                        
+                case 24:
+            // sk_log_main("main():005",0);
 
-		case 31:
+                    // Sensor();  // trans line 14 //11L:45.2us
+                    //                    start_get_die_temp();
+                    //Diagnostic(); // transline 11 start 13 getdata
+
+                    irqt1 = 0;
+                     break;
+
+				case 31:
+					if(trans_line == 12){
+                            #if DEMODE == 1
+                            	pout(0x1e);					
+                            #endif
+						//CyWdtClear();
+					}
+                        #if DEMODE == 1
+                        	pout(0x10);					
+                        #endif
 					irqt1 = 0;
 					break;
-		default:
+				default:
 					irqt1 = 0;					
 					break;
 			}
@@ -1113,12 +1360,17 @@ uint8 main_init()    // 2'h1X
 			CyDelayUs(10);
 		}
 
+
+
+
+            #if DEMODE == 1
+            	pout(0x10);					
+            #endif
+
 	}		
 }
 
 // ********* main routine end *********
-
-
 
 
 //**************************************************
@@ -1128,22 +1380,45 @@ uint8 main_init()    // 2'h1X
 void pc2main(void)   	// 2'h2X
 {
             
-    //target speed command increment from previous PC command
-    // 1/16sec period before
+            //target speed command increment from previous PC command
+            // 1/16sec period before
     
     int32	speed_lf_change;    // Left Front wheel
     int32	speed_rf_change;    // Right Front wheel
     int32	speed_lr_change;    // Left Rear wheel
     int32	speed_rr_change;    // Right Rear wheel
+
+
 	float   change_ratio ;  // 2016.0304 by K.sakashita
-    int8	i;
-    uint8	ret;
 
-
-
+    int8 i ;
+    uint8 ret ;
+    
+    char l_output[30];
+    
+    
+        #if DEMODE == 1
+    		pout(0x20);  //14.92us 8L:15.27us
+        #endif
+	
+        
+        
+        
+        
     if((sub_cycle_count == 0)&&(trans_line == 8)) {
+            #if DEMODE == 1						
+				pout(0x21);  //16.01us
+            #endif
+            #if DEMODE == 1
+				pout(no_getcom_loop_cnt) ;
+			    //CyDelayUs(1); // 1us wait
+            #endif
+
 		if(no_getcom_loop_cnt < 3){
 		}else{
+                #if DEMODE == 1						
+						pout(0x2f);
+                #endif
 			WheelStop();
 		}
    	}           
@@ -1151,21 +1426,36 @@ void pc2main(void)   	// 2'h2X
     
     //USB data pre get from PC but  wait 8 transline and 0sub count 
     
-	if (USBUART_1_DataIsReady()!=0){ 
-		//usb nide-ta gatoutyakusiteitara 0igai 
-		//    	getcom_flag = 0; //command receive compleate
-
+	if (USBUART_1_DataIsReady()!=0){ //usb にデータが到着していたら’０’以外　nide-ta gatoutyakusiteitara 0igai 
+            #if DEMODE == 1						
+						pout(0x22);
+            #endif
+//    	getcom_flag = 0; //command receive compleate
     	getcom_count_buf = 0; // received command byte
 		getcom_count_buf = USBUART_1_GetAll(&command_buf[getcom_count_buf]);
-
+            #if DEMODE1 == 1
+				pout(getcom_count_buf) ;
+			    //CyDelayUs(1); // 1us wait
+		        //TP_1_Write(0) ;
+                pout(loop_max);
+            #endif
 		if(getcom_count_buf > loop_max){
+                #if DEMODE == 1						
+						pout(0x23);
+                #endif
 			loop_max = getcom_count_buf;
 			trobot_status2 = loop_max;
         }
-
         if((command_buf[0]==0x02)&&(command_buf[1]==5)&&(command_buf[2]==COMMAND_LENGTH)&&(command_buf[COMMAND_LENGTH-1]==0x03)){
-			// ｿｿｿｿｿｿｿｿｿｿｿｿ
+             if( sk_log_flg2 & SK_LOG2_COM_RECIVE  ){
+                sk_log_int("Moter Ctrl Command Rcv ", 0 );
+            }
+            
+            
             i=0;
+                #if DEMODE == 1
+                	pout(0x29);			
+                #endif
             while(i < command_buf[2]){
                 command[i]=command_buf[i];
                 i++;
@@ -1174,9 +1464,13 @@ void pc2main(void)   	// 2'h2X
             getcom_flag = 0; //command receive compleate
 
         }else if((command_buf[0]==0x54)&&(command_buf[1]==command_buf[2])&&(command_buf[3] == 0x16)){  //frame format ('T'=0x54)
-			// ｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿｿ
-
+             if( sk_log_flg2 & SK_LOG2_COM_RECIVE  ){
+                sk_log_int("Command Param Rcv ", 0 );
+            }
             i=0;
+                #if DEMODE == 1
+                	pout(0x2a);			
+                #endif
             while(i < 64){
                 command_para[i]=command_buf[i];
                 i++ ;
@@ -1185,79 +1479,105 @@ void pc2main(void)   	// 2'h2X
             getcom_flag = 0; //command receive compleate
 
         }
-
         CyWdtClear();
-
     }else if (state == SHUTDWN){
-
         CyWdtClear();
-
     }else{
         no_getcom_loop_cnt++;
 
     }
     
     
+        #if DEMODE == 1						
+			pout(0x24);			//16.93us 8L:18.5us
+        #endif
+        #if DEMODE1 == 1
+			pout(getcom_count_buf) ;
+			pout(0x24);
+		    //CyDelayUs(1); // 1us wait
+        #endif
+        
+        
 	
 	if(getcom_flag == 0){
+            #if DEMODE == 1						
+				pout(0x25);		//8L:20.21us
+            #endif
+            #if DEMODE1 == 1
+				pout(getcom_count) ;
+				pout(0x25);
+				pout(getcom_count_para) ;
+				pout(0x25);
+			    //CyDelayUs(1); // 1us wait
+            #endif
+		if((getcom_count_para != COMMAND_LENGTH_P)&&(getcom_count >= COMMAND_LENGTH)){
+
+				com_status |= 2;
+		}
+        if((getcom_count % COMMAND_LENGTH) != 0){
+			com_status |= 4;
+		}
+		if((getcom_count / COMMAND_LENGTH) > 2){
+			com_status |= 8;
+		}
+
         
         //
         //Speed set from PC
         //
-        
-        if(getcom_count == COMMAND_LENGTH){
-			CyDelayUs(5); // 5us wait
-					
-            //
-            // read speed data from command
-            //
-			cycle_count_buf = command[12];
-                    
+        if( sk_log_flg4 & SK_LOG4_MOT_START   ){
+            if( sk_log_flg5 & SK_LOG5_PWM_CALUC   ){
+                sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+                 if(sk_mt_start == 1){
+                    // sk_log_flg4 |= SK_LOG4_SUB_CALC1;
+                    sk_mt_start =0;
+                    sk_log_cnt =0;
+                }
+            }
+            else{
+                if(sk_mt_start == 1){
+                    //sk_log_flg4 |= SK_LOG4_SUB_CALC1;
+                    sk_log_int_string("**** MT START ***** ");
+                    sk_mt_start =0;
+                    sk_log_cnt =0;
+                
+                }
+            }
+            CyDelayUs(5); // 5us wait
             if((state == IDLE )||(state == DRIVE)){
-    			speed_lf_buf	= (int32)((int8)command[4]); 
-    			speed_lf_buf	= (int32)(((uint32)speed_lf_buf<<8)+(uint8)command[5]); 
-    			speed_rf_buf	= (int32)((int8)command[6]); 
-    			speed_rf_buf	= (int32)(((uint32)speed_rf_buf<<8)+(uint8)command[7]); 
-    			speed_lr_buf	= (int32)((int8)command[8]); 
-    			speed_lr_buf	= (int32)(((uint32)speed_lr_buf<<8)+(uint8)command[9]); 
-    			speed_rr_buf	= (int32)((int8)command[10]); 
-    			speed_rr_buf	= (int32)(((uint32)speed_rr_buf<<8)+(uint8)command[11]); 
-             }else{
-     			speed_lf_buf	= 0; 
-    			speed_lf_buf	= 0; 
-    			speed_rf_buf	= 0; 
-    			speed_rf_buf	= 0; 
-    			speed_lr_buf	= 0; 
-    			speed_lr_buf	= 0; 
-    			speed_rr_buf	= 0; 
-    			speed_rr_buf	= 0; 
-             }
+				speed_lf_buf	= sk_mt_speed; 
+				speed_rf_buf	= sk_mt_speed; 
+                speed_lr_buf	= 0; 
+				speed_rr_buf	= 0; 
+            }
+            
+            if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+                if( sk_log_cnt > 900 ){
+                    sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+                }
+                sk_log_int_string("Morter Start 00");
+                sk_log_int_int32("speed_lf_buf =  ", speed_lf_buf);
+                sk_log_int_int32("speed_rf_buf  =  ", speed_rf_buf );
+                sk_log_int_int32("speed_lf =  ", speed_lf);
+                sk_log_int_int32("speed_rf  =  ", speed_rf );
 
-            //
-            // Check stop conditin and over write speed_xx_buf data
-            //
-
-            // Bumper Switch check 
-                    
-            if(em_stop_en != 0)Chk_Bumper(); // em_stop_en != 0 check bmp sw
-                    
-            // robot status check : faults and EM_stop
-                   
-            if((state != DRIVE)&&(state != IDLE))WheelStop(); // em_stop_en != 0 check bmp sw
-
+                sk_log_cnt+=5;
+            }
+            
+            
+            
             // calcurate required speed change 
                     
 			getcom_watch = 16;
 			speed_lf_change = speed_lf_buf - speed_lf;
 			speed_rf_change = speed_rf_buf - speed_rf;
- 			speed_lr_change = speed_lr_buf - speed_lr;
+			speed_lr_change = speed_lr_buf - speed_lr;
 			speed_rr_change = speed_rr_buf - speed_rr;
 
 
             // calcurate approval speed according to the MAX change 
 
-			if((speed_lf_change + speed_rf_change + speed_lr_change + speed_rr_change)!=0){   
-				//直進方向の速度変化のみを取り出す   
+			if((speed_lf_change + speed_rf_change + speed_lr_change + speed_rr_change)!=0){   //直進方向の速度変化のみを取り出す    									//20170721 K.S			
 				change_ratio=(float)(drive_wheels*(uint32)max_spd_chg)/(abs(speed_lf_change + speed_rf_change + speed_lr_change + speed_rr_change)) ; 	//20170721 K.S
 				if(change_ratio < 1){
 					speed_lf_buf = speed_lf + (int32)((speed_lf_change * change_ratio)) ;
@@ -1266,11 +1586,184 @@ void pc2main(void)   	// 2'h2X
 					speed_rr_buf = speed_rr + (int32)((speed_rr_change * change_ratio)) ;
 				}
 			}
+            
+            if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+                if( sk_log_cnt > 900 ){
+                    sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+                }
+                sk_log_int_string("Morter Start 01");
+                //sk_log_int_int32("speed_lf_buf =  ", speed_lf_buf);
+                //sk_log_int_int32("speed_rf_buf  =  ", speed_rf_buf );
+                //sk_log_int_int32("speed_lf =  ", speed_lf);
+                //sk_log_int_int32("speed_rf  =  ", speed_rf );
 
+                sk_log_int_int32("speed_lf_change =  ", speed_lf_change);
+                sk_log_int_int32("speed_rf_change  =  ", speed_rf_change );
+                
+                sk_log_int("drive_wheels = ", drive_wheels);
+                sk_log_int("max_spd_chg = ", (uint16) max_spd_chg);
+                sk_log_int_float("change_ratio = ", change_ratio );
+            
+                sk_log_cnt += 6;
+            }
+                        
 
 			getcom_count = 0;
 			getcom_flag = 1;
 			no_getcom_loop_cnt = 0;
+        }
+        else if(getcom_count == COMMAND_LENGTH){
+            
+            if( sk_log_flg2 & SK_LOG2_COM_RECIVE  ){
+                sk_log_int("Moter Ctrl Command Rcv ", 1 );
+            }
+            
+                        #if DEMODE == 1						
+    						pout(0x26); //23.01us
+                        #endif
+					CyDelayUs(5); // 5us wait
+					
+                    //
+                    // read speed data from command
+                    //
+					cycle_count_buf = command[12];
+                    if( sk_log_flg2 & SK_LOG2_CYCLE_CNT ){
+                        sk_log_int("cycle_count_buf = ",cycle_count_buf);
+                    }
+                    
+                    if((state == IDLE )||(state == DRIVE)){
+    					speed_lf_buf	= (int32)((int8)command[4]); 
+    					speed_lf_buf	= (int32)(((uint32)speed_lf_buf<<8)+(uint8)command[5]); 
+    					speed_rf_buf	= (int32)((int8)command[6]); 
+    					speed_rf_buf	= (int32)(((uint32)speed_rf_buf<<8)+(uint8)command[7]); 
+    					speed_lr_buf	= (int32)((int8)command[8]); 
+    					speed_lr_buf	= (int32)(((uint32)speed_lr_buf<<8)+(uint8)command[9]); 
+    					speed_rr_buf	= (int32)((int8)command[10]); 
+    					speed_rr_buf	= (int32)(((uint32)speed_rr_buf<<8)+(uint8)command[11]); 
+                    }else{
+     					speed_lf_buf	= 0; 
+    					speed_lf_buf	= 0; 
+    					speed_rf_buf	= 0; 
+    					speed_rf_buf	= 0; 
+    					speed_lr_buf	= 0; 
+    					speed_lr_buf	= 0; 
+    					speed_rr_buf	= 0; 
+    					speed_rr_buf	= 0; 
+                   }
+
+                    //
+                    // for debud 
+                    //
+                    
+                    if( sk_log_flg4 & SK_LOG4_PWM_DATA  ){
+                        if(sk_speed_lf_buf	!= speed_lf_buf ){
+                            sk_speed_lf_buf	= speed_lf_buf	; 
+                            l_output[0]='L';
+                            l_output[1]='F';
+                            l_output[2]=':';
+                            
+                            sk_int32toChar(&l_output[3],(uint32) speed_lf_buf);
+                            sk_log_int_string(l_output);
+                        }
+    					if( sk_speed_rf_buf	!= speed_rf_buf){
+                            sk_speed_rf_buf	= speed_rf_buf	; 
+                            l_output[0]='R';
+                            l_output[1]='F';
+                            l_output[2]=':';
+                            
+                            sk_int32toChar(&l_output[3],(uint32) speed_rf_buf);
+                            sk_log_int_string(l_output);
+                        }
+                    
+                        //
+                        // 以下は4駆動の時に使用
+                        //
+                        
+    					if( sk_speed_lr_buf	!= speed_lr_buf ){
+                            sk_speed_lr_buf	= speed_lr_buf	; 
+                            l_output[0]='L';
+                            l_output[1]='R';
+                            l_output[2]=':';
+                            sk_int32toChar(&l_output[3],(uint32) speed_lr_buf);
+                            sk_log_int_string(l_output);
+    					}
+                        
+                        if( sk_speed_rr_buf	!= speed_rr_buf ){
+                           
+                            sk_speed_rr_buf	= speed_rr_buf	; 
+                            l_output[0]='R';
+                            l_output[1]='R';
+                            l_output[2]=':';
+                            sk_int32toChar(&l_output[3],(uint32) speed_rr_buf);
+                            sk_log_int_string(l_output);
+                        }
+                    }
+                    
+                    
+                    
+                    
+                    //
+                    // Check stop conditin and over write speed_xx_buf data
+                    //
+
+                    // Bumper Switch check 
+                    
+                    if(em_stop_en != 0)Chk_Bumper(); // em_stop_en != 0 check bmp sw
+                    
+                    // robot status check : faults and EM_stop
+                   
+                    if((state != DRIVE)&&(state != IDLE))WheelStop(); // em_stop_en != 0 check bmp sw
+
+                    // calcurate required speed change 
+                    
+					getcom_watch = 16;
+					speed_lf_change = speed_lf_buf - speed_lf;
+					speed_rf_change = speed_rf_buf - speed_rf;
+ 					speed_lr_change = speed_lr_buf - speed_lr;
+					speed_rr_change = speed_rr_buf - speed_rr;
+
+                    if( sk_log_flg2 & SK_LOG2_COM_RECIVE  ){
+                        sk_log_int("Moter Ctrl Command Rcv ", 2 );
+                    }
+                                        
+	 					#if DEMODE1 == 1						
+							pout((uint)max_spd_chg);
+						    CyDelayUs(1); // 1us wait
+							pout((uint)speed_lf_change);
+						    CyDelayUs(1); // 1us wait
+							pout((uint)speed_rf_change);
+						#endif
+
+                    // calcurate approval speed according to the MAX change 
+
+					if((speed_lf_change + speed_rf_change + speed_lr_change + speed_rr_change)!=0){   //直進方向の速度変化のみを取り出す    									//20170721 K.S			
+						change_ratio=(float)(drive_wheels*(uint32)max_spd_chg)/(abs(speed_lf_change + speed_rf_change + speed_lr_change + speed_rr_change)) ; 	//20170721 K.S
+						if(change_ratio < 1){
+                                #if DEMODE == 1						
+            						pout(0x27);
+                                #endif
+                                
+                                
+                            if( sk_log_flg2 & SK_LOG2_COM_RECIVE  ){
+                                sk_log_int("Moter Ctrl Command Rcv ", 3 );
+                            }
+
+							speed_lf_buf = speed_lf + (int32)((speed_lf_change * change_ratio)) ;
+							speed_rf_buf = speed_rf + (int32)((speed_rf_change * change_ratio)) ;
+							speed_lr_buf = speed_lr + (int32)((speed_lr_change * change_ratio)) ;
+							speed_rr_buf = speed_rr + (int32)((speed_rr_change * change_ratio)) ;
+						}
+                            #if DEMODE1 == 1						
+        						pout(speed_lf_buf);
+        						pout(0x20);
+        						pout(speed_rf_buf);
+                            #endif
+					}
+
+
+					getcom_count = 0;
+					getcom_flag = 1;
+					no_getcom_loop_cnt = 0;
         }
         
         //
@@ -1278,116 +1771,108 @@ void pc2main(void)   	// 2'h2X
         //
 		
         if(getcom_count_para == COMMAND_LENGTH_P){
+                #if DEMODE == 1
+                	pout(0x28);			
+        // 		            TP_1_Write(1) ;
+                #endif
             motor_en_reg_Write((uint8)MOT_PVM_DRV_ON);       // PVM1,PVM2:on  sel:disenable  pDRV:enable
 
-			// 		            TP_1_Write(0) ;
-            // command_para[4];
-            logmode 		= (uint8)3 & (uint8)command_para[4];
-			direct_cnt 		= (uint8)(((uint8)4 &(uint8)command_para[4])>>2);
-			em_stop_en			= (uint8)(((uint8)8 &(uint8)command_para[4])>>3);
-			use_smooth_chg	= (uint8)(((uint8)16 &(uint8)command_para[4])>>4);
-			measure_sensor 	= (uint8)(((uint8)32 &(uint8)command_para[4])>>5);
-			drive_wheels 	= (uint8)(((((uint8)64 &(uint8)command_para[4])>>6)+1)*2);
+                #if DEMODE1 == 1
+        			pout(getcom_count_para);
+        			CyDelayUs(1); // 5us wait	
+                #endif
 
+// 		            TP_1_Write(0) ;
 
-            // command_para[5-6];
+            logmode 		= (uint8)3 & (uint8)command_para[4];                        // 2 bit0-1
+			direct_cnt 		= (uint8)(((uint8)4 &(uint8)command_para[4])>>2);           // 0 bit2
+			em_stop_en		= (uint8)(((uint8)8 &(uint8)command_para[4])>>3);           // 0 bit3  
+			use_smooth_chg	= (uint8)(((uint8)16 &(uint8)command_para[4])>>4);          // 1 bit4
+			measure_sensor 	= (uint8)(((uint8)32 &(uint8)command_para[4])>>5);          // 1 bit5(2WD/4WD)
+			drive_wheels 	= (uint8)(((((uint8)64 &(uint8)command_para[4])>>6)+1)*2);  // 2 bit6 2or4 
+            
 			speedratio		= (int16)((int8)command_para[5]);
 			speedratio		= (int16)(((uint16)speedratio	<<8)+(uint8)command_para[6]);
-
-            // command_para[7-8];
 			max_spd_chg		= (int16)((int8)command_para[7]);
 			max_spd_chg		= (int16)(((uint16)max_spd_chg	<<8)+(uint8)command_para[8]);
-
-            // command_para[9];
+            
+            // Assign MOT 11 10 01 00
 			motorassign[0] 	= (uint8)((uint8)3 &(uint8)command_para[9]);        //Wheel LF (wheel left:2WD)
 			motorassign[1] 	= (uint8)(((uint8)12 &(uint8)command_para[9])>>2);  //Wheel RF (wheel right:2WD)
 			motorassign[2] 	= (uint8)(((uint8)48 &(uint8)command_para[9])>>4);  //Wheel LR (non:2WD)
 			motorassign[3] 	= (uint8)(((uint8)192 &(uint8)command_para[9])>>6); //Wheel RR (non:2WD)
-
-            // command_para[10];
-			encassign[0] 	= (uint8)((uint8)3 &(uint8)command_para[10]);
-			encassign[1] 	= (uint8)(((uint8)12 &(uint8)command_para[10])>>2);
-			encassign[2] 	= (uint8)(((uint8)48 &(uint8)command_para[10])>>4);
-			encassign[3] 	= (uint8)(((uint8)192 &(uint8)command_para[10])>>6);
-
-            // command_para[11];
-			cw0 			= (uint8)((uint8)1 &(uint8)command_para[11]);
-			encd0 			= (uint8)(((uint8)2 &(uint8)command_para[11])>>1);
-			cw1 			= (uint8)(((uint8)4 &(uint8)command_para[11])>>2);
-			encd1 			= (uint8)(((uint8)8 &(uint8)command_para[11])>>3);
-			cw2  			= (uint8)(((uint8)16 &(uint8)command_para[11])>>4);
-			encd2   		= (uint8)(((uint8)32 &(uint8)command_para[11])>>5);
-			cw3  			= (uint8)(((uint8)64 &(uint8)command_para[11])>>6);
-			encd3  			= (uint8)(((uint8)128 &(uint8)command_para[11])>>7);
+            
+            // Assign ENC 11 10 01 00 
+			encassign[0] 	= (uint8)((uint8)3 &(uint8)command_para[10]);           // 00
+			encassign[1] 	= (uint8)(((uint8)12 &(uint8)command_para[10])>>2);     // 01
+			encassign[2] 	= (uint8)(((uint8)48 &(uint8)command_para[10])>>4);     // 10 
+			encassign[3] 	= (uint8)(((uint8)192 &(uint8)command_para[10])>>6);    // 11
+            
+            // Sig Direction  0110 1001 --> 0110 0011
+			cw0 			= (uint8)((uint8)1 &(uint8)command_para[11]);           // 1 -> 1
+			cw1 			= (uint8)(((uint8)4 &(uint8)command_para[11])>>2);      // 0 -> 0
+            cw2  			= (uint8)(((uint8)16 &(uint8)command_para[11])>>4);     // 0 -> 0
+			cw3  			= (uint8)(((uint8)64 &(uint8)command_para[11])>>6);     // 1 -> 1
 			
+            encd0 			= (uint8)(((uint8)2 &(uint8)command_para[11])>>1);      // 0 -> 1
+            encd1 			= (uint8)(((uint8)8 &(uint8)command_para[11])>>3);      // 1 -> 0
+			encd2   		= (uint8)(((uint8)32 &(uint8)command_para[11])>>5);     // 1 -> 1
+			encd3  			= (uint8)(((uint8)128 &(uint8)command_para[11])>>7);    // 0 -> 0
+			
+                #if DEMODE1 == 1
+					pout(encd0*16+cw0);
+					pout(0x2a);
+					pout(encd1*16+cw1);
+					pout(0x2a);
+				#endif
+			
+/* 1111111111111111111111111111   */
             enc_malti		= (uint16)((uint8)command_para[12]);
-            // command_para[13-14];
 			max_rpm 		= (int16)((int8)command_para[13]);
 			max_rpm 		= (int16)(((uint16)max_rpm<<8)+(uint8)command_para[14]);
-            // command_para[15-16];
 			gear_ratio_i16	= (int16)((int8)command_para[15]);
 			gear_ratio_i16	= (int16)(((uint16)gear_ratio_i16<<8)+(uint8)command_para[16]);
-            // command_para[17-18];
 			samp_rate		= (int16)((int8)command_para[17]); 
 			samp_rate		= (int16)(((uint16)samp_rate<<8)+(uint8)command_para[18]); 
-            // command_para[19-20];
 			enc_count		= (int16)((int8)command_para[19]);
 			enc_count		= (int16)(((uint16)enc_count<<8)+(uint8)command_para[20]);
-            // command_para[s21-22];
 			dim_wheel_i16	= (int16)((int8)command_para[21]); 
 			dim_wheel_i16	= (int16)(((uint16)dim_wheel_i16<<8)+(uint8)command_para[22]); 
-            // command_para[23-24];
 			dist_wheel_i16	= (int16)((int8)command_para[23]);
 			dist_wheel_i16	= (int16)(((uint16)dist_wheel_i16<<8)+(uint8)command_para[24]);
 
-            // command_para[25-26];
 			toruque_const_i16	= (int16)((int8)command_para[25]); 
 			toruque_const_i16	= (int16)(((uint16)toruque_const_i16<<8)+(uint8)command_para[26]); 
-            // command_para[27-28];
 			speed_const_i16	= (int16)((int8)command_para[27]); 
 			speed_const_i16	= (int16)(((uint16)speed_const_i16<<8)+(uint8)command_para[28]); 
-            // command_para[29-30];
 			spd_torq_grad_i16	= (int16)((int8)command_para[29]);
 			spd_torq_grad_i16	= (int16)(((uint16)spd_torq_grad_i16<<8)+(uint8)command_para[30]);
-            // command_para[31-32];
 			acc_limit_f_i16	= (int16)((int8)command_para[31]); 
 			acc_limit_f_i16	= (int16)(((uint16)acc_limit_f_i16<<8)+(uint8)command_para[32]); 
-            // command_para[33-34];
 			acc_limit_r_i16	= (int16)((int8)command_para[33]<<8); 
 			acc_limit_r_i16	= (int16)(((uint16)acc_limit_r_i16<<8)+(uint8)command_para[34]); 
-            // command_para[35-36];
 			acc_limit_s_i16	= (int16)((int8)command_para[35]); 
 			acc_limit_s_i16	= (int16)(((uint16)acc_limit_s_i16<<8)+(uint8)command_para[36]); 
-            // command_para[37-38];
 			safty_const_i16 	= (int16)((int8)command_para[37]);
 			safty_const_i16 	= (int16)(((uint16)safty_const_i16<<8)+(uint8)command_para[38]);
 
 
-            // command_para[39-40];
 			kvp_i16			= (int16)((int8)command_para[39]); 
 			kvp_i16			= (int16)(((uint16)kvp_i16<<8)+(uint8)command_para[40]); 
-            // command_para[41-42];
 			kcp_i16			= (int16)((int8)command_para[41]); 
 			kcp_i16			= (int16)(((uint16)kcp_i16<<8)+(uint8)command_para[42]); 
-            // command_para[43-44];
 			kvi_i16			= (int16)((int8)command_para[43]); 
 			kvi_i16			= (int16)(((uint16)kvi_i16<<8)+(uint8)command_para[44]); 
-            // command_para[45-46];
 			kci_i16			= (int16)((int8)command_para[45]); 
 			kci_i16			= (int16)(((uint16)kci_i16<<8)+(uint8)command_para[46]); 
-            // command_para[47-48];
 			kdl_i16			= (int16)((int8)command_para[47]); 
 			kdl_i16			= (int16)(((uint16)kdl_i16<<8)+(uint8)command_para[48]); 
-            // command_para[49-50];
 			kdr_i16			= (int16)((int8)command_para[49]); 
 			kdr_i16			= (int16)(((uint16)kdr_i16<<8)+(uint8)command_para[50]); 
-            // command_para[51-52];
 			satv_i16		= (int16)((int8)command_para[51]); 
 			satv_i16		= (int16)(((uint16)satv_i16<<8)+(uint8)command_para[52]); 
-            // command_para[53-54];
 			satc_i16		= (int16)((int8)command_para[53]);
 			satc_i16		= (int16)(((uint16)satc_i16<<8)+(uint8)command_para[54]);
-            // command_para[55-56];
             motor_para_1.m_para_wset.rdwbuf[2]= (uint16)(((uint16)command_para[55]<<4)+(uint8)(command_para[56]>>4));
 
             // bellow 3 motor parameter not changed by application for safty 20210109 K.S.
@@ -1395,13 +1880,9 @@ void pc2main(void)   	// 2'h2X
             motor_para_1.mpara.pwm_mode = 2;  // 1x MODE
             motor_para_1.mpara.otw_rep = 0;   // OTW error Enable
 
-            // command_para[56-57];
             motor_para_1.m_para_wset.rdwbuf[3]= (uint16)((((uint16)command_para[56]<<8)&0X0F00)+(uint8)command_para[57]);
-            // command_para[58-59];
             motor_para_1.m_para_wset.rdwbuf[4]= (uint16)(((uint16)command_para[58]<<4)+(uint8)(command_para[59]>>4));
-            // command_para[59-60];
             motor_para_1.m_para_wset.rdwbuf[5]= (uint16)((((uint16)command_para[59]<<8)&0X0F00)+(uint8)command_para[60]);
-            // command_para[61-62];
             motor_para_1.m_para_wset.rdwbuf[6]= (uint16)(((uint16)command_para[61]<<4)+(uint8)(command_para[62]>>4));
             
 			gear_ratio		=((float)gear_ratio_i16)/100;
@@ -1467,13 +1948,17 @@ void pc2main(void)   	// 2'h2X
                 status1 |= DRV_SPI_ERR ;
                 state=FAULT;
                 motor_en_reg_Write((uint8)MOT_PVM_DRV_ON);       // PVM1,PVM2:on  sel:disenable  pDRV:enable
+                sk_PutString01("FAULT07",CRLF_ON);
               
             }else{
                 motor_en_reg_Write((uint8)MOT_CIR_ALL_ON);       // PVM1,PVM2:on  sel:enable  pDRV:enable
-            }CyDelayUs(1000);
+            }
+            
+            CyDelayUs(1000);
             
             if ((state != EMSTOP)&&(state != FAULT)&&(state != SHUTDWN)){
                 state=IDLE;
+                sk_PutString01("IDLE02",CRLF_ON);
             }
 
 		}
@@ -1492,7 +1977,19 @@ void pc2main(void)   	// 2'h2X
 void Sub_Enc()  	// 2'h4X
 {
 	int16 ms0_main[4];
-    uint8 i;
+    uint8 i,j;
+    char string[30];
+    char *pt;
+    
+    const MENUE menue[] = {
+        {"ms0_main[0]= "},
+        {"ms0_main[1]= "},
+        {"ms0_main[2]= "},
+        {"ms0_main[3]= "}
+    };
+
+
+    
         #if DEMODE == 1 
             // 6.26us
         	pout(0x40);//6.41us 8L:6.61us
@@ -1503,6 +2000,40 @@ void Sub_Enc()  	// 2'h4X
 	ms0_main[1] = (int16)((2*encd1-1)*CY_GET_REG16(motor_enc_1_motor_enc_u0__16BIT_A1_REG));
 	ms0_main[2] = (int16)((2*encd2-1)*CY_GET_REG16(motor_enc_2_motor_enc_u0__16BIT_A1_REG));
 	ms0_main[3] = (int16)((2*encd3-1)*CY_GET_REG16(motor_enc_3_motor_enc_u0__16BIT_A1_REG));
+    
+    if( sk_log_flg5 & SK_LOG4_ENC_DATA   ){
+    	sk_ms0_main[0] += CY_GET_REG16(motor_enc_0_motor_enc_u0__16BIT_A1_REG);
+    	sk_ms0_main[1] += CY_GET_REG16(motor_enc_1_motor_enc_u0__16BIT_A1_REG);
+    	sk_ms0_main[2] += CY_GET_REG16(motor_enc_2_motor_enc_u0__16BIT_A1_REG);
+    	sk_ms0_main[3] += CY_GET_REG16(motor_enc_3_motor_enc_u0__16BIT_A1_REG);
+    }
+    
+    /*
+    if( sk_ms0_main[0] != ms0_main[0] ){
+                sk_ms0_main[0] = ms0_main[0];
+                sk_pwm_debug(8,CY_GET_REG16(motor_enc_0_motor_enc_u0__16BIT_A1_REG),ms0_main[0],encd0,0);
+    }
+    
+    
+    if( sk_log_flg4 & SK_LOG4_ENC_DATA  ){
+        for( i = 0; i < 4; i ++ ){
+            if( sk_ms0_main[i] != ms0_main[i] ){
+                sk_ms0_main[i] = ms0_main[i];
+                pt = menue[i].name;
+                j=0;
+                while( *pt != NULL ){
+                    string[j] = *pt;
+                    pt++;
+                    j++;
+                }
+                string[j] = NULL;
+                // j++;
+                sk_int16toChar(&string[j], ms0_main[i]);
+                sk_log_int_string(string);
+            }
+        }
+    }
+    */
     
     i=0;
     
@@ -1531,6 +2062,36 @@ void Sub_Enc()  	// 2'h4X
 	MS_LR_MAIN[0] +=  MS_LR_MAIN[1];			//LR WHEEL MOTOR
 	MS_RR_MAIN[0] +=  MS_RR_MAIN[1];			// RRWHEEL MOTOR
 
+    if( sk_log_flg4 & SK_LOG4_ENC_DATA  ){
+        string[0] = 'L';
+        string[1] = 'F';
+        string[2] = '=';
+        sk_int16toChar(&string[3], MS_LF_MAIN[0]);
+        
+        i=0;
+        while(string[i]!=NULL){
+            i++;
+        }
+        string[i] = ',';
+        i++;
+        sk_int16toChar(&string[i], MS_LF_MAIN[1]);
+        sk_log_int_string(string);
+        
+        string[0] = 'R';
+        string[1] = 'F';
+        string[2] = '=';
+        sk_int16toChar(&string[3], MS_RF_MAIN[0]);
+        
+        i=0;
+        while(string[i]!=NULL){
+            i++;
+        }
+        string[i] = ',';
+        i++;
+        sk_int16toChar(&string[i], MS_RF_MAIN[1]);
+        sk_log_int_string(string);
+        
+    }
         #if DEMODE == 1 
             // 6.26us
         	pout((int8)MS_LF_MAIN[1]);//LEFT WHEEL
@@ -1542,6 +2103,8 @@ void Sub_Enc()  	// 2'h4X
         	pout((int8)MS_RF_MAIN[0]);//RIGHT WHEEL
          	pout(0x40);//6.41us 8L:6.61us
         #endif
+
+
     
     return;
 }
@@ -1559,12 +2122,20 @@ void McpuOP() 	// 2'h5X
         	pout(0x50); //35.41us
         #endif
 	if(logmode == 0){
+        if( sk_log_flg2 & SK_LOG2_COM_RECIVE  ){
+            sk_log_int("McpuOP() ", 0 );
+        }
+                    
 		output_tmp[0] =	ms_lf_com_tx;
 		output_tmp[1] =	ms_rf_com_tx;
 		output_tmp[2] =	ms_lr_com_tx;
 		output_tmp[3] =	ms_rr_com_tx;
 	}
 	else if(logmode == 0x02){
+        if( sk_log_flg2 & SK_LOG2_COM_RECIVE  ){
+            sk_log_int("McpuOP() ", 1 );
+        }
+        
 			#if DEMODE == 1
 				pout(0x52);
 			#endif
@@ -1574,6 +2145,10 @@ void McpuOP() 	// 2'h5X
 		output_tmp[3] = speed_rr;
 	}
 	else{
+        if( sk_log_flg2 & SK_LOG2_COM_RECIVE  ){
+            sk_log_int("McpuOP() ", 2 );
+        }
+        
 			#if DEMODE == 1
 				pout(0x53);
 			#endif
@@ -1603,6 +2178,24 @@ void McpuOP() 	// 2'h5X
 		speed_rf_delta = (speed_rf-speed_rf_pre / 16);
 		speed_lr_delta = (speed_lr-speed_lr_pre / 16);			
 		speed_rr_delta = (speed_rr-speed_rr_pre / 16);
+        
+       if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+            if( sk_log_cnt > 900 ){
+                sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+            }
+            
+            if( sk_speed_lf != speed_lf ){
+                sk_speed_lf = speed_lf;
+                sk_log_int_int32("1 speed_lf =  ", speed_lf);    
+                sk_log_cnt ++;
+            }
+            
+            if( sk_speed_rf != speed_rf ){
+                sk_speed_rf = speed_rf;
+                sk_log_int_int32("1 speed_rf =  ", speed_rf);      
+                sk_log_cnt ++;
+            }                
+        }
 		
 			#if DEMODE1 == 1
 				pout(speed_lf_buf);
@@ -1634,6 +2227,23 @@ void McpuOP() 	// 2'h5X
 				pout(speed_lf);
 			#endif
 
+       if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+            if( sk_log_cnt > 900 ){
+                sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+            }
+            
+            if( sk_speed_lf != speed_lf ){
+                sk_speed_lf = speed_lf;
+                sk_log_int_int32("2 speed_lf =  ", speed_lf);    
+                sk_log_cnt ++;
+            }
+            
+            if( sk_speed_rf != speed_rf ){
+                sk_speed_rf = speed_rf;
+                sk_log_int_int32("2 speed_rf =  ", speed_rf);      
+                sk_log_cnt ++;
+            }                
+        }
     }
     #if DEMODE == 1
         	pout(0x50);	//42.49us
@@ -1670,6 +2280,7 @@ void Sub_Calc1(){			// 2'h7X
         // required speed == 0 and WHEEL currentry STOP
         if (state == DRIVE){  
             state=IDLE;
+            sk_PutString01("IDLE01",CRLF_ON);
         }
         
 		ms00_pw = 0;
@@ -1682,12 +2293,30 @@ void Sub_Calc1(){			// 2'h7X
 
         if (state == IDLE){  
             state=DRIVE;
+            
+            sk_PutString01("DRIVE",CRLF_ON);
+            
+            //sk_log_flg4 |= SK_LOG4_SUB_CALC1;
+            // sk_log_cnt = 0;
+            sk_log_int("state=DRIVE ",0);
+            //sk_log_int_int32("0 speed_lf =  ", speed_lf);        
+            //sk_log_int_int32("0 speed_rf =  ", speed_rf);   
+            
         }
         
 		if(direct_cnt){ // direct pulse width foced mode (user require to control direct pulse width )         
 				#if DEMODE == 1
 					pout(0x71);
 				#endif
+            if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+                if( sk_log_cnt > 900 ){
+                    sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+                }
+                sk_log_int("direct_cnt = ",direct_cnt);
+                sk_log_cnt += 1;
+            }
+                            
+                
 			if (abs(speed_lf)>96 ){
 				Motor_Contl4_3_Y.PWMDuty1= (float)(24); // 127=>96 by KS 20160311
 			}else{
@@ -1714,7 +2343,21 @@ void Sub_Calc1(){			// 2'h7X
 					pout(speed_rf%16) ;
 					pout(0x71);
 				#endif
+            if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+                if( sk_log_cnt > 900 ){
+                    sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+                }
 
+                sk_log_int("pwm_period = ", pwm_period);
+                sk_log_int_int32("speed_lf =  ", speed_lf);
+                sk_log_int_realT(".PWMDuty1 = ", Motor_Contl4_3_Y.PWMDuty1);
+                sk_log_int_int32("speed_rf =  ", speed_rf);
+                sk_log_int_realT(".PWMDuty2 = ", Motor_Contl4_3_Y.PWMDuty2);
+                
+            
+                sk_log_cnt += 5;
+            }
+            
 		}else{ // velocity control by PI contoroler
             #if DEMODE1 == 1
 				pout((int8)(MS_LF_MAIN[0]/16)) ;
@@ -1733,6 +2376,29 @@ void Sub_Calc1(){			// 2'h7X
     		Motor_Contl4_3_U.RPM3=(float)MS_LR_MAIN[0]*ratio_rpm;				// RPM3'*256*60/2048 LR wheel
     		Motor_Contl4_3_U.RPM4=(float)MS_RR_MAIN[0]*ratio_rpm;				// RPM4'*256*60/2048 RR wheel
 
+            if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+                if( sk_log_cnt > 900 ){
+                    sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+                }
+               
+                sk_log_int_int16("speedratio = ", speedratio);
+                sk_log_int_int32("speed_lf = ", speed_lf);                
+                sk_log_int_realT(".Targetspeed1 = ", Motor_Contl4_3_U.Targetspeed1);
+                
+                sk_log_int_int32("speed_rf = ", speed_rf);
+                sk_log_int_realT(".Targetspeed2 = ", Motor_Contl4_3_U.Targetspeed2);
+                
+                sk_log_int_float("ratio_rpm = ", ratio_rpm);
+                sk_log_int_int16("MS_LF_MAIN[0] = ", MS_LF_MAIN[0]);
+                sk_log_int_realT(".RPM1 = ", Motor_Contl4_3_U.RPM1);
+
+                sk_log_int_int16("MS_RF_MAIN[0] = ", MS_RF_MAIN[0]);
+                sk_log_int_realT(".RPM2 = ", Motor_Contl4_3_U.RPM2);
+
+                sk_log_cnt += 11;
+                
+
+            }
     			#if DEMODE2 == 1
     				pout(0x70) ;
     				pout(MS_LF_MAIN[0]>>8) ;
@@ -1755,6 +2421,14 @@ void Sub_Calc1(){			// 2'h7X
 
         //  calcurate PWM pulse width from driving volatge  for each motor_LF,_RF,_LR,_RR
         //  and reassign motor-n's pulse width ms_lf,_rf,_lr,_ll => ms0_com[0] ,[1],[2],[3]
+        
+        if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+            if( sk_log_cnt > 900 ){
+                sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+            }
+            sk_log_int("PWM CALC",1);
+            sk_log_cnt += 1;
+        }
         
         MS_LF_MAIN[0] = 0;
             #if DEMODE == 1
@@ -1796,6 +2470,25 @@ void Sub_Calc1(){			// 2'h7X
 		ms01_pw = (2*cw1-1)*ms0_com[1];
 		ms02_pw = (2*cw2-1)*ms0_com[2];
 		ms03_pw = (2*cw3-1)*ms0_com[3];
+        
+        if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+            if( sk_log_cnt > 900 ){
+                sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+            }
+        
+            sk_log_int("pwm_period = ", pwm_period);
+            sk_log_int_realT(".PWMDuty1 = ", Motor_Contl4_3_Y.PWMDuty1);
+            sk_log_int_int16("ms_lf_com_tx = ", ms_lf_com_tx);
+            sk_log_int_int32("ms00_pw = ", ms00_pw );
+                        
+            sk_log_int_realT(".PWMDuty2 = ", Motor_Contl4_3_Y.PWMDuty2);
+            sk_log_int_int16("ms_rf_com_tx = ", ms_rf_com_tx);
+            sk_log_int_int32("ms01_pw = ", ms01_pw );
+            
+            sk_log_cnt += 5;
+            
+
+        }
 				
 			#if DEMODE1 == 1
 				pout((int8)(ms00_pw/256)) ;
@@ -1821,14 +2514,37 @@ void Set_PWM(){			// 2'h8X
 			pout(0x80) ;   //411.22us
 		#endif
 
+        
+    //================================================================
+    // Morter LF
+    //================================================================
+    
+    //    
+    // PWM
+    //    
 	pwm_width0=(uint8)(abs(ms00_pw));
+
+    //    
+    // 回転方向
+    //    
 	if(ms00_pw <0){
 		sign0= 1u;
 	}else{
 		sign0= 0u;
 	}	
 
+    //================================================================
+    // Morter RF
+    //================================================================
+    
+    //    
+    // PWM
+    //    
 	pwm_width1=(uint8)(abs(ms01_pw));
+
+    //    
+    // 回転方向
+    //    
 	if(ms01_pw <0){
 		sign1= 1u;
 	}else{
@@ -1843,20 +2559,46 @@ void Set_PWM(){			// 2'h8X
     }else{
     
 
+        //================================================================
+        // Morter LR
+        //================================================================
+        
+        //    
+        // PWM
+        //    
+
     	pwm_width2=(uint8)(abs(ms02_pw));
+
+        //    
+        // 回転方向
+        //    
     	if(ms02_pw <0){
     		sign2= 1u;
     	}else{
     		sign2= 0u;
     	}	
 
+    	//================================================================
+        // Morter RR
+        //================================================================
+        
+        //    
+        // PWM
+        //    
+
     	pwm_width3=(uint8)(abs(ms03_pw));
+
+        //    
+        // 回転方向
+        //    
     	if(ms03_pw <0){
     		sign3= 1u;
     	}else{
     		sign3= 0u;
     	}
     }
+    
+    
 	pwm_control = blk1*16 + sign1*8 + blk0*4 + sign0*2 + direct;
  	motor_contl_reg_0_Write( pwm_control);
 			pout(pwm_width1%16) ;
@@ -1866,7 +2608,40 @@ void Set_PWM(){			// 2'h8X
 			pout(0x80) ;
 
 		#endif
+        
+    if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){ // if( sk_log_flg4 & SK_LOG4_MT_PWM  ){
+        if( sk_log_cnt > 900 ){
+            sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+        }
+    
+        if( sk_pwm_control != pwm_control ){
+           sk_pwm_control = pwm_control;
+            sk_log_int("Set PWM1:pwm_control = ",pwm_control);
+        }
+        
+        if( sk_pwm_period != pwm_period ){
+           sk_pwm_period = pwm_period;
+            sk_log_int("Set PWM1:pwm_period = ",pwm_period);
+        }
 
+        if( sk_pwm_width0 != pwm_width0 ) {
+           sk_pwm_width0 = pwm_width0;
+            sk_log_int("Set PWM1:pwm_width0 = ",pwm_width0);
+        }
+        if( sk_pwm_width1 != pwm_width1 ) {
+           sk_pwm_width1 = pwm_width1;
+            sk_log_int("Set PWM1:pwm_width1 = ",pwm_width1);
+        }
+        
+      
+        //sk_log_int("Set PWM1:pwm_control = ",pwm_control);
+        //sk_log_int("Set PWM1:pwm_period = ",pwm_period);
+        //sk_log_int("Set PWM1:pwm_width0 = ",pwm_width0);
+        //sk_log_int("Set PWM1:pwm_width1 = ",pwm_width1);
+
+        sk_log_cnt +=4;
+ 
+    }
 
 //	CY_SET_REG8 ( Direct_dual_8bPWM_1_Direct_dual_8bPWM_u0__A0_REG , pwm_period);
 	CY_SET_REG8 ( Direct_dual_8bPWM_0_Direct_dual_8bPWM_u0__A1_REG , pwm_period);
@@ -1876,6 +2651,20 @@ void Set_PWM(){			// 2'h8X
     pwm_control = blk3*16 + sign3*8 + blk2*4 + sign2*2 + direct;
  	motor_contl_reg_1_Write( pwm_control);
 
+    sk_mt_ctrl(31);
+    if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){ // if( sk_log_flg4 & SK_LOG4_MT_PWM  ){
+        if( sk_log_cnt > 900 ){
+            sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+        }
+
+        //sk_log_int("Set PWM2:pwm_control = ",pwm_control);
+        //sk_log_int("Set PWM2:pwm_period = ",pwm_period);
+        //sk_log_int("Set PWM2:pwm_width0 = ",pwm_width2);
+        //sk_log_int("Set PWM2:pwm_width1 = ",pwm_width3);
+
+        //sk_log_cnt +=4;
+    }
+        
 //	CY_SET_REG8 ( Direct_dual_8bPWM_1_Direct_dual_8bPWM_u0__A0_REG , pwm_period);
 	CY_SET_REG8 ( Direct_dual_8bPWM_1_Direct_dual_8bPWM_u0__A1_REG , pwm_period);
  	CY_SET_REG8 ( Direct_dual_8bPWM_1_Direct_dual_8bPWM_u0__D0_REG , pwm_width2);
@@ -1921,9 +2710,9 @@ void McpuOP2()		// 2'h6X
 	 
 		output2[trans_line][6] = cycle_count;       
         
-        	ms_lf_pc = 0; 
+        ms_lf_pc = 0; 
 		ms_rf_pc = 0; 
-    		ms_lr_pc = 0; 
+    	ms_lr_pc = 0; 
 		ms_rr_pc = 0; 
 
 	
@@ -1952,13 +2741,23 @@ void  main2pc()		// 2'haX
 	int8 out2_datpos;
 	int8 out2_tagpos2;
 
+        #if DEMODE == 1
+        	pout(0xa0);
+        #endif
 
 	if((sub_cycle_count ==30 )&&(trans_line == 15)){
         
-		// header
+            #if DEMODE == 1
+            	pout(0xa1);
+            #endif
+		out2pos = 0;
+		out2_tagpos2 = 0;
+		out2_tag_cycle = 0;
+		out2_datpos = 0;
 		if (state == SHUTDWN){
 			output2_tag_head[1] = 0x99; // SHUT Down request to CPU
 		    getcom_flag = 1;
+            sk_PutString01("SHUTDWN01",CRLF_ON);
 		}
         else if (getcom_flag == 0){
 			output2_tag_head[1] = 0x66; // send data receive error
@@ -1968,16 +2767,11 @@ void  main2pc()		// 2'haX
 		else{
 			output2_tag_head[1] = 0x55; // send datareceive corect
 			if(!sendcom_flag){
+//				getcom_flag = 0;				
 				sendcom_flag = 1;
 			}
 		}	
 	
-		//  outbuff1ｿｿｿｿｿ
-		out2pos = 0;
-		out2_tagpos2 = 0;
-		out2_tag_cycle = 0;
-		out2_datpos = 0;
-
 		while(out2_tagpos2 < 59){
 			if (out2_tagpos2 < 3){
 				outbuff1[out2_tagpos2]=output2_tag_head[out2_tagpos2];
@@ -1994,7 +2788,12 @@ void  main2pc()		// 2'haX
 			}
 			out2_tagpos2 += 1;
 		}
+//	}
 
+//	if((sub_cycle_count == 31)&&(trans_line == 15)){
+            #if DEMODE == 1
+            	pout(0xa2);
+            #endif
 		out2pos = 8;
 		out2_tagpos2 = 0;
 		out2_tag_cycle = 0;
@@ -2017,12 +2816,31 @@ void  main2pc()		// 2'haX
 			outbuff3[out2_tagpos2]=output2_tag[out2_tagpos2+3];
 			out2_tagpos2 += 1;
 		}
+//	}
+//	if((sub_cycle_count ==0 )&&(trans_line == 0)){
+    		#if DEMODE == 1
+    			pout(0xa3);
+    		#endif
 		out2pos = 0;
 		out2_tagpos = 0;
 		out2_tag_cycle = 0;
 	}
-
-
+    
+            
+    if( sk_log_flg5 & SK_LOG5_OUTPUT_P   ){
+        if(sk_input_ofst<59){
+            outbuff1[sk_input_ofst] = sk_input_data;
+        }
+        else if(sk_input_ofst<115){
+            outbuff2[sk_input_ofst-59] = sk_input_data;
+        }
+        else if(sk_input_ofst<145){
+            outbuff3[sk_input_ofst-115] = sk_input_data;
+        }
+    }
+    
+    
+    
 	
 	if( out2_tagpos ==0) {               //TX empty?
 		if(USBUART_1_CDCIsReady() != 0u){    // if ready to send more data to the PC 
@@ -2084,6 +2902,17 @@ void WheelStop(void)  	// 2'h3X
 	speed_lr_buf = 0;
 	speed_rr_buf = 0;
 	getcom_watch = 16;
+    
+        if( sk_log_flg4 & SK_LOG4_SUB_CALC1   ){
+            if( sk_log_cnt > 900 ){
+                sk_log_flg4 &= ~SK_LOG4_SUB_CALC1   ;
+            }
+
+            sk_log_int_int32("3 speed_lf =  ", speed_lf);        
+            sk_log_int_int32("3 speed_rf =  ", speed_rf);        
+            sk_log_cnt += 2;
+        }
+                
 //  New argolizum only streight acc limited 2016.0304 by K.sakashita 
 
 	speed_lf_change = speed_lf_buf - speed_lf;
@@ -2145,6 +2974,18 @@ void Chk_Bumper(void)
 
         
         /* front bwp touch the obstacl */
+        if( sk_log_flg2 & SK_LOG2_BMP_SENS ){
+            sk_PutString03("sk_bwp_sw = ",sk_bwp_sw , CRLF_ON,16);
+            sk_PutString03("bwp_sw = ",bwp_sw , CRLF_ON,16);
+            if( sk_bwp_sw != bwp_sw ){
+                sk_bwp_sw = bwp_sw;
+                sk_log_int("bwp_sw = ",bwp_sw);
+                sk_log_int("speed_lf_buf = ",speed_lf_buf);
+                sk_log_int("speed_rf_buf = ",speed_rf_buf);
+                sk_log_int("speed_lr_buf = ",speed_lr_buf);
+                sk_log_int("speed_rr_buf = ",speed_rr_buf);
+            }
+        }
         
         if((0 == (bwp_sw & 2)) || ( 0 ==( bwp_sw & 4))){
             if (speed_lf_buf>0) { speed_lf_buf = 0;}
@@ -2198,9 +3039,11 @@ void Sensor()		// 2'h9X
         	pout(sub_cycle_count) ;
         	pout(0x90) ;
         #endif
-
+        
+        
+    
+    
 	if(trans_line == 14){	
-
             #if DEMODE == 1
             	pout(0x91) ;	//14L:37.8us
             #endif
@@ -2226,7 +3069,6 @@ void Sensor()		// 2'h9X
         seq_code =0X99;
         output2_tag[26]=get_adc_value(adin,seq_code); //87.81us
 
-
         
         // PVM1 (Power Voltage 1)  Check
         
@@ -2238,6 +3080,7 @@ void Sensor()		// 2'h9X
         adin = 0;
         seq_code =0X96;
         output2_tag[23]=get_adc_value(adin,seq_code); //112.21us
+        
 
                 
         // PVM2 (Power Voltage 2)  Check 
@@ -2251,6 +3094,7 @@ void Sensor()		// 2'h9X
         seq_code =0X98;
         output2_tag[25]=get_adc_value(adin,seq_code);//146.91us
 
+
                
 		/* STEP Distance Sensor Check */
     
@@ -2258,13 +3102,14 @@ void Sensor()		// 2'h9X
         seq_code =0X9a;
         output2_tag[27]=get_adc_value(adin,seq_code);
 			
-
+        
 
 	}
         #if DEMODE == 1
         		pout(0x9b) ;//11L:43.42us 12L:35.23us 13L:37.81us //14L:148.42us
         #endif 
-
+        
+            
 	return;
 }
 
@@ -2280,6 +3125,8 @@ void rt_OneStep(void)	// 2'hbX
 
   /* Check for overrun */
   if (OverrunFlag){
+    // # define rtmSetErrorStatus(rtm, val)   ((rtm)->errorStatus = (val))
+    // Motor_Contl4_3_M->errorStatus = "Overrun";
     rtmSetErrorStatus(Motor_Contl4_3_M, "Overrun");
     return;
   }
@@ -2291,6 +3138,7 @@ void rt_OneStep(void)	// 2'hbX
   /* Set model inputs here */
 
   /* Step the model for base rate */
+ sk_mt_ctrl(30);
   Motor_Contl4_3_step();
 
   /* Get model outputs here */
@@ -2350,7 +3198,8 @@ uint8 spi_drv_init(void)
     
     // motor driver 0 to 3 assign
     
-    while(ii < drive_wheels )     //    while(ii <= 1 )
+    while(ii < drive_wheels )     
+//    while(ii <= 1 )
     {
         i=0;    // adress register adress
         pout(66);
@@ -2366,7 +3215,12 @@ uint8 spi_drv_init(void)
         }else{
             spi_sel = 63;    // not assign adress
         }
-
+        
+        if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+            sk_log_int("spi_sel = ",spi_sel);
+        }
+        
+        
         SS0_B_Write(spi_sel);    // not assign adress
         pout(ii);
         
@@ -2431,10 +3285,10 @@ uint8 spi_drv_init(void)
                     spitx_status    =   SPIM_1_ReadTxStatus()  ;
                     if (iw==0){
                         ret = 1;        //SPI comunucation timeout
-                    return ret;
-                }
-                //iw +=1;
-                iw -=1;
+                        return ret;
+                    }
+                    //iw +=1;
+                    iw -=1;
                 }
  
                 // register value Dummy read from  Buffer
@@ -2446,10 +3300,10 @@ uint8 spi_drv_init(void)
                     spirx_status    =   SPIM_1_GetRxBufferSize()  ;
                     if (iw==0){
                         ret = 1;        //SPI comunucation timeout
-                    return ret;
-                }
-                //iw +=1;
-                iw -=1;
+                        return ret;
+                    }
+                    //iw +=1;
+                    iw -=1;
                 }
            
                 // read data store the spirx_wd
@@ -2549,8 +3403,6 @@ uint8 spi_drv_read(void)
     uint8 spirx_status;
     uint8 spitx_status;
     int i,ii,iw,ret ;
-
-
     // CyGlobalIntEnable; /* Enable global interrupts. */
  
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
@@ -2564,12 +3416,19 @@ uint8 spi_drv_read(void)
     motor_para_1.m_para_wset.rdwbuf[0]=(uint16)0x000 ;
     motor_para_1.m_para_wset.rdwbuf[1]=(uint16)0x000 ;
     
-    
+    if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+        sk_log_int("read01:spi_sel = ",spi_sel);
+    }
+
     // motor driver 0 to 3 assign
     
     while(ii < drive_wheels )     
 //    while(ii <= 1 )
     {
+        if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+            sk_log_int("read02:ii = ",ii);
+        }
+
         i=0;    // adress register adress
         pout(66); //0x42
         
@@ -2587,6 +3446,9 @@ uint8 spi_drv_read(void)
         SS0_B_Write(spi_sel);    // not assign adress
         pout(ii);
         
+        if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+            sk_log_int("read02:spi_sel = ",spi_sel);
+        }        
         
         
         // register adress 0 to 6 (7 address) assign
@@ -2603,12 +3465,17 @@ uint8 spi_drv_read(void)
                 spirx_status    =   SPIM_1_ReadRxStatus()  ;
                 if (iw==0){
                     ret = 1;        //SPI comunucation timeout
+                    sk_PutString01("SPI time out 01",CRLF_ON);
                     return ret;
                 }
                 //iw +=1;
                 iw -=1;
             }
-            
+
+            if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+                sk_log_int("read03:spi_sel = ",spirx_status );
+            }        
+
             // SPI TX buffer clear for motor driver 
             
             spitx_status    =   SPIM_1_ReadTxStatus()  ;
@@ -2618,12 +3485,17 @@ uint8 spi_drv_read(void)
                 spitx_status    =   SPIM_1_ReadTxStatus()  ;
                 if (iw==0){
                     ret = 1;        //SPI comunucation timeout
+                    sk_PutString01("SPI time out 02",CRLF_ON);
                     return ret;
                 }
                 //iw +=1;
                 iw -=1;
 
             }
+
+            if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+                sk_log_int("read04:spi_sel = ",spirx_status );
+            }        
             
             // confirm register value by read SPI reg address 0 to 6 
             
@@ -2638,12 +3510,15 @@ uint8 spi_drv_read(void)
                 spitx_status    =   SPIM_1_ReadTxStatus()  ;
                 if (iw==0){
                     ret = 1;        //SPI comunucation timeout
+                    sk_PutString01("SPI time out 03",CRLF_ON);
                     return ret;
                 }
                 //iw +=1;
                 iw -=1;
             }
-
+            if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+                sk_log_int("read05:spitx_wd  = ",spitx_wd  );
+            } 
             
             // register value read from  each adrress(0-6)
             
@@ -2654,6 +3529,7 @@ uint8 spi_drv_read(void)
              spirx_status    =   SPIM_1_GetRxBufferSize()  ;
                 if (iw==0){
                     ret = 1;        //SPI comunucation timeout
+                    sk_PutString01("SPI time out 04",CRLF_ON);
                     return ret;
                 }
                 //iw +=1;
@@ -2669,15 +3545,23 @@ uint8 spi_drv_read(void)
                 //CyDelayUs(2);  
                 if (iw==0){
                     ret = 1;        //SPI comunucation timeout
+                    
+                    sk_PutString01("SPI time out 05",CRLF_ON);
                     return ret;
                 }
                 //iw +=1;
                 iw -=1;
             }
-
+            
+            if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+                sk_log_int("read06:spirx_wd  = ",spirx_wd );
+            } 
             // read data stored => wdwbuf[i]
             motor_parag_1[ii].m_para_wget.wdwbuf[i]=(spirx_wd & 0x07ff);
             if(drive_wheels <=2 ){ //2wheels case
+                if( sk_log_flg2 & SK_LOG2_SPI_READ  ){
+                    sk_log_int("read07:i  = ",i );
+                } 
                 if(i==0){
                     output2_tag[17+ii]=(( spirx_wd & 0x03c0)>>2);
                     //output2_tag[19+ii]=(( spirx_wd & 0x003f)); //vds_error{0,0,HA,LA,HB,LB,HC,LC}
@@ -2706,9 +3590,6 @@ uint8 spi_drv_set(void)
     uint8 spirx_status;
     uint8 spitx_status;
     int i,ii,iw,ret ;
-
-
-
     // CyGlobalIntEnable; /* Enable global interrupts. */
     spi_sel = 63;
     SS0_B_Write(spi_sel);    // SPI_1 enable
@@ -2718,16 +3599,24 @@ uint8 spi_drv_set(void)
     ii=0;
     ret= 0;     // return value set to 0 (no error)
 
+    if( sk_log_flg2 & SK_LOG2_SPI_SET ){
+        sk_log_int("spi_drv_set", 0);
+    }
     while(ii < drive_wheels )
 //     while(ii <= 1 )
     {
+        if( sk_log_flg2 & SK_LOG2_SPI_SET  ){
+            sk_log_int("SPI ii ***** = ", ii);
+        }
+        
+        
         i=0;    // adress register adress
         pout(66);
         
         if(ii==0){
-            spi_sel = 62;    //motor0 driver address
+            spi_sel = 62;    //motor0 driver address ★0x3e
         }else if(ii==1){
-            spi_sel = 61;    //motor1 driver address
+            spi_sel = 61;    //motor1 driver address ★0x3d
         }else if(ii==2){
             spi_sel = 59;    //motor2 driver address
         }else if(ii==3){
@@ -2735,15 +3624,25 @@ uint8 spi_drv_set(void)
         }else{
             spi_sel = 63;    // not assign adress
         }
+        
+        if( sk_log_flg2 & SK_LOG2_SPI_SET  ){
+            sk_log_int("SPI spi_sel = ", spi_sel);
+        }
+                
         SS0_B_Write(spi_sel);    // not assign adress
         pout(ii);
         
         
         
         // register adress 0 to 6 (7 address) assign
+        // i: DRV8323のレジスタ
 
         while(i <= 6)       
         {
+            if( sk_log_flg2 & SK_LOG2_SPI_SET  ){
+                sk_log_int("SPI i = ", i);
+            }
+                    
             
             // SPI RX buffer clear for motor driver 
             
@@ -2781,6 +3680,11 @@ uint8 spi_drv_set(void)
             
             if(i>=2){
                 spitx_wd = (uint16)(motor_para_1.m_para_wset.rdwbuf[i] + (i<<11)) ;
+                
+                if( sk_log_flg2 & SK_LOG2_SPI_SET  ){
+                    sk_log_int("SPI 0 spitx_wd = ", spitx_wd);
+                }
+                
                 SPIM_1_WriteTxData(spitx_wd);
                 spitx_status    =   SPIM_1_ReadTxStatus()  ;
                 iw=100;           
@@ -2817,7 +3721,9 @@ uint8 spi_drv_set(void)
                 //while(spirx_wd == 0xFFFF){
                 //    CyDelayUs(5);  
                 //}
-
+                if( sk_log_flg2 & SK_LOG2_SPI_SET  ){
+                    sk_log_int("SPI 1 spirx_wd = ", spirx_wd);
+                }
             }
             
             
@@ -2827,6 +3733,11 @@ uint8 spi_drv_set(void)
             
             spitx_wd = (uint16)(0x8000 + (i<<11)) ;
             SPIM_1_WriteTxData(spitx_wd);
+                            
+                if( sk_log_flg2 & SK_LOG2_SPI_SET  ){
+                    sk_log_int("SPI 2 spitx_wd = ", spitx_wd);
+                }
+                
             spitx_status    =   SPIM_1_ReadTxStatus()  ;
             iw=100;           
           
@@ -2861,6 +3772,12 @@ uint8 spi_drv_set(void)
             
             spirx_wd = 0xffff ;
             spirx_wd = SPIM_1_ReadRxData(); 
+            
+                if( sk_log_flg2 & SK_LOG2_SPI_SET  ){
+                    sk_log_int("SPI 3 spirx_wd = ", spirx_wd);
+                }
+                
+            
             iw=100;           
             while(spirx_wd == 0xFFFF){
                 CyDelayUs(5);  
@@ -2874,6 +3791,9 @@ uint8 spi_drv_set(void)
 
             // read data stored spirx_wd => wdwbuf[i]
             motor_parag_1[ii].m_para_wget.wdwbuf[i]=(spirx_wd & 0x07ff);
+                if( sk_log_flg2 & SK_LOG2_SPI_SET  ){
+                    sk_log_int("SPI 4 .wdwbuf[i] = ",motor_parag_1[ii].m_para_wget.wdwbuf[i]);
+                }
                 
             if (i >=2 ){
 	            if(motor_para_1.m_para_wset.rdwbuf[i] == motor_parag_1[ii].m_para_wget.wdwbuf[i]){
@@ -2905,10 +3825,13 @@ uint8 subp_init(void)
     uint8 j;
     // start die temprature measure 
     
+    sk_log_main("sub_init():001",0 );
+    
     start_get_die_temp();
     
     // variable of each function Initialize
    
+    sk_log_main("sub_init():002",0);
     variable_initialize();
 
     // To Enable Interrupt Globally
@@ -2933,12 +3856,15 @@ uint8 subp_init(void)
 
 
     USBUART_1_Start(0, USBUART_1_3V_OPERATION);
+    sk_log_main("sub_init():003",0);
+
     ret=0;
-    while(ret==0){
+    while(ret==0){                      // USBを接続しないとここで待つ
         j=USBUART_1_DataIsReady() ;
         CyDelayUs(100); // 100us wait
         ret=USBUART_1_bGetConfiguration();
     }
+    sk_log_main("sub_init():004",0);
 
     USBUART_1_CDC_Init();
  
@@ -2950,10 +3876,14 @@ uint8 subp_init(void)
 #endif
 /* *****USB UART connecting***** */
 
+    sk_log_main("sub_init():005",0);
+
     /* VDAC for ref of SAR_ADC setting */
 	VDAC8_1_Start();
 
     CyDelayUs(1000);
+
+    sk_log_main("sub_init():006",0);
 
 	/* ADC_SAR & Amux setting */
 	adin = 0;
@@ -2967,6 +3897,7 @@ uint8 subp_init(void)
     
 	/****** Die Temp check ******/
     /* 540ms continuous error cause Die temprature fault */
+    sk_log_main("sub_init():007",0);
     
     get_die_temp();
     output2_tag[22]=(uint8)die_temp;
@@ -2980,6 +3911,7 @@ uint8 subp_init(void)
             output2_tag[30]=status0;
 
             motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF); 
+             sk_PutString01("SHUTDWN02",CRLF_ON);
 
             return 1 ;
         }else{
@@ -3012,6 +3944,7 @@ uint8 subp_init(void)
             output2_tag[30]=status0;
 
             motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF); 
+             sk_PutString01("SHUTDWN03",CRLF_ON);
 
             return  1;
         }else{
@@ -3197,16 +4130,28 @@ void get_die_temp(void)
     uint8 die_status_l;
     
     die_status_l= 32;
+        #if DEMODE == 1
+        	pout(0xc0) ; //13L:42.91us
+        #endif
     
     /* Die Temp Measurement Start */
 //	Status = (uint8)DieTemp_1_Start();
 	i = 0;
+        #if DEMODE == 1
+//        	pout(0xc1) ; //13L:48.02us
+//            pout(Status);
+        	pout(0xc6) ;            
+        #endif
     
     // Get Die temp measurement loop limit 100 loop cycle
     
 	while(Status != (uint8)CYRET_SUCCESS){
 		Status = (uint8)DieTemp_1_Query(&die_temp_l);
 		CyDelayUs(1);
+        #if DEMODE == 1
+        	pout(0xc1) ; //58.11us
+            pout(Status);
+        #endif
 
 		i++;
         if (i >100) break;
@@ -3214,6 +4159,9 @@ void get_die_temp(void)
     
     die_temp = die_temp_l;
     
+        #if DEMODE == 1
+        	pout(0xc2) ;
+        #endif
   
     // Get temp data in succeed
 	die_status_l = 32; //0x20 : normal
@@ -3238,6 +4186,13 @@ void get_die_temp(void)
     
     die_status= die_status_l;
     
+        #if DEMODE == 1
+            pout(0xc3) ; //13L:62.92us 
+        #endif
+        #if DEMODE1 == 1
+    		pout(die_temp) ;
+    		pout(0xc5);
+        #endif
  
 }
 
@@ -3260,11 +4215,14 @@ uint8 get_adc_value(uint8 adin_l, uint8 seq_code_l)
     
 	ret = ADC_SAR_1_IsEndConversion(ADC_SAR_1_WAIT_FOR_RESULT);
 
-    if(ret)
+    if(ret){
 		mes_adc_val = (uint8)(ADC_SAR_1_GetResult16() / 16);
-	else
-		mes_adc_val = 0xfe;
         
+        sk_adc_debug( adin, mes_adc_val );
+    }
+	else{
+		mes_adc_val = 0xfe;
+    }
         #if DEMODE == 1
         		pout(seq_code_l) ; //13L 90.22us pmv1:114.295us
         #endif
@@ -3283,17 +4241,23 @@ void diag_sense(void)
     if (trans_line==0) diag_count=0;
        
 	switch(trans_line%4){ // every 1/16/4 sec(=15.625ms)
-	case 0:    
+		case 0:    
             //****** [PreProcess] Counter setting
+                #if DEMODE == 1
+                	pout(0xd0) ;	//Counter calc
+                #endif 
             if(state==SHUTDWN){
+                 sk_PutString01("SHUTDWN04",CRLF_ON);
                 break;
             }
             ++diag_count;
                 
             //****** [DIAG] Measure Die Temperature
+                #if DEMODE == 1
+                	pout(0xd1) ;	//enter diag_sense function
+                #endif 
             get_die_temp();    	
             die_temp_16 +=(uint8)die_temp;
-
             if(trans_line>11){
                 //if(state == EMSTOP) --emstop_timeover;
                 output2_tag[22] =(uint8)(die_temp_16>>2);
@@ -3304,6 +4268,7 @@ void diag_sense(void)
                     if(flt_dtm_tmover>= WDT_SHTDWN_LIMIT_FRM){
                         state = SHUTDWN;
                         motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);   // PVM1,PVM2:off  sel:disEN  pDRV:disEN
+                         sk_PutString01("SHUTDWN05",CRLF_ON);
                         break;
                     }
                 }else{
@@ -3315,10 +4280,16 @@ void diag_sense(void)
                 }
             }
             //****** Die Temp measure Start
+                #if DEMODE == 1
+                	pout(0xd7) ;	//13L: 41.19us
+                #endif
             start_get_die_temp();
 
-	    //****** [DIAG] Battery Voltage  Check (main battery )
-    	    adin = 5;
+			//****** [DIAG] Battery Voltage  Check (main battery )
+                #if DEMODE == 1
+                	pout(0xd2) ;	//enter diag_sense function
+                #endif 
+    		adin = 5;
             seq_code =0xb1;
             v_bat_16 +=get_adc_value(adin,seq_code);
             
@@ -3332,6 +4303,7 @@ void diag_sense(void)
                     if(flt_bat_tmover>= WDT_SHTDWN_LIMIT_FRM){
                         state = SHUTDWN;
                         motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);   // PVM1,PVM2:off  sel:disEN  pDRV:disEN
+                         sk_PutString01("SHUTDWN06",CRLF_ON);
                         break;
                     }
                 }else{
@@ -3342,9 +4314,12 @@ void diag_sense(void)
 
                 }
                 
-	    }
+			}
 
             //******* [SENSE]DET_SW(main SWitch off 
+                #if DEMODE == 1
+                	pout(0xdf) ;	//enter diag_sense function
+                #endif           
             if(trans_line>11){
                 if( (diag_count >= 4 ) &&(dist8_SW_DET_Read()!= 0) ){ 
                     // Main sw turn OFF
@@ -3353,6 +4328,7 @@ void diag_sense(void)
                     if(flt_msw_tmover>= WDT_SHTDWN_LIMIT_FRM){
                         state = SHUTDWN;
                         motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);   // PVM1,PVM2:off  sel:disEN  pDRV:disEN
+                         sk_PutString01("SHUTDWN07",CRLF_ON);
                         break;
                     }
                 }else{
@@ -3363,7 +4339,11 @@ void diag_sense(void)
             }
             
             //****** [DIAG] EM_stop_signal check
+                #if DEMODE == 1
+                	pout(0xd3) ;	//enter diag_sense function
+                #endif 
             if(state==FAULT){
+                 sk_PutString01("FAULT01",CRLF_ON);
                 break;
             }
 
@@ -3374,9 +4354,11 @@ void diag_sense(void)
                     if((ems_sig_tmover>= WDT_FAULT_LIMIT_FRM)&&(state==EMSTOP)){
                         state = FAULT;
                         motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);   // PVM1,PVM2:off  sel:disEN  pDRV:disEN
+                        sk_PutString01("FAULT02",CRLF_ON);
                         break;
                     }else if((ems_sig_tmover>= WDT_ESTOP_LIMIT_FRM)&&(state!=EMSTOP)){
                         state = EMSTOP;
+                        sk_PutString01("ESTOP01",CRLF_ON);
                         break;
                     }
                 }else{ 
@@ -3388,7 +4370,10 @@ void diag_sense(void)
             
             if(drive_wheels == 2){
 			//****** [DIAG] PVM1 (Power Voltage 1)  Check 
-        	adin = 6;
+                    #if DEMODE == 1
+                    	pout(0xd4) ;	//enter diag_sense function
+                    #endif 
+        		adin = 6;
                 seq_code =0xb4;
                 pvm1_16 +=get_adc_value(adin,seq_code);
                 if(trans_line>11){
@@ -3402,9 +4387,11 @@ void diag_sense(void)
                         if((ems_pvm_tmover>= WDT_FAULT_LIMIT_FRM)&&(state==EMSTOP)){
                             state = FAULT;
                             motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);   // PVM1,PVM2:off  sel:disEN  pDRV:disEN
+                            sk_PutString01("FAULT03",CRLF_ON);
                             break;
                         }else if((ems_pvm_tmover>= WDT_ESTOP_LIMIT_FRM)&&(state!=EMSTOP)){
                             state = EMSTOP;
+                            sk_PutString01("ESTOP02",CRLF_ON);
                         }
 
                     }else{
@@ -3417,33 +4404,35 @@ void diag_sense(void)
             
             }else{
 			//****** [DIAG] PVM2 (Power Voltage 2)  Check 
+                    #if DEMODE == 1
+                    	pout(0xd5) ;	//enter diag_sense function
+                    #endif 
 
                 adin = 6;
                 seq_code =0xb4;
                 pvm1_16 +=get_adc_value(adin,seq_code);
         
-       			adin = 7;
+        		adin = 7;
                 seq_code =0xb5;
                 pvm2_16 +=get_adc_value(adin,seq_code);
-       			
-				if(trans_line>11){
+        		if(trans_line>11){
                     output2_tag[15] = (uint8)((pvm1_16>>2)*1.0) ; // x8 Volt
                     output2_tag[16] = (uint8)((pvm2_16>>2)*1.0) ; // x8 Volt
                     pvm1_16 = 0;
                     pvm2_16 = 0;
-                
-				    if((diag_count >= 4 ) &&((output2_tag[15]<LOW_VOLTAGE )||(output2_tag[16]<LOW_VOLTAGE ))){
+                    if((diag_count >= 4 ) &&((output2_tag[15]<LOW_VOLTAGE )||(output2_tag[16]<LOW_VOLTAGE ))){
                         status0 |= PVM1_FAULT ;
                         status0 |= PVM2_FAULT ;
                         ++ems_pvm_tmover;
-                
-					        if((ems_pvm_tmover>= WDT_FAULT_LIMIT_FRM)&&(state==EMSTOP)){
-                      		    state = FAULT;
-                            	motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);   // PVM1,PVM2:off  sel:disEN  pDRV:disEN
-                            	break;
-                        	}else if((ems_pvm_tmover>= WDT_ESTOP_LIMIT_FRM)&&(state!=EMSTOP)){
-                            	state = EMSTOP;
-                        	}	
+                        if((ems_pvm_tmover>= WDT_FAULT_LIMIT_FRM)&&(state==EMSTOP)){
+                            state = FAULT;
+                            motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);   // PVM1,PVM2:off  sel:disEN  pDRV:disEN
+                            sk_PutString01("FAULT04",CRLF_ON);
+                            break;
+                        }else if((ems_pvm_tmover>= WDT_ESTOP_LIMIT_FRM)&&(state!=EMSTOP)){
+                            state = EMSTOP;
+                            sk_PutString01("ESTOP03",CRLF_ON);
+                        }
 
                     }else{
                         //pass goto PVM2 Voltage Ckeck
@@ -3451,10 +4440,14 @@ void diag_sense(void)
                         status0 &= ~(uint8)PVM2_FAULT ;
                         ems_pvm_tmover = 0;
                     }
+
                 }
 			}
             
             //****** [DIAG] Motor Pre Drive FAULT Check
+                #if DEMODE == 1
+                	pout(0xd6) ;	//enter diag_sense function
+                #endif 
                          
             if(trans_line>11){
                 ret=SS0_B_Read();
@@ -3466,10 +4459,12 @@ void diag_sense(void)
                     if((ems_drv_tmover>= WDT_FAULT_LIMIT_FRM)&&(state==EMSTOP)){
                         state = FAULT;
                         motor_en_reg_Write((uint8)MOT_CIR_ALL_OFF);   // PVM1,PVM2:off  sel:disEN  pDRV:disEN
+                        sk_PutString01("FAULT05",CRLF_ON);
                         SS0_B_Write(ret);
                         break;
                     }else if((ems_drv_tmover>= WDT_ESTOP_LIMIT_FRM)&&(state!=EMSTOP)){
                         state = EMSTOP;
+                        sk_PutString01("ESTOP04",CRLF_ON);
                     }
 
                 }else{
@@ -3486,6 +4481,9 @@ void diag_sense(void)
 
         case 1:    
             //****** [SENSE] ACCEL METER 9Axis 
+                #if DEMODE == 1
+                	pout(0xd8) ;	//enter diag_sense function
+                #endif           
             spi_sel = 111;
             ret = spi_read_bytes(spi_sel, 0x3b, 4, 0);
             axis9[0] += (int16)(((uint16)tmp[0]<<8)+tmp[1]);
@@ -3509,6 +4507,9 @@ void diag_sense(void)
 			}
 			
             //******* [SENSE] Gyro METER 9Axis 
+                #if DEMODE == 1
+                	pout(0xd9) ;	//enter diag_sense function
+                #endif           
             spi_sel = 111;
             ret = spi_read_bytes(spi_sel, 0x43, 4, 0);
             axis9[3] += (int16)(((uint16)tmp[0]<<8)+tmp[1]);
@@ -3535,6 +4536,9 @@ void diag_sense(void)
             //****** [SENSE] Distance Sensor 1 Check [front]
             //if (frame_count %4 ==3){  //for 1/4 Hz sonner measure
             if(trans_line>11){
+                    #if DEMODE == 1
+                    	pout(0xda) ;	//enter diag_sense function
+                    #endif 
      
                 adin = 1;
                 seq_code =0X97;
@@ -3547,6 +4551,9 @@ void diag_sense(void)
             //****** [SENSE] Distance Sensor 3  Check[rear] 
             //if (frame_count %4 ==3){  //for 1/4 Hz sonner measure
             if(trans_line>11){
+                    #if DEMODE == 1
+                    	pout(0xdb) ;	//enter diag_sense function
+                    #endif 
                 adin = 3;
                 seq_code =0X99;
                 dist_rear +=get_adc_value(adin,seq_code); //63.11us
@@ -3563,6 +4570,9 @@ void diag_sense(void)
             //****** [SENSE] Distance Sensor 0 Check [right front]
             //if (frame_count %4 ==3){  //for 1/4 Hz sonner measure
             if(trans_line>11){
+                    #if DEMODE == 1
+                    	pout(0xdc) ;	//enter diag_sense function
+                    #endif 
                 adin = 0;
                 seq_code =0X98;
                 dist_fr +=get_adc_value(adin,seq_code); //63.11us
@@ -3575,6 +4585,9 @@ void diag_sense(void)
             //****** [SENSE] Distance Sensor 2 Check [left front]
             //if (frame_count %4 ==3){  //for 1/4 Hz sonner measure
             if(trans_line>11){
+                    #if DEMODE == 1
+                    	pout(0xdd) ;	//enter diag_sense function
+                    #endif 
                 adin = 2;
                 seq_code =0X98;
                 dist_fl +=get_adc_value(adin,seq_code); //63.11us
@@ -3585,13 +4598,16 @@ void diag_sense(void)
             //}
 			
             //****** [SENSE] STEP Distance Sensor Check 
+                #if DEMODE == 1
+                	pout(0xde) ;	//enter diag_sense function
+                #endif           
             adin = 4;
             seq_code =0X9a;
             dist_st +=get_adc_value(adin,seq_code); //63.11us
             if(trans_line>11){
                 output2_tag[27] = (uint8)(dist_st>>2); //63.11us
                 dist_st =0;
-    	}	
+    		}	
 		    break;
 
 
@@ -3605,6 +4621,9 @@ void diag_sense(void)
         output2_tag[30]=status0;
 	}
         
+        #if DEMODE == 1
+        		pout(0xd0) ; //11L:56.72us 12L:38.52us 13L:118.81us
+        #endif 
 	return;
    
 }
@@ -3733,16 +4752,28 @@ uint8 spi_write_byte(uint8 devadr, uint8 regadr, uint8 wr_dat, uint8 mask)
 	//uint8	rd_data;
 	uint8	err = 0;
     uint8 iw;
+    
+    if( sk_log_flg2 & SK_LOG2_SPI_WR  ){
+        sk_log_int("SPI_WR:devadr = ",devadr );
+        sk_log_int("SPI_WR:regadr = ",regadr );
+        sk_log_int("SPI_WR:wr_dat = ",wr_dat );
+        //sk_log_int("SPI_WR:mask = ",mask );
+    }
+        
     SS0_B_Write(devadr);    // SPI_1 enable
 	wr_data = wr_dat;
 	SPIM_2_WriteTxData(regadr);
 	SPIM_2_WriteTxData(wr_data);
     err    =   SPIM_2_ReadTxStatus()  ;
+    
     iw=100;           
     while(!(err & SPIM_2_STS_SPI_DONE)){  // wait until finish writing
         CyDelayUs(5);  
         err    =   SPIM_2_ReadTxStatus()  ;
         if (iw==0){
+            if( sk_log_flg2 & SK_LOG2_SPI_WR  ){
+                sk_log_int("SPI_WR:err = ",err );
+            }
             return 1;        //SPI comunucation timeout
         }
         iw +=1;
@@ -3762,8 +4793,13 @@ uint8 spi_read_bytes(uint8 devadr, uint8 regadr, uint8 num, uint8 start)
     uint8   i ;
     //spi2_clr_buff();
     i = 0 ;
-	if (num < 1)      num = 1;
-	else if (num > 4) num = 4;
+	if (num < 1){
+        num = 1;
+	}
+    else if (num > 4){
+        num = 4;
+    }
+    
     SS0_B_Write(devadr);    // SPI_1 enable
 	regadr = 0x80 + regadr;
 

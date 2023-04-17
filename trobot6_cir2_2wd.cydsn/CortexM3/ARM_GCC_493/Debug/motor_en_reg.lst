@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
   29:.\Generated_Source\PSoC5/motor_en_reg.c **** *
   30:.\Generated_Source\PSoC5/motor_en_reg.c **** * Parameters:
   31:.\Generated_Source\PSoC5/motor_en_reg.c **** *  control:  The value to be assigned to the Control Register.
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 2
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 2
 
 
   32:.\Generated_Source\PSoC5/motor_en_reg.c **** *
@@ -82,7 +82,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
   37              	.L3:
   38 0006 00BF     		.align	2
   39              	.L2:
-  40 0008 72640040 		.word	1073767538
+  40 0008 76640040 		.word	1073767542
   41              		.cfi_endproc
   42              	.LFE0:
   43              		.size	motor_en_reg_Write, .-motor_en_reg_Write
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
   54              		@ args = 0, pretend = 0, frame = 0
   55              		@ frame_needed = 0, uses_anonymous_args = 0
   56              		@ link register save eliminated.
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 3
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 3
 
 
   59:.\Generated_Source\PSoC5/motor_en_reg.c ****     return motor_en_reg_Control;
@@ -131,7 +131,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
   62              	.L6:
   63 0006 00BF     		.align	2
   64              	.L5:
-  65 0008 72640040 		.word	1073767538
+  65 0008 76640040 		.word	1073767542
   66              		.cfi_endproc
   67              	.LFE1:
   68              		.size	motor_en_reg_Read, .-motor_en_reg_Read
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
  109 004b 54000000 		.4byte	.LASF5
  110 004f 02       		.uleb128 0x2
  111 0050 08       		.byte	0x8
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 4
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 4
 
 
  112 0051 05       		.byte	0x5
@@ -198,7 +198,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
  126 006b 04       		.uleb128 0x4
  127 006c AC010000 		.4byte	.LASF12
  128 0070 02       		.byte	0x2
- 129 0071 3801     		.2byte	0x138
+ 129 0071 9201     		.2byte	0x192
  130 0073 2C000000 		.4byte	0x2c
  131 0077 02       		.uleb128 0x2
  132 0078 04       		.byte	0x4
@@ -215,7 +215,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
  143 008c 04       		.uleb128 0x4
  144 008d 4F000000 		.4byte	.LASF13
  145 0091 02       		.byte	0x2
- 146 0092 E201     		.2byte	0x1e2
+ 146 0092 3C02     		.2byte	0x23c
  147 0094 98000000 		.4byte	0x98
  148 0098 05       		.uleb128 0x5
  149 0099 6B000000 		.4byte	0x6b
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
  166 00bf 00       		.byte	0
  167 00c0 08       		.uleb128 0x8
  168 00c1 90010000 		.4byte	.LASF19
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 5
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 5
 
 
  169 00c5 01       		.byte	0x1
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
  223 002c 03       		.uleb128 0x3
  224 002d 0E       		.uleb128 0xe
  225 002e 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 6
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 6
 
 
  226 002f 0B       		.uleb128 0xb
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
  280 0066 08       		.uleb128 0x8
  281 0067 2E       		.uleb128 0x2e
  282 0068 00       		.byte	0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 7
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 7
 
 
  283 0069 3F       		.uleb128 0x3f
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
  332      6E657261 
  332      7465645F 
  332      536F7572 
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 8
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 8
 
 
  332      63655C50 
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 1
  354      20726576 
  354      6973696F 
  354      6E203232 
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccXrxEpN.s 			page 9
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc5Q4kdT.s 			page 9
 
 
  354      31323230 

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
   29:.\Generated_Source\PSoC5/BMP_SW.c **** *
   30:.\Generated_Source\PSoC5/BMP_SW.c **** * Parameters:
   31:.\Generated_Source\PSoC5/BMP_SW.c **** *  None.
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 2
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 2
 
 
   32:.\Generated_Source\PSoC5/BMP_SW.c **** *
@@ -83,7 +83,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
   37              	.L3:
   38 0006 00BF     		.align	2
   39              	.L2:
-  40 0008 60640040 		.word	1073767520
+  40 0008 6B650040 		.word	1073767787
   41              		.cfi_endproc
   42              	.LFE0:
   43              		.size	BMP_SW_Read, .-BMP_SW_Read
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
   54              		@ args = 0, pretend = 0, frame = 0
   55              		@ frame_needed = 0, uses_anonymous_args = 0
   56 0000 08B5     		push	{r3, lr}
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 3
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 3
 
 
   57              		.cfi_def_cfa_offset 8
@@ -143,7 +143,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
   72              	.L7:
   73 0016 00BF     		.align	2
   74              	.L6:
-  75 0018 90640040 		.word	1073767568
+  75 0018 9B650040 		.word	1073767835
   76              		.cfi_endproc
   77              	.LFE1:
   78              		.size	BMP_SW_InterruptEnable, .-BMP_SW_InterruptEnable
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
   88              		.cfi_startproc
   89              		@ args = 0, pretend = 0, frame = 0
   90              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 4
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 4
 
 
   91 0000 08B5     		push	{r3, lr}
@@ -204,7 +204,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  107              	.L11:
  108 0016 00BF     		.align	2
  109              	.L10:
- 110 0018 90640040 		.word	1073767568
+ 110 0018 9B650040 		.word	1073767835
  111              		.cfi_endproc
  112              	.LFE2:
  113              		.size	BMP_SW_InterruptDisable, .-BMP_SW_InterruptDisable
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  122              		.loc 1 104 0
  123              		.cfi_startproc
  124              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 5
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 5
 
 
  125              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -255,7 +255,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  132              	.L14:
  133 0006 00BF     		.align	2
  134              	.L13:
- 135 0008 80640040 		.word	1073767552
+ 135 0008 8B650040 		.word	1073767819
  136              		.cfi_endproc
  137              	.LFE3:
  138              		.size	BMP_SW_WriteMask, .-BMP_SW_WriteMask
@@ -298,13 +298,13 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  129:.\Generated_Source\PSoC5/BMP_SW.c **** }
  155              		.loc 1 129 0
  156 0004 7047     		bx	lr
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 6
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 6
 
 
  157              	.L17:
  158 0006 00BF     		.align	2
  159              	.L16:
- 160 0008 80640040 		.word	1073767552
+ 160 0008 8B650040 		.word	1073767819
  161              		.cfi_endproc
  162              	.LFE4:
  163              		.size	BMP_SW_ReadMask, .-BMP_SW_ReadMask
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  211 0057 08       		.byte	0x8
  212 0058 07       		.byte	0x7
  213 0059 56000000 		.4byte	.LASF7
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 7
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 7
 
 
  214 005d 03       		.uleb128 0x3
@@ -372,7 +372,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  222 006b 04       		.uleb128 0x4
  223 006c 3E000000 		.4byte	.LASF12
  224 0070 02       		.byte	0x2
- 225 0071 3801     		.2byte	0x138
+ 225 0071 9201     		.2byte	0x192
  226 0073 2C000000 		.4byte	0x2c
  227 0077 02       		.uleb128 0x2
  228 0078 04       		.byte	0x4
@@ -389,7 +389,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  239 008c 04       		.uleb128 0x4
  240 008d FB010000 		.4byte	.LASF13
  241 0091 02       		.byte	0x2
- 242 0092 E201     		.2byte	0x1e2
+ 242 0092 3C02     		.2byte	0x23c
  243 0094 98000000 		.4byte	0x98
  244 0098 05       		.uleb128 0x5
  245 0099 6B000000 		.4byte	0x6b
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  268 00ce 08       		.uleb128 0x8
  269 00cf 09020000 		.4byte	.LASF17
  270 00d3 01       		.byte	0x1
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 8
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 8
 
 
  271 00d4 3B       		.byte	0x3b
@@ -478,19 +478,19 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  325 0155 00000000 		.4byte	.LFB4
  326 0159 0C000000 		.4byte	.LFE4-.LFB4
  327 015d 01       		.uleb128 0x1
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 9
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 9
 
 
  328 015e 9C       		.byte	0x9c
  329 015f 0B       		.uleb128 0xb
  330 0160 27000000 		.4byte	.LASF25
  331 0164 03       		.byte	0x3
- 332 0165 7E       		.byte	0x7e
+ 332 0165 7D       		.byte	0x7d
  333 0166 6B000000 		.4byte	0x6b
  334 016a 0C       		.uleb128 0xc
  335 016b D5010000 		.4byte	.LASF26
  336 016f 03       		.byte	0x3
- 337 0170 7F       		.byte	0x7f
+ 337 0170 7E       		.byte	0x7e
  338 0171 0D       		.uleb128 0xd
  339 0172 6B000000 		.4byte	0x6b
  340 0176 00       		.byte	0
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  382 0026 08       		.uleb128 0x8
  383 0027 00       		.byte	0
  384 0028 00       		.byte	0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 10
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 10
 
 
  385 0029 04       		.uleb128 0x4
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  439 0060 3B       		.uleb128 0x3b
  440 0061 0B       		.uleb128 0xb
  441 0062 27       		.uleb128 0x27
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 11
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 11
 
 
  442 0063 19       		.uleb128 0x19
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  496 009c 00       		.byte	0
  497 009d 3F       		.uleb128 0x3f
  498 009e 19       		.uleb128 0x19
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 12
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 12
 
 
  499 009f 03       		.uleb128 0x3
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  553 0022 00000000 		.4byte	0
  554              		.section	.debug_aranges,"",%progbits
  555 0000 3C000000 		.4byte	0x3c
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 13
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 13
 
 
  556 0004 0200     		.2byte	0x2
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  598 0027 4379456E 		.ascii	"CyEnterCriticalSection\000"
  598      74657243 
  598      72697469 
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 14
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 14
 
 
  598      63616C53 
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  619              	.LASF20:
  620 0134 424D505F 		.ascii	"BMP_SW_ReadMask\000"
  620      53575F52 
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 15
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 15
 
 
  620      6561644D 
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 1
  642              	.LASF14:
  643 0200 73697A65 		.ascii	"sizetype\000"
  643      74797065 
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\cc2PVBwt.s 			page 16
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccgKHlLE.s 			page 16
 
 
  643      00

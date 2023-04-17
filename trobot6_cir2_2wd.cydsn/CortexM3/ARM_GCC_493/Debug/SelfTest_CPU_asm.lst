@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
   29:.\SelfTest_CPU_asm.c **** * Cypress reserves the right to make changes without further notice to the
   30:.\SelfTest_CPU_asm.c **** * materials described herein. Cypress does not assume any liability arising out
   31:.\SelfTest_CPU_asm.c **** * of the application or use of any product or circuit described herein. Cypress
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 2
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 2
 
 
   32:.\SelfTest_CPU_asm.c **** * does not authorize its products for use as critical components in life-support
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
   86:.\SelfTest_CPU_asm.c **** *
   87:.\SelfTest_CPU_asm.c **** *****************************************************************************/
   88:.\SelfTest_CPU_asm.c **** 
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 3
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 3
 
 
   89:.\SelfTest_CPU_asm.c **** #if defined(__C51__)
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  138:.\SelfTest_CPU_asm.c ****         
  139:.\SelfTest_CPU_asm.c ****         rl A
  140:.\SelfTest_CPU_asm.c ****         xch A, @R0
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 4
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 4
 
 
  141:.\SelfTest_CPU_asm.c ****         xch A, @R0
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
   43 0016 B0F1553F 		CMP   R0, 0x55555555  
   44 001a 40F09980 		BNE   __test_asm_fail    
   45 001e 4FF0AA31 		MOV   R1, 0xAAAAAAAA  
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 5
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 5
 
 
   46 0022 B1F1AA3F 		CMP   R1, 0xAAAAAAAA  
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  100 00de BAF1AA3F 		CMP   R10, 0xAAAAAAAA  
  101 00e2 35D1     		BNE   __test_asm_fail    
  102 00e4 4FF0553A 		MOV   R10, 0x55555555  
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 6
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 6
 
 
  103 00e8 BAF1553F 		CMP   R10, 0x55555555  
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  195:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R6")
  196:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R7")
  197:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R8")
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 7
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 7
 
 
  198:.\SelfTest_CPU_asm.c ****             CPU_REGISTER_TEST("R9")
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  152              		.cfi_endproc
  153              	.LFE63:
  154              		.size	CPU_PSoC_Asm, .-CPU_PSoC_Asm
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 8
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 8
 
 
  155              		.text
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  209 0062 08       		.byte	0x8
  210 0063 07       		.byte	0x7
  211 0064 46000000 		.4byte	.LASF7
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 9
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 9
 
 
  212 0068 04       		.uleb128 0x4
@@ -497,7 +497,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  225 0081 05       		.uleb128 0x5
  226 0082 2E000000 		.4byte	.LASF11
  227 0086 04       		.byte	0x4
- 228 0087 3801     		.2byte	0x138
+ 228 0087 9201     		.2byte	0x192
  229 0089 2C000000 		.4byte	0x2c
  230 008d 02       		.uleb128 0x2
  231 008e 04       		.byte	0x4
@@ -527,7 +527,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  255 00be 07       		.uleb128 0x7
  256 00bf 21010000 		.4byte	.LASF20
  257 00c3 05       		.byte	0x5
- 258 00c4 5506     		.2byte	0x655
+ 258 00c4 9606     		.2byte	0x696
  259 00c6 CA000000 		.4byte	0xca
  260 00ca 08       		.uleb128 0x8
  261 00cb 76000000 		.4byte	0x76
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  266 0001 11       		.uleb128 0x11
  267 0002 01       		.byte	0x1
  268 0003 25       		.uleb128 0x25
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 10
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 10
 
 
  269 0004 0E       		.uleb128 0xe
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  323 003a 0E       		.uleb128 0xe
  324 003b 3A       		.uleb128 0x3a
  325 003c 0B       		.uleb128 0xb
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 11
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 11
 
 
  326 003d 3B       		.uleb128 0x3b
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  380 0074 00       		.byte	0
  381 0075 00       		.byte	0
  382              		.section	.debug_aranges,"",%progbits
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 12
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 12
 
 
  383 0000 1C000000 		.4byte	0x1c
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  414      65642069 
  415              	.LASF12:
  416 005d 666C6F61 		.ascii	"float\000"
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 13
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 13
 
 
  416      7400
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 1
  438      50555F61 
  438      736D2E63 
  439              	.LASF2:
-ARM GAS  C:\Users\nosak\AppData\Local\Temp\ccmDFnNK.s 			page 14
+ARM GAS  C:\Users\nosak\AppData\Local\Temp\cck1trY3.s 			page 14
 
 
  440 0159 73686F72 		.ascii	"short int\000"

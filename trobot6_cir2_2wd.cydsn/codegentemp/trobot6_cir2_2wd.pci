@@ -1,5 +1,5 @@
 # trobot6_cir2_2wd
-# 2023-03-13 08:25:18Z
+# 2023-03-31 07:00:26Z
 
 # IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
 dont_use_io iocell 1 0
@@ -74,6 +74,8 @@ set_io "hw1(0)" iocell 1 5
 set_io "dist8_SW_DET(0)" iocell 4 2
 set_io "Dist4_PVM_CUR(0)" iocell 3 6
 set_io "Sonr_TRG_x4(0)" iocell 12 4
+set_io "Rx_1(0)" iocell 12 2
+set_io "Tx_1(0)" iocell 12 3
 set_location "\USBUART_1:USB\" usbcell -1 -1 0
 set_location "\ADC_SAR_1:ADC_SAR\" sarcell -1 -1 1
 set_location "\VDAC8_1:viDAC8\" vidaccell -1 -1 1

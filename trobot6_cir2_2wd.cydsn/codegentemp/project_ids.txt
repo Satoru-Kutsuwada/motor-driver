@@ -1,7 +1,0 @@
-C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\Libraly\trobot_libs\trobot_libs.cylib\trobot_libs.cyprj|9ac56a28-5207-4229-a7e7-eb758abae3f1
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|f2750324-61aa-47bf-b889-cd7dbe67a2d4
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|68c07510-3326-4245-bfc7-0df062e4ee15
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|a28dd59f-b764-44b1-987b-eae03c75f560
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|44d557ad-cdb6-4b9b-b695-bb5cbb76d385
-C:\TIRI\k3g2pmpm_20211223\trobot_psoc_v6_73\trobot6_cir2_2wd.cydsn\trobot6_cir2_2wd.cyprj|90920b3e-bc3f-463d-b8d7-4b1acaf921cc
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\dev\psoc3\AnalogDevice\PSoC35AnalogDevice.cylib\PSoC35AnalogDevice.cyprj|d88e9150-5c55-4fb9-9758-711782530efd
